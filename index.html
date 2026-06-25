@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanima Iykarayil Motor Driving School - Billing</title>
+    <!-- Include html2pdf library for offline PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -54,7 +55,6 @@
             gap: 10px;
         }
 
-        /* The L Badge */
         .l-badge {
             background: white;
             color: var(--brand-red);
@@ -92,7 +92,6 @@
             opacity: 0.9;
         }
 
-        /* Main Layout */
         .container {
             max-width: 1100px;
             margin: 30px auto;
@@ -153,12 +152,6 @@
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--brand-teal);
         }
 
         button {
@@ -173,19 +166,10 @@
             margin-bottom: 12px;
         }
 
-        .btn-primary { background: var(--brand-teal); color: white; }
-        .btn-primary:hover { background: var(--brand-dark-teal); }
-        
         .btn-pdf { background: #0284c7; color: white; }
         .btn-pdf:hover { background: #0369a1; }
-
         .btn-whatsapp { background: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-whatsapp:hover { background: #20ba5a; }
-
-        /* Receipt Preview Side */
-        .receipt-preview-container {
-            position: relative;
-        }
 
         .receipt-preview {
             border: 1px solid #cbd5e1;
@@ -193,7 +177,6 @@
             background: #fff;
             min-height: 420px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .receipt-pdf-header {
@@ -201,7 +184,6 @@
             border-bottom: 2px solid var(--brand-teal);
             padding-bottom: 15px;
             margin-bottom: 25px;
-            position: relative;
         }
 
         .receipt-pdf-header h3 {
@@ -209,7 +191,6 @@
             color: var(--brand-teal);
             font-size: 1.6rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
 
         .pdf-l-badge {
@@ -224,7 +205,6 @@
             font-weight: 900;
             font-size: 0.9rem;
             margin-left: 5px;
-            vertical-align: middle;
         }
 
         .receipt-row {
@@ -245,7 +225,7 @@
             color: var(--brand-dark-teal);
             margin-top: 25px;
         }
-        
+
         .instructions-box {
             background: #eff6ff;
             border-left: 4px solid #3b82f6;
@@ -254,17 +234,59 @@
             border-radius: 4px;
             font-size: 0.85rem;
             color: #1e40af;
-            line-height: 1.4;
         }
+
+        /* History Table Section Styles */
+        .history-container {
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--brand-teal);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .clear-btn {
+            background: #64748b;
+            color: white;
+            padding: 8px 15px;
+            width: auto;
+            font-size: 0.85rem;
+            float: right;
+            margin-bottom: 15px;
+        }
+        .clear-btn:hover { background: #475569; }
     </style>
 </head>
 <body>
 
 <div class="brand-header">
     <div class="brand-title">Thanima Iykarayil</div>
-    <div class="brand-subtitle">
-        MOTOR DRIVING SCHOOL <span class="l-badge">L</span>
-    </div>
+    <div class="brand-subtitle">MOTOR DRIVING SCHOOL <span class="l-badge">L</span></div>
     <br>
     <div class="tagline-container">LEARN TO DRIVE WITH CONFIDENCE ≫</div>
     <div class="meta-info">
@@ -274,6 +296,7 @@
 </div>
 
 <div class="container">
+    <!-- Form Side -->
     <div class="card">
         <h2>Generate Fee Receipt</h2>
         <form id="receiptForm">
@@ -315,21 +338,18 @@
             </div>
             
             <button type="button" class="btn-pdf" onclick="downloadPDF()">1. Download PDF Receipt</button>
-            <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.66.986 3.298 1.448 5.355 1.449 5.883 0 10.668-4.782 10.67-10.661.002-2.848-1.105-5.527-3.116-7.538C17.492 2.393 14.814 1.284 12 1.284c-5.887 0-10.666 4.779-10.67 10.66-.001 2.036.533 3.668 1.508 5.213l-.993 3.63 3.712-.975zm13.114-6.97c-.303-.151-1.793-.884-2.073-.986-.28-.102-.483-.152-.686.152-.203.304-.785.986-.962 1.189-.178.203-.355.228-.658.077-.304-.152-1.282-.472-2.442-1.506-.903-.806-1.512-1.802-1.69-2.105-.177-.303-.019-.467.133-.618.136-.136.304-.355.456-.532.152-.177.203-.304.304-.507.102-.203.051-.38-.025-.532-.076-.152-.686-1.653-.94-2.26-.248-.599-.501-.518-.686-.527-.177-.008-.38-.01-.583-.01-.203 0-.533.076-.813.38-.28.304-1.065 1.039-1.065 2.532s1.09 2.939 1.242 3.141c.152.203 2.14 3.268 5.185 4.579.725.312 1.29.499 1.731.639.728.231 1.39.198 1.914.12.584-.087 1.793-.733 2.047-1.442.254-.709.254-1.317.177-1.442-.077-.127-.28-.203-.584-.354z"/></svg>
-                2. Chat & Attach on WhatsApp
-            </button>
+            <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">2. Chat & Attach on WhatsApp</button>
             
             <div class="instructions-box">
                 <strong>How to send the PDF:</strong><br>
-                1. Click <strong>Download PDF Receipt</strong> to save the receipt file.<br>
-                2. Click <strong>Chat & Attach on WhatsApp</strong>. It opens the chat with your student.<br>
-                3. Simply drag & drop or attach the downloaded PDF into their chat!
+                1. Click Download PDF to save it. (This also logs it to history below!)<br>
+                2. Click Chat on WhatsApp, open the student's chat log, and simply drop the PDF file inside.
             </div>
         </form>
     </div>
 
-    <div class="receipt-preview-container">
+    <!-- Preview Side -->
+    <div>
         <h2>Receipt Live Preview</h2>
         <div class="receipt-preview" id="receiptPrintArea">
             <div class="receipt-pdf-header">
@@ -347,16 +367,46 @@
             <div class="receipt-row total-row"><strong>Total Amount Paid:</strong> <span id="pdfAmount">₹ 0</span></div>
             
             <p style="text-align:center; margin-top:50px; font-size:1rem; font-weight:700; color:var(--brand-teal); font-style:italic;">≫ Learn To Drive With Confidence ≪</p>
-            <p style="text-align:center; margin-top:10px; font-size:0.8rem; color:#64748b;">This is a computer generated digital fee receipt.</p>
+        </div>
+    </div>
+</div>
+
+<!-- History Log Section -->
+<div class="history-container">
+    <div class="card">
+        <button type="button" class="clear-btn" onclick="clearHistory()">Clear All Records</button>
+        <h2>📜 Saved Billing History</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Receipt No</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Amount</th>
+                        <th>Mode</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #64748b;">No bills generated yet on this device.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script>
-    // Generate unique look-ahead receipt number on load
     window.onload = function() {
-        document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
+        generateNewReceiptNo();
         updatePreview();
+        loadHistory();
+    }
+
+    function generateNewReceiptNo() {
+        document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
     }
 
     function updatePreview() {
@@ -367,7 +417,6 @@
         const mode = document.getElementById('payMode').value;
         const date = new Date().toLocaleDateString('en-IN');
 
-        // Dynamically update the live preview/PDF block
         document.getElementById('pdfReceiptNo').innerText = 'Receipt No: ' + receiptNo;
         document.getElementById('pdfDate').innerText = 'Date: ' + date;
         document.getElementById('pdfName').innerText = name;
@@ -376,19 +425,75 @@
         document.getElementById('pdfAmount').innerText = '₹ ' + amount;
     }
 
+    // Capture entry data and store to LocalStorage
+    function saveRecordToHistory() {
+        const receiptNo = document.getElementById('receiptNo').value;
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('whatsappNo').value;
+        const course = document.getElementById('course').value;
+        const amount = document.getElementById('amount').value;
+        const mode = document.getElementById('payMode').value;
+        const date = new Date().toLocaleDateString('en-IN');
+
+        if(!name || !phone || !amount) return false;
+
+        const record = { date, receiptNo, name, course, amount, mode };
+        
+        let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+        
+        // Prevent registering matching duplicates if button clicked repeatedly
+        if (!history.some(item => item.receiptNo === receiptNo)) {
+            history.unshift(record); // Add to beginning of history list
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+            loadHistory();
+        }
+        return true;
+    }
+
+    function loadHistory() {
+        const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+        const tbody = document.getElementById('historyTableBody');
+        
+        if(history.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b;">No bills generated yet on this device.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = history.map(item => `
+            <tr>
+                <td>${item.date}</td>
+                <td><strong>${item.receiptNo}</strong></td>
+                <td>${item.name}</td>
+                <td>${item.course}</td>
+                <td><strong>₹ ${item.amount}</strong></td>
+                <td>${item.mode}</td>
+            </tr>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if(confirm("Are you sure you want to delete all historical records on this device? This action cannot be undone.")) {
+            localStorage.removeItem('driving_school_history');
+            loadHistory();
+        }
+    }
+
     function downloadPDF() {
         const name = document.getElementById('custName').value || 'Student';
-        const element = document.getElementById('receiptPrintArea');
+        if(!document.getElementById('custName').value || !document.getElementById('amount').value) {
+            alert('Please fill student details before saving.');
+            return;
+        }
         
+        saveRecordToHistory();
+        const element = document.getElementById('receiptPrintArea');
         const opt = {
-            margin:       10,
-            filename:     'Receipt_' + name.replace(/\s+/g, '_') + '.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            margin: 10,
+            filename: 'Receipt_' + name.replace(/\s+/g, '_') + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-
-        // Generate and download PDF seamlessly offline
         html2pdf().set(opt).from(element).save();
     }
 
@@ -402,14 +507,12 @@
         const date = new Date().toLocaleDateString('en-IN');
 
         if(!name || !phone || !amount) {
-            alert('Please enter Student Name, WhatsApp Number, and Amount.');
+            alert('Please fill out all fields before launching WhatsApp.');
             return;
         }
 
-        // Always prepend India code 91 and clean phone number
+        saveRecordToHistory();
         const cleanPhone = '91' + phone.replace(/\D/g, '');
-
-        // Standard Text Summary to accompany the PDF
         const message = `*🧾 FEE RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
                         `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                         `----------------------------------------%0A` +
@@ -422,10 +525,13 @@
                         `*Total Amount Received: ₹ ${amount}*%0A%0A` +
                         `👇 Please find your official PDF Receipt attached below.`;
 
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`;
-        window.open(whatsappUrl, '_blank');
+        window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
+        
+        // Refresh form for the next student transaction automatically
+        document.getElementById('receiptForm').reset();
+        generateNewReceiptNo();
+        updatePreview();
     }
 </script>
-
 </body>
 </html>
