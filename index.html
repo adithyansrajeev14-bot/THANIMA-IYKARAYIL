@@ -441,12 +441,11 @@
         
         let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
         
-        // Prevent registering matching duplicates if button clicked repeatedly
-        if (!history.some(item => item.receiptNo === receiptNo)) {
-            history.unshift(record); // Add to beginning of history list
-            localStorage.setItem('driving_school_history', JSON.stringify(history));
-            loadHistory();
-        }
+        // Save the new record immediately to the top of the history list
+        history.unshift(record); 
+        localStorage.setItem('driving_school_history', JSON.stringify(history));
+        
+        loadHistory();
         return true;
     }
 
