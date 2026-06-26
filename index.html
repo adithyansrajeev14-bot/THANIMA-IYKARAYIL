@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanima Iykarayil Motor Driving School - Billing</title>
+    
+    <!-- Firebase SDK v9 Compatibility Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
     <style>
         :root {
             --brand-teal: #005f73;
@@ -20,6 +25,63 @@
             color: var(--text-dark);
             margin: 0;
             padding: 0;
+        }
+
+        /* Login Screen Overlay Layout */
+        #authOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--brand-dark-teal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .login-card h2 {
+            color: var(--brand-teal);
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .login-brand-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--brand-yellow);
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+
+        .login-brand-sub {
+            font-size: 1rem;
+            color: white;
+            background: var(--brand-teal);
+            padding: 4px 10px;
+            display: inline-block;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        /* Main Content Container hidden initially until authenticated */
+        #mainApplicationWindow {
+            display: none;
         }
 
         /* Professional Header Banner */
@@ -414,7 +476,25 @@
         .clear-btn { background: #64748b; }
         .clear-btn:hover { background: #475569; }
 
+        .logout-btn {
+            background: var(--brand-red);
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            float: right;
+            margin-top: 15px;
+            margin-right: 20px;
+        }
+        .logout-btn:hover { background: #b91c1c; }
+
         /* Dedicated Pure Invoice View Mode */
+        body.customer-view-mode #authOverlay { display: none !important; }
+        body.customer-view-mode #mainApplicationWindow { display: block !important; }
+        body.customer-view-mode .logout-btn { display: none !important; }
         body.customer-view-mode .brand-header { padding: 20px 10px; }
         body.customer-view-mode .brand-title { font-size: 1.8rem; }
         body.customer-view-mode .brand-subtitle { font-size: 1.1rem; }
@@ -424,7 +504,7 @@
         /* Printer Rules Optimization */
         @media print {
             body { background: #fff; color: #000; }
-            .brand-header, #previewHeader, .btn-print-customer { display: none !important; }
+            .brand-header, #previewHeader, .btn-print-customer, .logout-btn { display: none !important; }
             .container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
             .receipt-preview { border: none !important; box-shadow: none !important; padding: 0 !important; }
         }
@@ -432,125 +512,264 @@
 </head>
 <body>
 
-<div class="brand-header">
-    <div class="brand-title">Thanima Iykarayil</div>
-    <div class="brand-subtitle">MOTOR DRIVING SCHOOL <span class="l-badge">L</span></div>
-    <br>
-    <div class="tagline-container">LEARN TO DRIVE WITH CONFIDENCE ≫</div>
-    <div class="meta-info">
-        <span>✓ Govt. Approved</span>
-        <span>✓ LIC NO: 3/13/2019</span>
-    </div>
-</div>
-
-<div class="container">
-    <div class="card">
-        <h2>Generate Fee Receipt</h2>
-        <form id="receiptForm">
-            <div class="form-group">
-                <label>Receipt No:</label>
-                <input type="text" id="receiptNo" readonly style="background: #f1f5f9; font-weight: bold;">
-            </div>
-            <div class="form-group">
-                <label>Student Name:</label>
-                <input type="text" id="custName" required placeholder="Enter student name" oninput="updatePreview()">
-            </div>
-            <div class="form-group">
-                <label>WhatsApp Number:</label>
+<!-- Secure Auth Screen Overlay Section -->
+<div id="authOverlay">
+    <div class="login-card">
+        <div class="login-brand-title">Thanima Iykarayil</div>
+        <div class="login-brand-sub">MOTOR DRIVING SCHOOL</div>
+        <h2>Administrative Secure Login</h2>
+        
+        <!-- Phase A: Collect Phone Number -->
+        <div id="phoneInputSection">
+            <div class="form-group" style="text-align: left;">
+                <label>Registered Mobile Number:</label>
                 <div class="phone-input-container">
-                    <input type="text" class="country-code" value="+91" readonly>
-                    <input type="tel" id="whatsappNo" required placeholder="Enter 10-digit mobile number">
+                    <input type="text" class="country-code" value="+91" readonly style="width: 60px;">
+                    <input type="tel" id="loginPhoneNo" placeholder="Enter 10-digit number" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Training Course / Service:</label>
-                <select id="course" onchange="updatePreview()">
-                    <option value="Four Wheeler Training (Car)">Four Wheeler Training (Car)</option>
-                    <option value="Two Wheeler Training (Bike/Scooter)">Two Wheeler Training (Bike/Scooter)</option>
-                    <option value="Combined Package (Car + Bike)">Combined Package (Car + Bike)</option>
-                    <option value="License Service & Documentation">License Service & Documentation</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Amount Paid (₹):</label>
-                <input type="number" id="amount" required placeholder="0" oninput="updatePreview()">
-            </div>
-            <div class="form-group">
-                <label>Payment Mode:</label>
-                <select id="payMode" onchange="updatePreview()">
-                    <option value="UPI / GPay / PhonePe">UPI / GPay / PhonePe</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                </select>
-            </div>
-            
-            <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">Generate & Send Bill on WhatsApp</button>
-            
-            <div class="instructions-box">
-                <strong>Dynamic Grouping Enabled:</strong><br>
-                Receipts with matching student names and WhatsApp numbers are collected together under a single master profile below so you can audit their total account balance beautifully.
-            </div>
-        </form>
-    </div>
-
-    <div>
-        <h2 id="previewHeader">Receipt Live Preview</h2>
-        <div class="receipt-preview" id="receiptPrintArea">
-            <div class="receipt-pdf-header">
-                <h3>THANIMA IYKARAYIL <span class="pdf-l-badge">L</span></h3>
-                <strong style="color:var(--brand-teal); font-size:0.95rem; letter-spacing:1px; display:block; margin-top:3px;">MOTOR DRIVING SCHOOL</strong>
-                <p style="margin: 5px 0; font-size:0.85rem; color:#475569; font-weight:600;">Govt. Approved | LIC NO: 3/13/2019</p>
-                <div style="margin-top:12px; font-size:0.9rem; color:#1e293b; border-top:1px solid #e2e8f0; padding-top:8px;">
-                    <span id="previewDate">Date: --/--/----</span> &nbsp;|&nbsp; <span id="previewReceiptNo">Receipt No: TI-XXXXX</span>
-                </div>
-            </div>
-            
-            <div class="receipt-row"><strong>Student Name:</strong> <span id="previewName">____________________</span></div>
-            <div class="receipt-row"><strong>Course / Service:</strong> <span id="previewCourse">Four Wheeler Training (Car)</span></div>
-            <div class="receipt-row"><strong>Payment Mode:</strong> <span id="previewMode">UPI / GPay / PhonePe</span></div>
-            
-            <div class="total-row">
-                <strong>Total Amount Paid:</strong> 
-                <span id="previewAmount">₹ 0</span>
-            </div>
-            
-            <p style="text-align:center; margin-top:50px; font-size:1rem; font-weight:700; color:var(--brand-teal); font-style:italic;">≫ Learn To Drive With Confidence ≪</p>
-            <p id="printFooterText" style="text-align:center; margin-top:15px; font-size:0.8rem; color:#64748b; display:none;">This is an official real-time verified computer-generated digital receipt.</p>
+            <!-- Invisible/Visible ReCaptcha Safeguard Box required by Firebase Phone Auth -->
+            <div id="recaptcha-container" style="margin: 15px auto; display: flex; justify-content: center;"></div>
+            <button type="button" style="background: var(--brand-teal); color: white;" onclick="triggerOTPSend()">Send Verification OTP</button>
         </div>
-        
-        <button type="button" id="customerPrintBtn" class="btn-print-customer" onclick="window.print()">🖨️ Save / Print Receipt</button>
+
+        <!-- Phase B: Verify Received OTP -->
+        <div id="otpVerifySection" style="display: none;">
+            <p style="font-size: 0.9rem; color:#475569; margin-bottom: 15px;">An official 6-digit OTP code has been text-messaged to your mobile number.</p>
+            <div class="form-group" style="text-align: left;">
+                <label>Enter 6-Digit OTP Code:</label>
+                <input type="text" id="loginOTPCode" placeholder="X X X X X X" maxlength="6" style="text-align: center; letter-spacing: 5px; font-weight: bold;">
+            </div>
+            <button type="button" style="background: #107c41; color: white;" onclick="verifySubmittedOTP()">Verify Code & Login</button>
+            <button type="button" style="background: #e2e8f0; color: #334155; font-size: 0.85rem;" onclick="resetLoginScreen()">← Back</button>
+        </div>
     </div>
 </div>
 
-<div class="history-container">
-    <div class="card">
-        <div class="action-bar">
-            <button type="button" class="history-btn excel-btn" onclick="exportToExcel()">📊 Download Excel Sheet</button>
-            <button type="button" class="history-btn clear-btn" onclick="clearAllHistory()">Clear All Records</button>
+<!-- Main Application UI Wrapper Block -->
+<div id="mainApplicationWindow">
+    <button type="button" class="logout-btn" onclick="triggerAccountLogout()">🔒 Secure Logout</button>
+
+    <div class="brand-header">
+        <div class="brand-title">Thanima Iykarayil</div>
+        <div class="brand-subtitle">MOTOR DRIVING SCHOOL <span class="l-badge">L</span></div>
+        <br>
+        <div class="tagline-container">LEARN TO DRIVE WITH CONFIDENCE ≫</div>
+        <div class="meta-info">
+            <span>✓ Govt. Approved</span>
+            <span>✓ LIC NO: 3/13/2019</span>
         </div>
-        <h2>📜 Grouped Student Ledger Logs</h2>
-        
-        <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by student name or mobile number..." oninput="loadHistory()">
-        
-        <div id="groupedLedgerContainer">
+    </div>
+
+    <div class="container">
+        <!-- Form Side -->
+        <div class="card">
+            <h2>Generate Fee Receipt</h2>
+            <form id="receiptForm">
+                <div class="form-group">
+                    <label>Receipt No:</label>
+                    <input type="text" id="receiptNo" readonly style="background: #f1f5f9; font-weight: bold;">
+                </div>
+                <div class="form-group">
+                    <label>Student Name:</label>
+                    <input type="text" id="custName" required placeholder="Enter student name" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp Number:</label>
+                    <div class="phone-input-container">
+                        <input type="text" class="country-code" value="+91" readonly>
+                        <input type="tel" id="whatsappNo" required placeholder="Enter 10-digit mobile number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Training Course / Service:</label>
+                    <select id="course" onchange="updatePreview()">
+                        <option value="Four Wheeler Training (Car)">Four Wheeler Training (Car)</option>
+                        <option value="Two Wheeler Training (Bike/Scooter)">Two Wheeler Training (Bike/Scooter)</option>
+                        <option value="Combined Package (Car + Bike)">Combined Package (Car + Bike)</option>
+                        <option value="License Service & Documentation">License Service & Documentation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount Paid (₹):</label>
+                    <input type="number" id="amount" required placeholder="0" oninput="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Payment Mode:</label>
+                    <select id="payMode" onchange="updatePreview()">
+                        <option value="UPI / GPay / PhonePe">UPI / GPay / PhonePe</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">Generate & Send Bill on WhatsApp</button>
+                
+                <div class="instructions-box">
+                    <strong>Dynamic Grouping Enabled:</strong><br>
+                    Receipts with matching student names and WhatsApp numbers are collected together under a single master profile below so you can audit their total account balance beautifully.
+                </div>
+            </form>
+        </div>
+
+        <!-- Live Preview Display Side / Full Receipt Mode -->
+        <div>
+            <h2 id="previewHeader">Receipt Live Preview</h2>
+            <div class="receipt-preview" id="receiptPrintArea">
+                <div class="receipt-pdf-header">
+                    <h3>THANIMA IYKARAYIL <span class="pdf-l-badge">L</span></h3>
+                    <strong style="color:var(--brand-teal); font-size:0.95rem; letter-spacing:1px; display:block; margin-top:3px;">MOTOR DRIVING SCHOOL</strong>
+                    <p style="margin: 5px 0; font-size:0.85rem; color:#475569; font-weight:600;">Govt. Approved | LIC NO: 3/13/2019</p>
+                    <div style="margin-top:12px; font-size:0.9rem; color:#1e293b; border-top:1px solid #e2e8f0; padding-top:8px;">
+                        <span id="previewDate">Date: --/--/----</span> &nbsp;|&nbsp; <span id="previewReceiptNo">Receipt No: TI-XXXXX</span>
+                    </div>
+                </div>
+                
+                <div class="receipt-row"><strong>Student Name:</strong> <span id="previewName">____________________</span></div>
+                <div class="receipt-row"><strong>Course / Service:</strong> <span id="previewCourse">Four Wheeler Training (Car)</span></div>
+                <div class="receipt-row"><strong>Payment Mode:</strong> <span id="previewMode">UPI / GPay / PhonePe</span></div>
+                
+                <div class="total-row">
+                    <strong>Total Amount Paid:</strong> 
+                    <span id="previewAmount">₹ 0</span>
+                </div>
+                
+                <p style="text-align:center; margin-top:50px; font-size:1rem; font-weight:700; color:var(--brand-teal); font-style:italic;">≫ Learn To Drive With Confidence ≪</p>
+                <p id="printFooterText" style="text-align:center; margin-top:15px; font-size:0.8rem; color:#64748b; display:none;">This is an official real-time verified computer-generated digital receipt.</p>
             </div>
+            
+            <button type="button" id="customerPrintBtn" class="btn-print-customer" onclick="window.print()">🖨️ Save / Print Receipt</button>
+        </div>
+    </div>
+
+    <!-- Grouped History Section -->
+    <div class="history-container">
+        <div class="card">
+            <div class="action-bar">
+                <button type="button" class="history-btn excel-btn" onclick="exportToExcel()">📊 Download Excel Sheet</button>
+                <button type="button" class="history-btn clear-btn" onclick="clearAllHistory()">Clear All Records</button>
+            </div>
+            <h2>📜 Grouped Student Ledger Logs</h2>
+            
+            <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by student name or mobile number..." oninput="loadHistory()">
+            
+            <div id="groupedLedgerContainer">
+                <!-- Populated via Javascript -->
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+    // ==========================================
+    // PLACE YOUR COPIED FIREBASE CONFIG HERE:
+    // ==========================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyC15S3IiiyFXnCdZ3gJX2YTD-FZYu3EiHo",
+        authDomain: "thanima-mds.firebaseapp.com",
+        projectId: "thanima-mds",
+        storageBucket: "thanima-mds.firebasestorage.app",
+        messagingSenderId: "471966128661",
+        appId: "1:471966128661:web:f507b695a4172179c84c1c"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    let confirmationResult = null;
+
     let expandedBoxes = {};
 
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
+        
+        // Skip auth checks entirely if running in customer view receipt link mode
         if (urlParams.has('bill')) {
             renderOnlineInvoiceMode(urlParams);
         } else {
-            generateNewReceiptNo();
-            updatePreview();
-            loadHistory();
+            initFirebaseInvisibleCaptcha();
+            setupAuthListener();
         }
     }
 
+    // Auth Screen Logic Implementations
+    function initFirebaseInvisibleCaptcha() {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'normal', // Sets up a small manual verification box to block automation attacks
+            'callback': (response) => {}
+        });
+        window.recaptchaVerifier.render();
+    }
+
+    function setupAuthListener() {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Access approved -> open application workspace panel
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('mainApplicationWindow').style.display = 'block';
+                
+                generateNewReceiptNo();
+                updatePreview();
+                loadHistory();
+            } else {
+                // Logged out/Unverified -> force block overlay
+                document.getElementById('authOverlay').style.display = 'flex';
+                document.getElementById('mainApplicationWindow').style.display = 'none';
+                resetLoginScreen();
+            }
+        });
+    }
+
+    function triggerOTPSend() {
+        const rawPhone = document.getElementById('loginPhoneNo').value.trim();
+        if(rawPhone.length !== 10 || isNaN(rawPhone)) {
+            alert('Please specify a valid 10-digit mobile phone number.');
+            return;
+        }
+
+        const fullE164PhoneNumber = '+91' + rawPhone;
+        const appVerifier = window.recaptchaVerifier;
+
+        auth.signInWithPhoneNumber(fullE164PhoneNumber, appVerifier)
+            .then((result) => {
+                confirmationResult = result;
+                document.getElementById('phoneInputSection').style.display = 'none';
+                document.getElementById('otpVerifySection').style.display = 'block';
+                alert('OTP security code sent successfully!');
+            }).catch((error) => {
+                alert('Error sending SMS code: ' + error.message);
+                if(window.recaptchaVerifier) window.recaptchaVerifier.render();
+            });
+    }
+
+    function verifySubmittedOTP() {
+        const code = document.getElementById('loginOTPCode').value.trim();
+        if(code.length !== 6 || isNaN(code)) {
+            alert('Please fill out the full 6-digit confirmation code.');
+            return;
+        }
+
+        confirmationResult.confirm(code)
+            .then((result) => {
+                // User logged in successfully. Listener handles layout switching automatically
+            }).catch((error) => {
+                alert('Invalid OTP validation credentials provided. ' + error.message);
+            });
+    }
+
+    function resetLoginScreen() {
+        document.getElementById('phoneInputSection').style.display = 'block';
+        document.getElementById('otpVerifySection').style.display = 'none';
+        document.getElementById('loginOTPCode').value = '';
+    }
+
+    function triggerAccountLogout() {
+        if(confirm("Confirm security session logout?")) {
+            auth.signOut();
+        }
+    }
+
+    // Core Billing System Scripts
     function generateNewReceiptNo() {
         document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
     }
@@ -704,7 +923,6 @@
         }
     }
 
-    // High fidelity browser native HTML Excel generator
     function exportToExcel() {
         const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
         if (history.length === 0) {
@@ -712,10 +930,9 @@
             return;
         }
 
-        // Build Excel spreadsheet rows markup structure
         let excelContent = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head><meta charset="UTF-8"></head>
+            <head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Billing Data</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
             <body>
             <table border="1">
                 <tr style="background-color: #005f73; color: white; font-weight: bold;">
@@ -745,7 +962,6 @@
 
         excelContent += `</table></body></html>`;
 
-        // Create virtual object data link stream inside your memory cache layer
         const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
         const downloadUrl = URL.createObjectURL(blob);
         const virtualLink = document.createElement('a');
