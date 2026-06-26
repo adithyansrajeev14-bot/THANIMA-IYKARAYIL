@@ -421,16 +421,79 @@
         body.customer-view-mode .container { grid-template-columns: 1fr; max-width: 600px; margin: 20px auto; }
         body.customer-view-mode .card, body.customer-view-mode .history-container { display: none; }
 
+        /* Secure Login Screen Overlay Styling */
+        #loginOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 47, 53, 0.88);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            text-align: center;
+            border-top: 5px solid var(--brand-yellow);
+        }
+
+        .login-btn {
+            background: var(--brand-teal);
+            color: white;
+            margin-top: 15px;
+        }
+
+        .login-btn:hover {
+            background: var(--brand-dark-teal);
+        }
+
+        .login-error {
+            color: var(--brand-red);
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+
         /* Printer Rules Optimization */
         @media print {
             body { background: #fff; color: #000; }
-            .brand-header, #previewHeader, .btn-print-customer { display: none !important; }
+            .brand-header, #previewHeader, .btn-print-customer, #loginOverlay { display: none !important; }
             .container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
             .receipt-preview { border: none !important; box-shadow: none !important; padding: 0 !important; }
         }
     </style>
 </head>
 <body>
+
+<div id="loginOverlay">
+    <div class="login-card">
+        <h2 style="color: var(--brand-teal); border: none; padding-bottom: 0; margin-bottom: 25px;">🔒 Staff Authentication</h2>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group" style="text-align: left;">
+                <label>Username</label>
+                <input type="text" id="loginUser" required placeholder="Enter username">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Password</label>
+                <input type="password" id="loginPass" required placeholder="Enter password">
+            </div>
+            <button type="submit" class="login-btn">Unlock Dashboard</button>
+            <div id="loginError" class="login-error">❌ Invalid credentials. Access Denied.</div>
+        </form>
+    </div>
+</div>
 
 <div class="brand-header">
     <div class="brand-title">Thanima Iykarayil</div>
@@ -446,7 +509,7 @@
 <div class="container">
     <div class="card">
         <h2>Generate Fee Receipt</h2>
-        <form id="receiptForm">
+        <form id="receiptForm" onsubmit="event.preventDefault();">
             <div class="form-group">
                 <label>Receipt No:</label>
                 <input type="text" id="receiptNo" readonly style="background: #f1f5f9; font-weight: bold;">
@@ -473,7 +536,7 @@
             </div>
             <div class="form-group">
                 <label>Amount Paid (₹):</label>
-                <input type="number" id="amount" required placeholder="0" oninput="updatePreview()">
+                <input type="number" id="amount" required min="0" placeholder="0" oninput="updatePreview()">
             </div>
             <div class="form-group">
                 <label>Payment Mode:</label>
@@ -532,8 +595,7 @@
         
         <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by student name or mobile number..." oninput="loadHistory()">
         
-        <div id="groupedLedgerContainer">
-            </div>
+        <div id="groupedLedgerContainer"></div>
     </div>
 </div>
 
@@ -543,11 +605,29 @@
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('bill')) {
+            const overlay = document.getElementById('loginOverlay');
+            if (overlay) overlay.style.display = 'none';
             renderOnlineInvoiceMode(urlParams);
         } else {
             generateNewReceiptNo();
             updatePreview();
             loadHistory();
+        }
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        const userField = document.getElementById('loginUser').value;
+        const passField = document.getElementById('loginPass').value;
+        const errorMsg = document.getElementById('loginError');
+        const overlay = document.getElementById('loginOverlay');
+
+        if (userField === "Arun9666" && passField === "A6669n") {
+            errorMsg.style.display = 'none';
+            overlay.style.display = 'none';
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('loginPass').value = '';
         }
     }
 
@@ -559,7 +639,7 @@
         if(document.body.classList.contains('customer-view-mode')) return;
 
         const receiptNo = document.getElementById('receiptNo').value;
-        const name = document.getElementById('custName').value || '____________________';
+        const name = document.getElementById('custName').value.trim() || '____________________';
         const course = document.getElementById('course').value;
         const amount = document.getElementById('amount').value || '0';
         const mode = document.getElementById('payMode').value;
@@ -576,13 +656,17 @@
     function saveRecordToHistory() {
         const receiptNo = document.getElementById('receiptNo').value;
         const name = document.getElementById('custName').value.trim();
-        const phone = document.getElementById('whatsappNo').value.trim();
+        let phone = document.getElementById('whatsappNo').value.trim().replace(/\D/g, '');
         const course = document.getElementById('course').value;
         const amount = parseFloat(document.getElementById('amount').value || 0);
         const mode = document.getElementById('payMode').value;
         const date = new Date().toLocaleDateString('en-IN');
 
         if(!name || !phone || !amount) return false;
+
+        if (phone.length === 12 && phone.startsWith('91')) {
+            phone = phone.slice(2);
+        }
 
         const id = 'ID-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
         const record = { id, date, receiptNo, name, phone, course, amount, mode };
@@ -704,7 +788,6 @@
         }
     }
 
-    // High fidelity browser native HTML Excel generator
     function exportToExcel() {
         const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
         if (history.length === 0) {
@@ -712,7 +795,6 @@
             return;
         }
 
-        // Build Excel spreadsheet rows markup structure
         let excelContent = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
             <head><meta charset="UTF-8"></head>
@@ -745,7 +827,6 @@
 
         excelContent += `</table></body></html>`;
 
-        // Create virtual object data link stream inside your memory cache layer
         const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
         const downloadUrl = URL.createObjectURL(blob);
         const virtualLink = document.createElement('a');
@@ -759,16 +840,27 @@
     }
 
     function sendWhatsApp() {
+        const form = document.getElementById('receiptForm');
+        
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
         const receiptNo = document.getElementById('receiptNo').value;
         const name = document.getElementById('custName').value.trim();
-        const phone = document.getElementById('whatsappNo').value.trim();
+        let phone = document.getElementById('whatsappNo').value.trim().replace(/\D/g, '');
         const course = document.getElementById('course').value;
         const amount = document.getElementById('amount').value;
         const mode = document.getElementById('payMode').value;
         const date = new Date().toLocaleDateString('en-IN');
 
-        if(!name || !phone || !amount) {
-            alert('Please fill out all fields before launching WhatsApp.');
+        if (phone.length === 12 && phone.startsWith('91')) {
+            phone = phone.slice(2);
+        }
+
+        if (phone.length !== 10) {
+            alert('Please enter a valid 10-digit WhatsApp phone number.');
             return;
         }
 
@@ -776,8 +868,8 @@
 
         const baseUrl = window.location.origin + window.location.pathname;
         const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
-
-        const cleanPhone = '91' + phone.replace(/\D/g, '');
+        const cleanPhone = '91' + phone;
+        
         const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
                         `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                         `----------------------------------------%0A` +
@@ -788,7 +880,7 @@
 
         window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
         
-        document.getElementById('receiptForm').reset();
+        form.reset();
         document.getElementById('historySearch').value = '';
         generateNewReceiptNo();
         updatePreview();
