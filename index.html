@@ -356,7 +356,6 @@
             padding: 10px 20px;
         }
 
-        /* Ensure expanded view stays open if marked */
         .payments-detail-box.open {
             display: block;
         }
@@ -389,15 +388,30 @@
         }
         .delete-single-btn:hover { background: #b91c1c; }
 
-        .clear-btn {
-            background: #64748b;
-            color: white;
-            padding: 8px 15px;
-            width: auto;
-            font-size: 0.85rem;
-            float: right;
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
             margin-bottom: 15px;
         }
+
+        .history-btn {
+            color: white;
+            padding: 10px 18px;
+            width: auto;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 0;
+            transition: background 0.2s;
+        }
+
+        .excel-btn { background: #107c41; }
+        .excel-btn:hover { background: #0b592e; }
+
+        .clear-btn { background: #64748b; }
         .clear-btn:hover { background: #475569; }
 
         /* Dedicated Pure Invoice View Mode */
@@ -430,7 +444,6 @@
 </div>
 
 <div class="container">
-    <!-- Form Side -->
     <div class="card">
         <h2>Generate Fee Receipt</h2>
         <form id="receiptForm">
@@ -480,7 +493,6 @@
         </form>
     </div>
 
-    <!-- Live Preview Display Side / Full Receipt Mode -->
     <div>
         <h2 id="previewHeader">Receipt Live Preview</h2>
         <div class="receipt-preview" id="receiptPrintArea">
@@ -510,22 +522,22 @@
     </div>
 </div>
 
-<!-- Grouped History Section -->
 <div class="history-container">
     <div class="card">
-        <button type="button" class="clear-btn" onclick="clearAllHistory()">Clear All Records</button>
+        <div class="action-bar">
+            <button type="button" class="history-btn excel-btn" onclick="exportToExcel()">📊 Download Excel Sheet</button>
+            <button type="button" class="history-btn clear-btn" onclick="clearAllHistory()">Clear All Records</button>
+        </div>
         <h2>📜 Grouped Student Ledger Logs</h2>
         
         <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by student name or mobile number..." oninput="loadHistory()">
         
         <div id="groupedLedgerContainer">
-            <!-- Populated via Javascript -->
-        </div>
+            </div>
     </div>
 </div>
 
 <script>
-    // Track which user profiles are currently expanded so they don't snap shut when you hit delete
     let expandedBoxes = {};
 
     window.onload = function() {
@@ -671,7 +683,6 @@
     }
 
     function deleteSinglePayment(targetId, event) {
-        // Essential core fix: Completely blocks event cascading upward into toggle animations
         if(event) {
             event.stopPropagation();
             event.preventDefault();
@@ -680,14 +691,8 @@
         if(!confirm("Are you sure you want to delete this specific receipt payment record?")) return;
 
         let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-        
-        // Remove the selected item match precisely 
         history = history.filter(item => item.id !== targetId);
-        
-        // Push and update database instantly
         localStorage.setItem('driving_school_history', JSON.stringify(history));
-        
-        // Reload dashboard logs cleanly
         loadHistory();
     }
 
@@ -697,6 +702,60 @@
             expandedBoxes = {};
             loadHistory();
         }
+    }
+
+    // High fidelity browser native HTML Excel generator
+    function exportToExcel() {
+        const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+        if (history.length === 0) {
+            alert("There are no records available to export into Excel.");
+            return;
+        }
+
+        // Build Excel spreadsheet rows markup structure
+        let excelContent = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head><meta charset="UTF-8"></head>
+            <body>
+            <table border="1">
+                <tr style="background-color: #005f73; color: white; font-weight: bold;">
+                    <th>Date</th>
+                    <th>Receipt Number</th>
+                    <th>Student Name</th>
+                    <th>WhatsApp Number</th>
+                    <th>Course / Service</th>
+                    <th>Payment Mode</th>
+                    <th>Amount Paid (INR)</th>
+                </tr>
+        `;
+
+        history.forEach(item => {
+            excelContent += `
+                <tr>
+                    <td>${item.date}</td>
+                    <td>${item.receiptNo}</td>
+                    <td>${item.name}</td>
+                    <td>+91 ${item.phone}</td>
+                    <td>${item.course}</td>
+                    <td>${item.mode}</td>
+                    <td>${item.amount}</td>
+                </tr>
+            `;
+        });
+
+        excelContent += `</table></body></html>`;
+
+        // Create virtual object data link stream inside your memory cache layer
+        const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+        const downloadUrl = URL.createObjectURL(blob);
+        const virtualLink = document.createElement('a');
+        
+        virtualLink.href = downloadUrl;
+        virtualLink.download = `Thanima_Driving_School_Billing_Report_${new Date().toISOString().slice(0,10)}.xls`;
+        
+        document.body.appendChild(virtualLink);
+        virtualLink.click();
+        document.body.removeChild(virtualLink);
     }
 
     function sendWhatsApp() {
