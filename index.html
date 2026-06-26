@@ -152,6 +152,14 @@
             font-size: 1rem;
         }
 
+        .search-box {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 2px solid var(--brand-teal);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
         button {
             width: 100%;
             padding: 14px;
@@ -166,6 +174,14 @@
 
         .btn-whatsapp { background: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-whatsapp:hover { background: #20ba5a; }
+        
+        .btn-print-customer { 
+            background: var(--brand-teal); 
+            color: white; 
+            margin-top: 20px; 
+            display: none; /* Only reveals in customer invoice mode */
+        }
+        .btn-print-customer:hover { background: var(--brand-dark-teal); }
 
         /* On-Screen Preview Structure */
         .receipt-preview {
@@ -293,12 +309,20 @@
         }
         .clear-btn:hover { background: #475569; }
 
-        /* Dedicated Pure Invoice View Mode (Triggers when customer views online link) */
+        /* Dedicated Pure Invoice View Mode (Triggers when customer opens online link) */
         body.customer-view-mode .brand-header { padding: 20px 10px; }
         body.customer-view-mode .brand-title { font-size: 1.8rem; }
         body.customer-view-mode .brand-subtitle { font-size: 1.1rem; }
         body.customer-view-mode .container { grid-template-columns: 1fr; max-width: 600px; margin: 20px auto; }
         body.customer-view-mode .card, body.customer-view-mode .history-container { display: none; }
+
+        /* PRINTER SPECIFIC OVERRIDES: Forces clean alignment when customer prints or saves to PDF */
+        @media print {
+            body { background: #fff; color: #000; }
+            .brand-header, #previewHeader, .btn-print-customer { display: none !important; }
+            .container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            .receipt-preview { border: none !important; box-shadow: none !important; padding: 0 !important; }
+        }
     </style>
 </head>
 <body>
@@ -315,7 +339,6 @@
 </div>
 
 <div class="container">
-    <!-- Form Side -->
     <div class="card">
         <h2>Generate Fee Receipt</h2>
         <form id="receiptForm">
@@ -365,7 +388,6 @@
         </form>
     </div>
 
-    <!-- Live Preview Display Side / Full Receipt Mode -->
     <div>
         <h2 id="previewHeader">Receipt Live Preview</h2>
         <div class="receipt-preview" id="receiptPrintArea">
@@ -386,14 +408,18 @@
             <p style="text-align:center; margin-top:50px; font-size:1rem; font-weight:700; color:var(--brand-teal); font-style:italic; clear: both;">≫ Learn To Drive With Confidence ≪</p>
             <p id="printFooterText" style="text-align:center; margin-top:15px; font-size:0.8rem; color:#64748b; clear:both; display:none;">This is an official real-time verified computer-generated digital receipt.</p>
         </div>
+        
+        <button type="button" id="customerPrintBtn" class="btn-print-customer" onclick="window.print()">🖨️ Save / Print Receipt</button>
     </div>
 </div>
 
-<!-- History Log Section -->
 <div class="history-container">
     <div class="card">
         <button type="button" class="clear-btn" onclick="clearHistory()">Clear All Records</button>
         <h2>📜 Saved Billing History</h2>
+        
+        <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by student name, course or receipt number..." oninput="filterHistory()">
+        
         <div class="table-responsive">
             <table>
                 <thead>
@@ -494,6 +520,36 @@
         `).join('');
     }
 
+    // Multi-Column Instant Search Filter
+    function filterHistory() {
+        const searchQuery = document.getElementById('historySearch').value.toLowerCase();
+        const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+        const tbody = document.getElementById('historyTableBody');
+
+        const filtered = history.filter(item => {
+            return item.name.toLowerCase().includes(searchQuery) || 
+                   item.receiptNo.toLowerCase().includes(searchQuery) || 
+                   item.course.toLowerCase().includes(searchQuery) ||
+                   item.date.toLowerCase().includes(searchQuery);
+        });
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b;">No matching bills found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(item => `
+            <tr>
+                <td>${item.date}</td>
+                <td><strong>${item.receiptNo}</strong></td>
+                <td>${item.name}</td>
+                <td>${item.course}</td>
+                <td><strong>₹ ${item.amount}</strong></td>
+                <td>${item.mode}</td>
+            </tr>
+        `).join('');
+    }
+
     function clearHistory() {
         if(confirm("Are you sure you want to delete all historical records on this device? This action cannot be undone.")) {
             localStorage.removeItem('driving_school_history');
@@ -534,6 +590,7 @@
         
         // Reset the input fields so the page is ready for the next billing record
         document.getElementById('receiptForm').reset();
+        document.getElementById('historySearch').value = ''; // Reset search field if active
         generateNewReceiptNo();
         updatePreview();
     }
@@ -544,6 +601,7 @@
         
         document.getElementById('previewHeader').innerText = "Official Digital Fee Receipt";
         document.getElementById('printFooterText').style.display = "block";
+        document.getElementById('customerPrintBtn').style.display = "block"; // Reveal print button
 
         document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + params.get('no');
         document.getElementById('previewDate').innerText = 'Date: ' + params.get('dt');
