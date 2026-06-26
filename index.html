@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanima Iykarayil Motor Driving School - Billing</title>
-    <!-- Include html2pdf library for offline PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --brand-teal: #005f73;
@@ -159,24 +157,24 @@
             padding: 14px;
             border: none;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             margin-bottom: 12px;
         }
 
-        .btn-pdf { background: #0284c7; color: white; }
-        .btn-pdf:hover { background: #0369a1; }
         .btn-whatsapp { background: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-whatsapp:hover { background: #20ba5a; }
 
+        /* On-Screen Preview Structure */
         .receipt-preview {
             border: 1px solid #cbd5e1;
             padding: 35px;
             background: #fff;
             min-height: 420px;
             border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         .receipt-pdf-header {
@@ -208,32 +206,46 @@
         }
 
         .receipt-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 1.05rem;
+            display: block;
+            clear: both;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
             border-bottom: 1px dashed #e2e8f0;
             padding-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .receipt-row strong {
+            float: left;
+            color: #475569;
+        }
+        
+        .receipt-row span {
+            float: right;
+            text-align: right;
+            font-weight: 600;
         }
 
         .total-row {
             border-top: 2px solid var(--brand-teal);
             border-bottom: 2px solid var(--brand-teal);
-            padding: 14px 0;
+            padding: 14px 10px;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--brand-dark-teal);
-            margin-top: 25px;
+            margin-top: 35px;
+            background-color: #f8fafc;
         }
 
         .instructions-box {
             background: #eff6ff;
             border-left: 4px solid #3b82f6;
-            padding: 12px;
+            padding: 14px;
             margin-top: 15px;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #1e40af;
+            line-height: 1.4;
         }
 
         /* History Table Section Styles */
@@ -280,6 +292,13 @@
             margin-bottom: 15px;
         }
         .clear-btn:hover { background: #475569; }
+
+        /* Dedicated Pure Invoice View Mode (Triggers when customer views online link) */
+        body.customer-view-mode .brand-header { padding: 20px 10px; }
+        body.customer-view-mode .brand-title { font-size: 1.8rem; }
+        body.customer-view-mode .brand-subtitle { font-size: 1.1rem; }
+        body.customer-view-mode .container { grid-template-columns: 1fr; max-width: 600px; margin: 20px auto; }
+        body.customer-view-mode .card, body.customer-view-mode .history-container { display: none; }
     </style>
 </head>
 <body>
@@ -337,36 +356,35 @@
                 </select>
             </div>
             
-            <button type="button" class="btn-pdf" onclick="downloadPDF()">1. Download PDF Receipt</button>
-            <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">2. Chat & Attach on WhatsApp</button>
+            <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">Generate & Send Bill on WhatsApp</button>
             
             <div class="instructions-box">
-                <strong>How to send the PDF:</strong><br>
-                1. Click Download PDF to save it. (This also logs it to history below!)<br>
-                2. Click Chat on WhatsApp, open the student's chat log, and simply drop the PDF file inside.
+                <strong>How it works:</strong><br>
+                When you click the button, it safely saves the transaction to your device history, clears the form for your next entry, and builds a specialized live link for your customer to track their digital receipt directly online!
             </div>
         </form>
     </div>
 
-    <!-- Preview Side -->
+    <!-- Live Preview Display Side / Full Receipt Mode -->
     <div>
-        <h2>Receipt Live Preview</h2>
+        <h2 id="previewHeader">Receipt Live Preview</h2>
         <div class="receipt-preview" id="receiptPrintArea">
             <div class="receipt-pdf-header">
                 <h3>THANIMA IYKARAYIL <span class="pdf-l-badge">L</span></h3>
                 <strong style="color:var(--brand-teal); font-size:0.95rem; letter-spacing:1px; display:block; margin-top:3px;">MOTOR DRIVING SCHOOL</strong>
                 <p style="margin: 5px 0; font-size:0.85rem; color:#475569; font-weight:600;">Govt. Approved | LIC NO: 3/13/2019</p>
                 <div style="margin-top:12px; font-size:0.9rem; color:#1e293b; border-top:1px solid #e2e8f0; padding-top:8px;">
-                    <span id="pdfDate">Date: --/--/----</span> &nbsp;|&nbsp; <span id="pdfReceiptNo">Receipt No: TI-XXXXX</span>
+                    <span id="previewDate">Date: --/--/----</span> &nbsp;|&nbsp; <span id="previewReceiptNo">Receipt No: TI-XXXXX</span>
                 </div>
             </div>
             
-            <div class="receipt-row"><strong>Student Name:</strong> <span id="pdfName">____________________</span></div>
-            <div class="receipt-row"><strong>Course / Service:</strong> <span id="pdfCourse">Four Wheeler Training (Car)</span></div>
-            <div class="receipt-row"><strong>Payment Mode:</strong> <span id="pdfMode">UPI / GPay / PhonePe</span></div>
-            <div class="receipt-row total-row"><strong>Total Amount Paid:</strong> <span id="pdfAmount">₹ 0</span></div>
+            <div class="receipt-row"><strong>Student Name:</strong> <span id="previewName">____________________</span></div>
+            <div class="receipt-row"><strong>Course / Service:</strong> <span id="previewCourse">Four Wheeler Training (Car)</span></div>
+            <div class="receipt-row"><strong>Payment Mode:</strong> <span id="previewMode">UPI / GPay / PhonePe</span></div>
+            <div class="receipt-row total-row"><strong>Total Amount Paid:</strong> <span id="previewAmount">₹ 0</span></div>
             
-            <p style="text-align:center; margin-top:50px; font-size:1rem; font-weight:700; color:var(--brand-teal); font-style:italic;">≫ Learn To Drive With Confidence ≪</p>
+            <p style="text-align:center; margin-top:50px; font-size:1rem; font-weight:700; color:var(--brand-teal); font-style:italic; clear: both;">≫ Learn To Drive With Confidence ≪</p>
+            <p id="printFooterText" style="text-align:center; margin-top:15px; font-size:0.8rem; color:#64748b; clear:both; display:none;">This is an official real-time verified computer-generated digital receipt.</p>
         </div>
     </div>
 </div>
@@ -400,17 +418,24 @@
 
 <script>
     window.onload = function() {
-        generateNewReceiptNo();
-        updatePreview();
-        loadHistory();
+        // Read address URL Parameters to detect if it's a student viewing an online receipt
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('bill')) {
+            renderOnlineInvoiceMode(urlParams);
+        } else {
+            generateNewReceiptNo();
+            updatePreview();
+            loadHistory();
+        }
     }
 
-    // Generates a fully random 5 digit ticket number prefix
     function generateNewReceiptNo() {
         document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
     }
 
     function updatePreview() {
+        if(document.body.classList.contains('customer-view-mode')) return;
+
         const receiptNo = document.getElementById('receiptNo').value;
         const name = document.getElementById('custName').value || '____________________';
         const course = document.getElementById('course').value;
@@ -418,15 +443,15 @@
         const mode = document.getElementById('payMode').value;
         const date = new Date().toLocaleDateString('en-IN');
 
-        document.getElementById('pdfReceiptNo').innerText = 'Receipt No: ' + receiptNo;
-        document.getElementById('pdfDate').innerText = 'Date: ' + date;
-        document.getElementById('pdfName').innerText = name;
-        document.getElementById('pdfCourse').innerText = course;
-        document.getElementById('pdfMode').innerText = mode;
-        document.getElementById('pdfAmount').innerText = '₹ ' + amount;
+        document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + receiptNo;
+        document.getElementById('previewDate').innerText = 'Date: ' + date;
+        document.getElementById('previewName').innerText = name;
+        document.getElementById('previewCourse').innerText = course;
+        document.getElementById('previewMode').innerText = mode;
+        document.getElementById('previewAmount').innerText = '₹ ' + amount;
     }
 
-    // Capture entry data and store to LocalStorage safely
+    // Capture and log records to local system layout
     function saveRecordToHistory() {
         const receiptNo = document.getElementById('receiptNo').value;
         const name = document.getElementById('custName').value;
@@ -439,10 +464,8 @@
         if(!name || !phone || !amount) return false;
 
         const record = { date, receiptNo, name, course, amount, mode };
-        
         let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
         
-        // Pushes every transaction straight to the top of the history list
         history.unshift(record); 
         localStorage.setItem('driving_school_history', JSON.stringify(history));
         
@@ -478,25 +501,6 @@
         }
     }
 
-    function downloadPDF() {
-        const name = document.getElementById('custName').value || 'Student';
-        if(!document.getElementById('custName').value || !document.getElementById('amount').value) {
-            alert('Please fill student details before saving.');
-            return;
-        }
-        
-        saveRecordToHistory();
-        const element = document.getElementById('receiptPrintArea');
-        const opt = {
-            margin: 10,
-            filename: 'Receipt_' + name.replace(/\s+/g, '_') + '.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
-    }
-
     function sendWhatsApp() {
         const receiptNo = document.getElementById('receiptNo').value;
         const name = document.getElementById('custName').value;
@@ -512,25 +516,41 @@
         }
 
         saveRecordToHistory();
+
+        // Dynamically build the customer's unique invoice URL using query parameters
+        const baseUrl = window.location.origin + window.location.pathname;
+        const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
+
         const cleanPhone = '91' + phone.replace(/\D/g, '');
-        const message = `*🧾 FEE RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
+        const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
                         `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                         `----------------------------------------%0A` +
-                        `*Date:* ${date}%0A` +
-                        `*Receipt No:* ${receiptNo}%0A%0A` +
                         `*Student Name:* ${name}%0A` +
-                        `*Course/Service:* ${course}%0A` +
-                        `*Payment Mode:* ${mode}%0A` +
-                        `----------------------------------------%0A` +
-                        `*Total Amount Received: ₹ ${amount}*%0A%0A` +
-                        `👇 Please find your official PDF Receipt attached below.`;
+                        `*Total Amount Paid: ₹ ${amount}*%0A` +
+                        `----------------------------------------%0A%0A` +
+                        `👉 Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
 
         window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
         
-        // Refresh form configuration for subsequent generation runs
+        // Reset the input fields so the page is ready for the next billing record
         document.getElementById('receiptForm').reset();
         generateNewReceiptNo();
         updatePreview();
+    }
+
+    // Triggers if URL contains ?bill=true parameters
+    function renderOnlineInvoiceMode(params) {
+        document.body.classList.add('customer-view-mode');
+        
+        document.getElementById('previewHeader').innerText = "Official Digital Fee Receipt";
+        document.getElementById('printFooterText').style.display = "block";
+
+        document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + params.get('no');
+        document.getElementById('previewDate').innerText = 'Date: ' + params.get('dt');
+        document.getElementById('previewName').innerText = params.get('nm');
+        document.getElementById('previewCourse').innerText = params.get('cs');
+        document.getElementById('previewMode').innerText = params.get('md');
+        document.getElementById('previewAmount').innerText = '₹ ' + params.get('am');
     }
 </script>
 </body>
