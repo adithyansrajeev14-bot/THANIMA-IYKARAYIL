@@ -13,9 +13,25 @@
             --dark-bg: #070f14;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-focus-border: rgba(0, 168, 204, 0.4);
             --text-light: #e2e8f0;
             --text-muted: #94a3b8;
+            --header-bg: rgba(12, 27, 35, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.02);
+            --preview-bg: rgba(12, 27, 35, 0.6);
+            --preview-text: #ffffff;
+        }
+
+        /* Light Mode Variable Overrides */
+        body.light-mode {
+            --dark-bg: #f1f5f9;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --text-light: #0f172a;
+            --text-muted: #475569;
+            --header-bg: rgba(255, 255, 255, 0.6);
+            --input-bg: rgba(15, 23, 42, 0.02);
+            --preview-bg: rgba(255, 255, 255, 0.9);
+            --preview-text: #0f172a;
         }
         
         body {
@@ -29,29 +45,59 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Modern Dark Transparent Header */
+        body.light-mode {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 168, 204, 0.08) 0px, transparent 40%),
+                radial-gradient(at 100% 100%, rgba(203, 213, 225, 0.6) 0px, transparent 50%);
+        }
+
+        /* Transparent Header */
         .brand-header {
-            background: rgba(12, 27, 35, 0.7);
+            background: var(--header-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            color: white;
+            color: var(--text-light);
             padding: 35px 20px;
             text-align: center;
             position: relative;
             border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: background 0.3s ease;
+        }
+
+        /* Mode Dynamic Toggle Switch */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .theme-toggle-btn:hover {
+            background: rgba(255,255,255,0.1);
         }
 
         .brand-title {
             font-size: 2.6rem;
             font-weight: 900;
-            color: #ffffff;
+            color: var(--text-light);
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(0, 168, 204, 0.4);
         }
 
         .brand-subtitle {
@@ -77,14 +123,14 @@
             justify-content: center;
             font-weight: 900;
             font-size: 1.1rem;
-            box-shadow: 0 0 10px rgba(255, 82, 82, 0.5);
+            box-shadow: 0 0 10px rgba(255, 82, 82, 0.3);
         }
 
         .tagline-container {
             display: inline-block;
-            background: rgba(0, 168, 204, 0.15);
-            color: var(--brand-yellow);
-            border: 1px solid rgba(0, 168, 204, 0.3);
+            background: rgba(0, 168, 204, 0.12);
+            color: var(--text-light);
+            border: 1px solid rgba(0, 168, 204, 0.25);
             padding: 6px 20px;
             font-weight: 700;
             font-style: italic;
@@ -92,6 +138,11 @@
             font-size: 0.9rem;
             margin-bottom: 15px;
             letter-spacing: 1px;
+        }
+        body.light-mode .tagline-container {
+            background: #fff;
+            color: var(--brand-teal);
+            border-color: rgba(0, 168, 204, 0.2);
         }
 
         .meta-info {
@@ -103,7 +154,7 @@
             color: var(--text-muted);
         }
 
-        /* Glassmorphic Container Layout */
+        /* Containers */
         .container {
             max-width: 1100px;
             margin: 40px auto;
@@ -124,22 +175,20 @@
             padding: 30px;
             border-radius: 16px;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         h2 {
             margin-top: 0;
-            color: #ffffff;
+            color: var(--text-light);
             border-bottom: 1px solid var(--glass-border);
             padding-bottom: 14px;
             font-size: 1.3rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
 
-        .form-group {
-            margin-bottom: 22px;
-        }
+        .form-group { margin-bottom: 22px; }
 
         label {
             display: block;
@@ -148,17 +197,13 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .phone-input-container {
-            display: flex;
-            gap: 8px;
-        }
+        .phone-input-container { display: flex; gap: 8px; }
 
         .country-code {
             width: 75px;
-            background: rgba(255, 255, 255, 0.05) !important;
+            background: var(--input-bg) !important;
             border: 1px solid var(--glass-border) !important;
             color: var(--text-muted) !important;
             font-weight: bold;
@@ -168,39 +213,29 @@
         input, select {
             width: 100%;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--input-bg);
             border: 1px solid var(--glass-border);
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 1rem;
-            color: #ffffff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-light);
+            transition: all 0.2s ease;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--brand-teal);
-            background: rgba(0, 168, 204, 0.03);
-            box-shadow: 0 0 12px rgba(0, 168, 204, 0.2);
-        }
-
-        input::placeholder {
-            color: #4b5563;
+            box-shadow: 0 0 12px rgba(0, 168, 204, 0.15);
         }
 
         .search-box {
             margin-bottom: 20px;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.01);
+            background: var(--input-bg);
             border: 1px solid var(--glass-border);
             border-radius: 8px;
             font-size: 0.95rem;
-            color: #ffffff;
-        }
-        
-        .search-box:focus {
-            border-color: var(--brand-yellow);
-            box-shadow: 0 0 12px rgba(255, 213, 79, 0.15);
+            color: var(--text-light);
         }
 
         button {
@@ -222,32 +257,28 @@
             align-items: center; 
             justify-content: center; 
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
         }
-        .btn-whatsapp:hover { 
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-        }
+        .btn-whatsapp:hover { transform: translateY(-1px); }
         
         .btn-print-customer { 
-            background: linear-gradient(135deg, rgba(0, 168, 204, 0.8) 0%, rgba(12, 123, 147, 0.8) 100%); 
-            border: 1px solid var(--brand-teal);
+            background: var(--brand-teal); 
             color: white; 
             margin-top: 20px; 
             display: none;
         }
-        .btn-print-customer:hover { background: var(--brand-teal); }
 
-        /* Transparent Glass Receipt Styling */
+        /* Glass Receipt Styling */
         .receipt-preview {
             border: 1px solid var(--glass-border);
             padding: 35px;
-            background: rgba(12, 27, 35, 0.6);
+            background: var(--preview-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             min-height: 420px;
             border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            color: var(--preview-text);
+            transition: background 0.3s ease;
         }
 
         .receipt-pdf-header {
@@ -259,10 +290,9 @@
 
         .receipt-pdf-header h3 {
             margin: 0;
-            color: #ffffff;
+            color: var(--preview-text);
             font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: 1px;
         }
 
         .pdf-l-badge {
@@ -277,7 +307,6 @@
             font-weight: 900;
             font-size: 0.85rem;
             margin-left: 5px;
-            vertical-align: middle;
         }
 
         .receipt-row {
@@ -286,43 +315,26 @@
             align-items: center;
             margin-bottom: 22px;
             font-size: 1.05rem;
-            border-bottom: 1px dashed rgba(255,255,255,0.05);
+            border-bottom: 1px dashed var(--glass-border);
             padding-bottom: 10px;
         }
         
-        .receipt-row strong {
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-        
-        .receipt-row span {
-            text-align: right;
-            font-weight: 600;
-            color: #ffffff;
-        }
+        .receipt-row strong { color: var(--text-muted); font-weight: 500; }
+        .receipt-row span { text-align: right; font-weight: 600; color: var(--preview-text); }
 
         .total-row {
             border: 1px solid rgba(0, 168, 204, 0.2);
             padding: 16px;
             margin-top: 35px;
             border-radius: 8px;
-            background-color: rgba(0, 168, 204, 0.04);
+            background-color: rgba(0, 168, 204, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .total-row strong {
-            color: #ffffff;
-            font-size: 1.1rem;
-        }
-
-        .total-row span {
-            color: var(--brand-yellow);
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-shadow: 0 0 10px rgba(255, 213, 79, 0.3);
-        }
+        .total-row strong { color: var(--preview-text); }
+        .total-row span { color: #d97706; font-size: 1.5rem; font-weight: 800; }
+        body:not(.light-mode) .total-row span { color: var(--brand-yellow); }
 
         .instructions-box {
             background: rgba(0, 168, 204, 0.05);
@@ -331,16 +343,12 @@
             margin-top: 20px;
             border-radius: 4px;
             font-size: 0.85rem;
-            color: #a5f3fc;
+            color: var(--text-light);
             line-height: 1.5;
         }
 
-        /* Transparent Ledger Log Tabs & Lists */
-        .history-container {
-            max-width: 1100px;
-            margin: 0 auto 60px auto;
-            padding: 0 20px;
-        }
+        /* Ledger History Logs Layout */
+        .history-container { max-width: 1100px; margin: 0 auto 60px auto; padding: 0 20px; }
 
         .student-row {
             background: rgba(255, 255, 255, 0.01);
@@ -348,11 +356,6 @@
             border-radius: 12px;
             margin-bottom: 14px;
             overflow: hidden;
-            transition: border-color 0.2s ease;
-        }
-        
-        .student-row:hover {
-            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .student-summary {
@@ -361,108 +364,67 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.01);
             user-select: none;
         }
+        .student-summary:hover { background: rgba(255, 255, 255, 0.03); }
+        body.light-mode .student-summary:hover { background: rgba(0, 0, 0, 0.02); }
 
-        .student-summary:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .student-info {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .student-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #ffffff;
-        }
-
-        .student-phone {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .student-meta {
-            text-align: right;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .student-name { font-weight: 600; font-size: 1.1rem; color: var(--text-light); }
+        .student-phone { font-size: 0.85rem; color: var(--text-muted); }
+        .student-meta { text-align: right; display: flex; align-items: center; gap: 15px; }
 
         .total-badge {
-            background: rgba(0, 168, 204, 0.15);
-            border: 1px solid rgba(0, 168, 204, 0.3);
+            background: rgba(0, 168, 204, 0.12);
+            border: 1px solid rgba(0, 168, 204, 0.25);
             color: var(--brand-teal);
             padding: 6px 14px;
             border-radius: 20px;
             font-weight: 700;
-            font-size: 0.9rem;
         }
 
         .count-badge {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-light);
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
-            font-weight: 600;
             border: 1px solid var(--glass-border);
         }
 
         .payments-detail-box {
             display: none;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.08);
             border-top: 1px solid var(--glass-border);
             padding: 12px 22px;
         }
-
-        .payments-detail-box.open {
-            display: block;
-        }
+        .payments-detail-box.open { display: block; }
 
         .inner-payment-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--glass-border);
             font-size: 0.95rem;
-        }
-
-        .inner-payment-item:last-child {
-            border-bottom: none;
         }
 
         .delete-single-btn {
             background: rgba(255, 82, 82, 0.1);
-            border: 1px solid rgba(255, 82, 82, 0.3);
+            border: 1px solid rgba(255, 82, 82, 0.25);
             color: var(--brand-red);
             padding: 6px 12px;
             border-radius: 6px;
-            font-size: 0.75rem;
             cursor: pointer;
             width: auto;
             margin-bottom: 0;
             font-weight: 600;
         }
-        .delete-single-btn:hover { 
-            background: var(--brand-red); 
-            color: white; 
-        }
+        .delete-single-btn:hover { background: var(--brand-red); color: white; }
 
-        .action-bar {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+        .action-bar { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 20px; }
 
         .history-btn {
-            color: white;
+            color: var(--text-light);
             padding: 10px 20px;
             width: auto;
             font-size: 0.85rem;
@@ -471,79 +433,39 @@
             border-radius: 8px;
             cursor: pointer;
             margin-bottom: 0;
+            background: var(--glass-bg);
         }
-
-        .excel-btn { background: rgba(16, 124, 65, 0.15); border-color: rgba(16, 124, 65, 0.4); color: #22c55e; }
+        .excel-btn { color: #22c55e; }
         .excel-btn:hover { background: #107c41; color: white; }
+        .clear-btn:hover { background: var(--brand-red); color: white; }
 
-        .clear-btn { background: rgba(255, 255, 255, 0.02); color: var(--text-muted); }
-        .clear-btn:hover { background: rgba(255, 82, 82, 0.2); border-color: var(--brand-red); color: white; }
-
-        /* Dedicated Pure Invoice View Mode */
-        body.customer-view-mode {
-            background-image: radial-gradient(at 50% 0%, rgba(0, 168, 204, 0.12) 0px, transparent 50%);
-        }
-        body.customer-view-mode .brand-header { padding: 25px 10px; }
-        body.customer-view-mode .brand-title { font-size: 1.9rem; }
-        body.customer-view-mode .brand-subtitle { font-size: 1.1rem; }
+        /* View Modes & Overlay */
+        body.customer-view-mode .brand-header, body.customer-view-mode .theme-toggle-btn { display: none; }
         body.customer-view-mode .container { grid-template-columns: 1fr; max-width: 600px; margin: 30px auto; }
         body.customer-view-mode .card, body.customer-view-mode .history-container { display: none; }
 
-        /* Secure Login Screen Overlay Styling */
         #loginOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(4, 9, 12, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 9, 12, 0.85); backdrop-filter: blur(16px);
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
         }
+        body.light-mode #loginOverlay { background: rgba(241, 245, 249, 0.85); }
 
         .login-card {
-            background: rgba(12, 27, 35, 0.6);
-            border: 1px solid var(--glass-border);
-            padding: 45px 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            text-align: center;
+            background: var(--header-bg); border: 1px solid var(--glass-border);
+            padding: 45px 40px; border-radius: 16px; width: 100%; max-width: 400px; box-sizing: border-box; text-align: center;
         }
 
-        .login-btn {
-            background: linear-gradient(135deg, var(--brand-teal) 0%, #0c7b93 100%);
-            color: white;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0, 168, 204, 0.25);
-        }
+        .login-btn { background: var(--brand-teal); color: white; margin-top: 20px; }
 
-        .login-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(0, 168, 204, 0.4);
-        }
+        .login-error { color: var(--brand-red); font-size: 0.85rem; font-weight: 600; margin-top: 14px; display: none; }
 
-        .login-error {
-            color: var(--brand-red);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 14px;
-            display: none;
-        }
-
-        /* Printer Rules Optimization */
         @media print {
-            body { background: #fff; color: #000; background-image: none; }
-            .brand-header, #previewHeader, .btn-print-customer, #loginOverlay { display: none !important; }
+            body { background: #fff !important; color: #000 !important; }
+            .brand-header, #previewHeader, .btn-print-customer, #loginOverlay, .theme-toggle-btn { display: none !important; }
             .container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            .receipt-preview { border: none !important; box-shadow: none !important; padding: 0 !important; background: transparent !important; }
-            .receipt-row span, .total-row span, .receipt-pdf-header h3 { color: #000 !important; text-shadow: none !important; }
+            .receipt-preview { border: none !important; box-shadow: none !important; padding: 0 !important; background: transparent !important; color: #000 !important; }
+            .receipt-row span, .total-row span, .receipt-pdf-header h3 { color: #000 !important; }
             .receipt-row strong { color: #333 !important; }
             .total-row { border: 1px solid #000 !important; background: transparent !important; }
         }
@@ -570,6 +492,9 @@
 </div>
 
 <div class="brand-header">
+    <button type="button" class="theme-toggle-btn" onclick="toggleThemeMode()">
+        <span id="themeBtnIcon">☀️</span> <span id="themeBtnText">Light Mode</span>
+    </button>
     <div class="brand-title">Thanima Iykarayil</div>
     <div class="brand-subtitle">MOTOR DRIVING SCHOOL <span class="l-badge">L</span></div>
     <br>
@@ -586,7 +511,7 @@
         <form id="receiptForm" onsubmit="event.preventDefault();">
             <div class="form-group">
                 <label>Receipt No:</label>
-                <input type="text" id="receiptNo" readonly style="background: rgba(255,255,255,0.04); color: var(--brand-yellow); font-weight: bold; border-color: rgba(255,213,79,0.2);">
+                <input type="text" id="receiptNo" readonly style="font-weight: bold; border-color: rgba(0,168,204,0.25);">
             </div>
             <div class="form-group">
                 <label>Student Name:</label>
@@ -637,7 +562,7 @@
                 <h3>THANIMA IYKARAYIL <span class="pdf-l-badge">L</span></h3>
                 <strong style="color:var(--brand-teal); font-size:0.9rem; letter-spacing:1px; display:block; margin-top:5px;">MOTOR DRIVING SCHOOL</strong>
                 <p style="margin: 5px 0; font-size:0.8rem; color:var(--text-muted); font-weight:600;">Govt. Approved | LIC NO: 3/13/2019</p>
-                <div style="margin-top:15px; font-size:0.85rem; color:var(--text-light); border-top:1px solid var(--glass-border); padding-top:10px;">
+                <div style="margin-top:15px; font-size:0.85rem; border-top:1px solid var(--glass-border); padding-top:10px;">
                     <span id="previewDate" style="color: var(--text-muted)">Date: --/--/----</span> &nbsp;|&nbsp; <span id="previewReceiptNo" style="color: var(--text-muted)">Receipt No: TI-XXXXX</span>
                 </div>
             </div>
@@ -677,6 +602,13 @@
     let expandedBoxes = {};
 
     window.onload = function() {
+        // Handle persistent theme setting 
+        if (localStorage.getItem('theme_mode') === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeBtnIcon').innerText = '🌙';
+            document.getElementById('themeBtnText').innerText = 'Dark Mode';
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('bill')) {
             const overlay = document.getElementById('loginOverlay');
@@ -686,6 +618,24 @@
             generateNewReceiptNo();
             updatePreview();
             loadHistory();
+        }
+    }
+
+    function toggleThemeMode() {
+        const body = document.body;
+        const icon = document.getElementById('themeBtnIcon');
+        const text = document.getElementById('themeBtnText');
+        
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            icon.innerText = '☀️';
+            text.innerText = 'Light Mode';
+            localStorage.setItem('theme_mode', 'dark');
+        } else {
+            body.classList.add('light-mode');
+            icon.innerText = '🌙';
+            text.innerText = 'Dark Mode';
+            localStorage.setItem('theme_mode', 'light');
         }
     }
 
@@ -798,11 +748,11 @@
             const innerRowsHtml = group.payments.map(pay => `
                 <div class="inner-payment-item">
                     <div>
-                        <strong style="color: #fff;">${pay.date}</strong> - <span style="color:var(--brand-teal); font-weight:600;">${pay.receiptNo}</span> | 
+                        <strong>${pay.date}</strong> - <span style="color:var(--brand-teal); font-weight:600;">${pay.receiptNo}</span> | 
                         <span style="color:var(--text-muted);">${pay.course} (${pay.mode})</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <strong style="color:var(--brand-yellow)">₹ ${pay.amount}</strong>
+                        <strong style="color:var(--brand-teal)">₹ ${pay.amount}</strong>
                         <button type="button" class="delete-single-btn" onclick="deleteSinglePayment('${pay.id}', event)">❌ Delete</button>
                     </div>
                 </div>
@@ -944,13 +894,13 @@
         const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
         const cleanPhone = '91' + phone;
         
-        const message = `*¼ DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
+        const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
                         `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                         `----------------------------------------%0A` +
                         `*Student Name:* ${name}%0A` +
-                        `*Total Amount Paid: Ç ${amount}*%0A` +
+                        `*Total Amount Paid: ₹ ${amount}*%0A` +
                         `----------------------------------------%0A%0A` +
-                        `¦ Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
+                        `👉 Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
 
         window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
         
