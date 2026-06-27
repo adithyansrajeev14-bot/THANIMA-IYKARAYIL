@@ -561,8 +561,8 @@
                 <input type="text" id="receiptNo" readonly style="font-weight: bold; border-color: rgba(0,168,204,0.25);">
             </div>
             <div class="form-group">
-                <label>Student Name:</label>
-                <input type="text" id="custName" required placeholder="Enter student name" oninput="updatePreview()">
+                <label>Name:</label>
+                <input type="text" id="custName" required placeholder="Enter name" oninput="updatePreview()">
             </div>
             <div class="form-group">
                 <label>WhatsApp Number:</label>
@@ -600,7 +600,7 @@
             
             <div class="instructions-box">
                 <strong>Dynamic Grouping Enabled:</strong><br>
-                Receipts with matching student names and WhatsApp numbers are collected together under a single master profile below so you can audit their total account balance beautifully.
+                Receipts with matching names and WhatsApp numbers are collected together under a single master profile below so you can audit their total account balance beautifully.
             </div>
         </form>
     </div>
@@ -617,7 +617,7 @@
                 </div>
             </div>
             
-            <div class="receipt-row"><strong>Student Name:</strong> <span id="previewName">____________________</span></div>
+            <div class="receipt-row"><strong>Name:</strong> <span id="previewName">____________________</span></div>
             <div class="receipt-row"><strong>Course / Service:</strong> <span id="previewCourse">Four Wheeler Training (Car)</span></div>
             <div class="receipt-row"><strong>Payment Mode:</strong> <span id="previewMode">UPI / GPay / PhonePe</span></div>
             
@@ -640,9 +640,9 @@
             <button type="button" class="history-btn excel-btn" onclick="exportToExcel()">📊 Download Excel Sheet</button>
             <button type="button" class="history-btn clear-btn" onclick="clearAllHistory()">Clear All Records</button>
         </div>
-        <h2>📜 Grouped Student Ledger Logs</h2>
+        <h2>📜 Grouped Ledger Logs</h2>
         
-        <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by student name or mobile number..." oninput="loadHistory()">
+        <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by name or mobile number..." oninput="loadHistory()">
         
         <div id="groupedLedgerContainer"></div>
     </div>
@@ -882,7 +882,7 @@
                 <tr style="background-color: #005f73; color: white; font-weight: bold;">
                     <th>Date</th>
                     <th>Receipt Number</th>
-                    <th>Student Name</th>
+                    <th>Name</th>
                     <th>WhatsApp Number</th>
                     <th>Course / Service</th>
                     <th>Payment Mode</th>
@@ -952,7 +952,7 @@
         const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
                         `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                         `----------------------------------------%0A` +
-                        `*Student Name:* ${name}%0A` +
+                        `*Name:* ${name}%0A` +
                         `*Total Amount Paid: ₹ ${amount}*%0A` +
                         `----------------------------------------%0A%0A` +
                         `👉 Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
