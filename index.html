@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanima Iykarayil Motor Driving School - Central Console</title>
+    <title>Thanima Iykarayil MDS - Central Console</title>
     <style>
         :root {
             --bg-main: #0b132b;
@@ -292,7 +292,7 @@
             <div class="login-cell">
                 <div class="login-card">
                     <h2>System Authentication</h2>
-                    <p>Thanima Iykarayil Control Terminal</p>
+                    <p>Thanima Iykarayil MDS Terminal</p>
                     <div class="form-group" style="text-align: left;">
                         <label>Operator ID</label>
                         <input type="text" id="loginUser" placeholder="Enter Operator ID">
@@ -314,7 +314,7 @@
             <!-- Left Console Sidebar Cell Section -->
             <td class="sidebar-cell">
                 <div class="sidebar-brand">
-                    <h3>THANIMA DRIVING DESK</h3>
+                    <h3>THANIMA IYKARAYIL MDS</h3>
                     <p>Institutional Central Matrix v4.3</p>
                 </div>
                 <ul class="sidebar-menu">
@@ -385,9 +385,8 @@
                                 <div class="panel" style="background: rgba(255,255,255,0.01);">
                                     <div class="receipt-preview" id="printReceiptArea">
                                         <div class="receipt-header">
-                                            <h2 style="margin-bottom:4px; font-weight:800; font-size:1.35rem;">THANIMA MOTOR DRIVING SCHOOL</h2>
-                                            <p style="font-size: 0.85rem; color: #475569;">Iykarayil Buildings, Mallappally | Tel: +91 9447175416</p>
-                                            <p style="font-size: 0.8rem; color: #64748b; margin-top:2px;">Govt Reg. Institution</p>
+                                            <h2 id="previewHeader" style="margin-bottom:4px; font-weight:800; font-size:1.35rem;">THANIMA IYKARAYIL MDS</h2>
+                                            <p style="font-size: 0.85rem; color: #475569;">Govt Reg. Institution</p>
                                         </div>
                                         <div class="receipt-row">
                                             <span id="previewReceiptNo" style="font-weight: 600;">Receipt No: --</span>
@@ -803,7 +802,7 @@
             const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
 
             const cleanPhone = '91' + phone.replace(/\D/g, '');
-            const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
+            const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MDS*%0A` +
                             `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                             `----------------------------------------%0A` +
                             `*Student Name:* ${name}%0A` +
@@ -817,7 +816,7 @@
         }
 
         function renderOnlineInvoiceMode(params) {
-            document.getElementById('previewHeader').innerText = "Official Digital Fee Receipt";
+            document.getElementById('previewHeader').innerText = "THANIMA IYKARAYIL MDS";
             document.getElementById('printFooterText').style.display = "block";
             document.getElementById('customerPrintBtn').style.display = "block";
 
