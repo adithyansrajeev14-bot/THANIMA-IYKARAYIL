@@ -54,10 +54,6 @@
             text-align: center;
         }
 
-        @media (min-width: 480px) {
-            .login-card { padding: 40px; }
-        }
-
         .login-card h2 { color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.4rem; }
         .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
 
@@ -182,8 +178,6 @@
             text-align: center;
         }
 
-        @media (min-width: 768px) { header.dashboard-header { text-align: left; padding: 20px; margin-bottom: 30px; } }
-
         .form-split-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -202,8 +196,6 @@
             height: fit-content;
         }
 
-        @media (min-width: 480px) { .panel { padding: 25px; } }
-
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--accent-blue); font-size: 0.9rem; }
         
@@ -217,8 +209,6 @@
             color: var(--text-light);
             outline: none;
         }
-
-        input:focus, select:focus { border-color: var(--accent-cyan); }
 
         .db-config-box {
             background: rgba(6, 214, 160, 0.08);
@@ -245,7 +235,6 @@
             text-align: center;
         }
 
-        .btn:hover { background-color: #0096b4; }
         .btn-success { background-color: var(--success-green); color: var(--bg-main); }
         .btn-secondary { background-color: #4a5568; color: var(--text-light); }
         .btn-danger { background-color: var(--error-red); color: var(--text-light); }
@@ -307,7 +296,6 @@
         }
 
         .folder-title { font-weight: bold; color: var(--accent-cyan); font-size: 1.05rem; }
-        
         .folder-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.85rem; }
 
         .count-badge, .total-badge {
@@ -355,11 +343,6 @@
 
         .tab-page { display: none; }
         .tab-page.active { display: block; }
-
-        body.customer-view-mode .sidebar-panel,
-        body.customer-view-mode #loginScreen { display: none !important; }
-        body.customer-view-mode .main-content-view { padding: 15px; background: #f8fafc; }
-        body.customer-view-mode header.dashboard-header { display: none; }
     </style>
 </head>
 <body>
@@ -388,9 +371,9 @@
                 <p>Institutional Management Matrix</p>
             </div>
             <ul class="sidebar-menu">
-                <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Billing Form</li>
-                <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Student Archives</li>
-                <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Control Settings</li>
+                <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Terminal Billing Form</li>
+                <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Grouped Student Archives</li>
+                <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Profile & Menu Settings</li>
             </ul>
         </div>
 
@@ -615,6 +598,15 @@
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
+            
+            // Sync headings text
+            const titleMap = {
+                'billing': 'Terminal Billing Form',
+                'students': 'Grouped Student Archives',
+                'settings': 'Profile & Menu Settings'
+            };
+            document.getElementById('topNavTitle').innerText = titleMap[tabId];
+            
             if(tabId === 'students') fetchSheetsCloudData();
         }
 
@@ -638,27 +630,39 @@
             document.getElementById('previewAmount').innerText = '₹ ' + amount;
         }
 
+        // Bypasses browser blocks completely using clean JSONP injection execution
         function fetchSheetsCloudData() {
             const label = document.getElementById('dbStatusLabel');
-            label.innerText = "Status: Pulling live records from Google Sheet... ⏳";
+            label.innerText = "Status: Syncing Live rows from Google Sheets Matrix... ⏳";
             
-            fetch(googleScriptUrl)
-                .then(res => res.json())
-                .then(data => {
-                    if (Array.isArray(data)) {
-                        localStorage.setItem('driving_school_history', JSON.stringify(data));
-                        label.innerText = "Status: Connected to Google Sheets Live Sync Hub ✅";
-                        if (document.getElementById('tab-students').classList.contains('active')) {
-                            loadGroupedStudents();
-                        }
-                    }
-                })
-                .catch(err => {
-                    console.error("Fetch failed, reverting to local data storage cache", err);
-                    label.innerText = "Status: Local Cache Active (Sync Offline) ⚠️";
-                    loadGroupedStudents();
-                });
+            // Clean up old scripts
+            const oldScript = document.getElementById('jsonpSyncScript');
+            if(oldScript) oldScript.remove();
+
+            const script = document.createElement('script');
+            script.id = 'jsonpSyncScript';
+            script.src = googleScriptUrl + "?callback=handleSheetsCloudResponse";
+            
+            script.onerror = function() {
+                label.innerText = "Status: Local Backup Matrix Active (Offline Mode) ⚠️";
+                loadGroupedStudents();
+            };
+            
+            document.body.appendChild(script);
         }
+
+        // Processing callback function fired straight from the spreadsheet script
+        window.handleSheetsCloudResponse = function(data) {
+            const label = document.getElementById('dbStatusLabel');
+            if (Array.isArray(data)) {
+                localStorage.setItem('driving_school_history', JSON.stringify(data));
+                label.innerText = "Status: Connected to Google Sheets Live Sync Hub ✅";
+                loadGroupedStudents();
+            } else {
+                label.innerText = "Status: Response structural variation detected ⚠️";
+                loadGroupedStudents();
+            }
+        };
 
         function sendWhatsApp() {
             const receiptNo = document.getElementById('receiptNo').value;
