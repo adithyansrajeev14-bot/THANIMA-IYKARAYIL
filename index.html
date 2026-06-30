@@ -84,14 +84,13 @@
         .db-config-box {
             background: #f0fdf4;
             border: 1px dashed #16a34a;
-            padding: 12px;
+            padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .db-status {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #16a34a;
         }
@@ -240,9 +239,8 @@
 
     <div class="main-container">
         <div class="panel">
-            <!-- Automated Status Notification Box -->
             <div class="db-config-box">
-                <div class="db-status" id="dbStatusLabel">Cloud Synchronization Connected Live ✅</div>
+                <div class="db-status" id="dbStatusLabel">Status: Syncing cloud connection...</div>
             </div>
 
             <form id="receiptForm" onsubmit="event.preventDefault();">
@@ -336,7 +334,7 @@
         <div class="ledger-tools">
             <input type="text" id="historySearch" placeholder="Search logs by student name or mobile string..." oninput="loadHistory()">
             <button class="btn" style="width: auto; white-space: nowrap;" onclick="exportToExcel()">📊 Export Data (.XLS)</button>
-            <button class="btn btn-danger" style="width: auto; white-space: nowrap;" onclick="clearAllHistory()">⚠️ Purge Device Screen Cache</button>
+            <button class="btn btn-danger" style="width: auto; white-space: nowrap;" onclick="clearAllHistory()">⚠️ Purge Device History</button>
         </div>
 
         <div id="groupedLedgerContainer"></div>
@@ -345,18 +343,30 @@
     <script>
         let expandedBoxes = {};
         
-        // BOTH KEYS ARE NOW SECURELY FIXED AND HARDCODED INTERNALLY:
+        // SECURE CLOUD ENDPOINTS WITH YOUR CORRECT PUBLISHABLE API TOKEN
         const supabaseUrl = "https://oxbjszslvkytkuhswnry.supabase.co";
-        const supabaseKey = "ThMDS6669@base";
+        const supabaseKey = "sb_publishable_5po2pNSon-F9C2NrIGjXbA_FeM6Y2EO";
 
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('bill')) {
                 renderOnlineInvoiceMode(urlParams);
             } else {
+                setDbStatus(true);
                 generateNewReceiptNo();
                 updatePreview();
-                fetchSupabaseCloudData(); // Automatically synchronizes data on launch
+                fetchSupabaseCloudData(); 
+            }
+        }
+
+        function setDbStatus(connected) {
+            const label = document.getElementById('dbStatusLabel');
+            if(connected) {
+                label.innerText = "Status: Connected to Supabase Production Hub Live ✅";
+                label.style.color = "#16a34a";
+            } else {
+                label.innerText = "Status: Local Engine Disconnected Framework Only ⚠️";
+                label.style.color = "#dc2626";
             }
         }
 
@@ -397,9 +407,13 @@
                 if(response.ok) {
                     const cloudHistory = await response.json();
                     localStorage.setItem('driving_school_history', JSON.stringify(cloudHistory));
+                    setDbStatus(true);
+                } else {
+                    setDbStatus(false);
                 }
             } catch (err) {
-                console.error("Supabase connection error fallback:", err);
+                console.error("Supabase engine fallback status active:", err);
+                setDbStatus(false);
             }
             loadHistory();
         }
@@ -436,7 +450,7 @@
                     body: JSON.stringify(record)
                 });
             } catch(e) {
-                console.error("Cloud upload error connection failure:", e);
+                console.error("Cloud engine error stack tracking:", e);
             }
             document.getElementById('submitBtn').innerText = "Dispatch Digital Receipt via WhatsApp";
             return true;
@@ -448,7 +462,7 @@
             const container = document.getElementById('groupedLedgerContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No transaction records found on the cloud database server.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No central database transaction records discovered. Check RLS policies if records are missing.</div>`;
                 return;
             }
 
@@ -535,7 +549,7 @@
                 event.preventDefault();
             }
 
-            if(!confirm("Are you sure you want to permanently delete this record across all systems?")) return;
+            if(!confirm("Are you sure you want to delete this record across all platforms?")) return;
 
             let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
             history = history.filter(item => item.id !== targetId);
@@ -551,12 +565,12 @@
                     }
                 });
             } catch(e) {
-                console.error("Cloud deletion request failed:", e);
+                console.error("Cloud row drop error execution stream interrupted:", e);
             }
         }
 
         function clearAllHistory() {
-            if(confirm("This will refresh your local device display context. Active master records remain completely secure inside your cloud base database structure.")) {
+            if(confirm("This will clear cached metrics on this device monitor layer. Safe permanent cloud records will persist.")) {
                 localStorage.removeItem('driving_school_history');
                 expandedBoxes = {};
                 loadHistory();
@@ -566,7 +580,7 @@
         function exportToExcel() {
             const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
             if (history.length === 0) {
-                alert("No records are available to generate excel table sheets.");
+                alert("No records available to export.");
                 return;
             }
 
