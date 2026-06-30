@@ -17,110 +17,677 @@
             --success-green: #06d6a0;
             --error-red: #ef4444;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-light); }
-        #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 99999; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: var(--bg-card); padding: 30px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); text-align: center; }
-        .dashboard-container { display: flex; min-height: 100vh; flex-direction: column; }
-        @media (min-width: 992px) { .dashboard-container { flex-direction: row; } }
-        .sidebar-panel { width: 100%; background-color: #0d1b2a; padding: 15px; border-bottom: 1px solid var(--border-color); }
-        @media (min-width: 992px) { .sidebar-panel { width: 280px; min-height: 100vh; border-bottom: none; border-right: 1px solid var(--border-color); } }
-        .main-content-view { flex-grow: 1; padding: 30px; }
-        .panel { background: var(--bg-card); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 20px; }
-        .btn { background-color: var(--accent-cyan); color: var(--bg-main); padding: 12px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Login Screen --- */
+        #loginScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-main);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .login-card h2 { color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.4rem; }
+        .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
+
+        /* --- Layout --- */
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @media (min-width: 992px) {
+            .dashboard-container { flex-direction: row; }
+        }
+
+        /* --- Sidebar --- */
+        .sidebar-panel {
+            width: 100%;
+            background-color: #0d1b2a;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar-panel {
+                width: 280px;
+                min-height: 100vh;
+                border-bottom: none;
+                border-right: 1px solid var(--border-color);
+                padding: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        .sidebar-brand { padding: 10px 15px; text-align: center; }
+        @media (min-width: 992px) {
+            .sidebar-brand { padding: 25px 20px; border-bottom: 1px solid var(--border-color); }
+        }
+
+        .sidebar-brand h3 { color: var(--accent-cyan); font-size: 1.2rem; letter-spacing: 0.5px; }
+        .sidebar-brand p { color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 0 5px 0;
+            scrollbar-width: none;
+        }
+        .sidebar-menu::-webkit-scrollbar { display: none; }
+
+        @media (min-width: 992px) {
+            .sidebar-menu { flex-direction: column; padding: 20px 0; gap: 0; overflow-x: visible; }
+        }
+
+        .menu-item {
+            padding: 10px 16px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+            white-space: nowrap;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        @media (min-width: 992px) {
+            .menu-item {
+                padding: 14px 24px; font-size: 0.95rem; border-radius: 0;
+                white-space: normal; background: transparent; border: none; border-left: 4px solid transparent;
+            }
+        }
+
+        .menu-item:hover { background: rgba(255,255,255,0.05); color: var(--text-light); }
+        .menu-item.active { background: rgba(0, 180, 216, 0.15); color: var(--accent-cyan); border-color: var(--accent-cyan); }
+        @media (min-width: 992px) {
+            .menu-item.active { background: rgba(0, 180, 216, 0.1); border-left-color: var(--accent-cyan); border-top: none; border-right: none; border-bottom: none; }
+        }
+
+        /* --- Main Content --- */
+        .main-content-view { flex-grow: 1; padding: 15px; width: 100%; }
+        @media (min-width: 768px) { .main-content-view { padding: 30px; } }
+
+        header.dashboard-header {
+            margin-bottom: 20px; padding: 15px; background: var(--bg-card);
+            border-radius: 8px; border: 1px solid var(--border-color); text-align: center;
+        }
+
+        .form-split-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 992px) { .form-split-layout { grid-template-columns: 1fr 1fr; gap: 25px; } }
+
+        .panel {
+            background: var(--bg-card); padding: 15px; border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 1px solid var(--border-color); margin-bottom: 15px;
+        }
+
+        .form-group { margin-bottom: 18px; text-align: left; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--accent-blue); font-size: 0.9rem; }
+        input, select {
+            width: 100%; padding: 12px; background-color: var(--bg-input); border: 1px solid var(--border-color);
+            border-radius: 6px; font-size: 1rem; color: var(--text-light); outline: none;
+        }
+
+        .db-config-box {
+            background: rgba(6, 214, 160, 0.08); border: 1px dashed var(--success-green);
+            padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem; text-align: center;
+        }
+
+        .btn-container { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .btn {
+            background-color: var(--accent-cyan); color: var(--bg-main); padding: 12px 20px; border: none;
+            border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; text-align: center;
+        }
+        .btn-success { background-color: var(--success-green); color: var(--bg-main); }
+        .btn-secondary { background-color: #4a5568; color: var(--text-light); }
+        .btn-danger { background-color: var(--error-red); color: var(--text-light); }
+
+        /* --- Receipt Preview --- */
+        .receipt-preview {
+            border: 2px dashed var(--accent-cyan); padding: 20px; border-radius: 8px;
+            background: #ffffff; color: #1e293b; word-wrap: break-word;
+        }
+        .receipt-header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
+        .receipt-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0; }
+        @media (min-width: 400px) { .receipt-row { flex-direction: row; justify-content: space-between; gap: 0; } }
+        .receipt-total { font-size: 1.4rem; font-weight: bold; color: #005f73; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 2px solid #e2e8f0; }
+
+        /* --- Folders (Archives) --- */
+        .folder-box {
+            border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 12px; background: #151d33; overflow: hidden;
+        }
+        .folder-header {
+            padding: 15px; background: #1f2a4a; cursor: pointer; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid var(--border-color);
+        }
+        @media (min-width: 600px) { .folder-header { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .folder-title { font-weight: bold; color: var(--accent-cyan); font-size: 1.05rem; }
+        .folder-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.85rem; }
+        .count-badge, .total-badge { background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); }
+        .folder-content { display: none; padding: 15px; background: #0f1626; }
+        .folder-content.open { display: block; }
+        .nested-payment-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
+        .nested-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        @media (min-width: 576px) { .nested-grid { grid-template-columns: 1fr 1fr auto; align-items: center; } }
+
+        /* --- Settings Lists --- */
+        .course-manager-list { margin-top: 15px; list-style: none; }
+        .course-manager-item {
+            background: var(--bg-input); padding: 10px 12px; margin-bottom: 6px; border-radius: 4px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;
+        }
+
+        .settings-grid-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 992px) { .settings-grid-layout { grid-template-columns: 1fr 1fr; gap: 25px; } }
+
         .tab-page { display: none; }
         .tab-page.active { display: block; }
-        .menu-item { padding: 15px; cursor: pointer; color: var(--text-muted); }
-        .menu-item.active { color: var(--accent-cyan); border-left: 4px solid var(--accent-cyan); background: rgba(0, 180, 216, 0.1); }
     </style>
 </head>
 <body>
 
+    <!-- AUTH SCREEN -->
     <div id="loginScreen">
         <div class="login-card">
             <h2>System Authentication</h2>
-            <div style="text-align: left; margin-bottom: 15px;">
+            <p>THANIMA IYKARAYIL MDS Terminal</p>
+            <div class="form-group">
                 <label>Operator ID</label>
-                <input type="text" id="loginUser" style="width:100%; padding:10px; margin-top:5px;">
+                <input type="text" id="loginUser" placeholder="Enter Operator ID">
             </div>
-            <div style="text-align: left; margin-bottom: 15px;">
+            <div class="form-group">
                 <label>Passcode</label>
-                <input type="password" id="loginPass" style="width:100%; padding:10px; margin-top:5px;">
+                <input type="password" id="loginPass" placeholder="Enter Passcode">
             </div>
+            <p id="loginError" style="color: var(--error-red); display: none; margin-bottom: 12px; font-weight: bold;"></p>
             <button class="btn" onclick="handleAuthSubmit()">Unlock Workspace</button>
         </div>
     </div>
 
+    <!-- MAIN DASHBOARD -->
     <div class="dashboard-container">
+        <!-- SIDEBAR -->
         <div class="sidebar-panel">
-            <h3>THANIMA IYKARAYIL MDS</h3>
-            <ul style="list-style: none; margin-top: 20px;">
-                <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Terminal Billing</li>
-                <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Student Archives</li>
+            <div class="sidebar-brand">
+                <h3>THANIMA IYKARAYIL MDS</h3>
+                <p>Institutional Management Matrix</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Terminal Billing Form</li>
+                <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Grouped Student Archives</li>
+                <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Profile & Menu Settings</li>
             </ul>
         </div>
+
         <div class="main-content-view">
+            <header class="dashboard-header">
+                <h2 id="topNavTitle" style="color: var(--accent-cyan); font-size: 1.4rem;">Terminal Billing Form</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution | Lic No: 3/13/2019</p>
+            </header>
+
+            <!-- TAB 1: BILLING -->
             <div id="tab-billing" class="tab-page active">
-                <div class="panel">
-                    <div id="dbStatusLabel">Status: Ready</div>
-                    <form id="receiptForm" onsubmit="event.preventDefault();">
-                        <label>Student Name</label>
-                        <input type="text" id="custName" style="width:100%; padding:10px; margin-bottom:10px;">
-                        <button class="btn" onclick="sendWhatsApp()">Dispatch Receipt</button>
-                    </form>
+                <div class="form-split-layout">
+                    <!-- Input Form -->
+                    <div class="panel">
+                        <div class="db-config-box">
+                            <div id="dbStatusLabel">Status: Connecting to Live Google Sheets... ⏳</div>
+                        </div>
+                        <form id="receiptForm" onsubmit="event.preventDefault();">
+                            <div class="form-group">
+                                <label>Receipt Number</label>
+                                <input type="text" id="receiptNo" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Student Name</label>
+                                <input type="text" id="custName" placeholder="Enter full name" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label>WhatsApp Mobile Number</label>
+                                <input type="tel" id="whatsappNo" placeholder="10-digit number (e.g. 9876543210)">
+                            </div>
+                            <div class="form-group">
+                                <label>Course Selection Profile</label>
+                                <select id="course" onchange="updatePreview()"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mode of Settlement</label>
+                                <select id="payMode" onchange="updatePreview()">
+                                    <option value="UPI / GooglePay / PhonePe">UPI / GooglePay / PhonePe</option>
+                                    <option value="Cash Handover">Cash Handover</option>
+                                    <option value="Bank NetBanking Transfer">Bank NetBanking Transfer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount Settled (₹)</label>
+                                <input type="number" id="amount" placeholder="Enter numeric transaction values" oninput="updatePreview()">
+                            </div>
+                            <div class="btn-container">
+                                <button type="button" class="btn btn-success" onclick="sendWhatsApp()">Dispatch Digital Receipt via WhatsApp</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Receipt</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Receipt Preview -->
+                    <div class="panel" style="background: rgba(255,255,255,0.01);">
+                        <div class="receipt-preview">
+                            <div class="receipt-header">
+                                <h2 style="margin-bottom:4px; font-weight:800; font-size:1.35rem; color: #0b132b;">THANIMA IYKARAYIL MDS</h2>
+                                <p style="font-size: 0.75rem; color: #475569;">Iykarayil Buildings, Mallappally | Tel: +91 9447175416<br>Govt Reg. Institution</p>
+                            </div>
+                            <div class="receipt-row">
+                                <span id="previewReceiptNo" style="font-weight: 600;">Receipt No: --</span>
+                                <span id="previewDate">Date: --</span>
+                            </div>
+                            <div class="receipt-row" style="margin-top: 15px;">
+                                <span style="color: #64748b;">Received With Thanks From:</span>
+                                <span id="previewName" style="font-weight: 600; text-transform: uppercase;">____________________</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span style="color: #64748b;">Allocated Course Assignment:</span>
+                                <span id="previewCourse" style="font-weight: 600;">--</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span style="color: #64748b;">Transaction Settlement Mode:</span>
+                                <span id="previewMode" style="font-weight: 600;">--</span>
+                            </div>
+                            <div class="receipt-total" id="previewAmount">₹ 0</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- TAB 2: ARCHIVES (HISTORY) -->
             <div id="tab-students" class="tab-page">
-                <div class="panel" id="groupedFoldersContainer">Loading data...</div>
+                <div class="panel">
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <input type="text" id="historySearch" placeholder="Filter directories by student name or mobile parameters..." oninput="loadGroupedStudents()">
+                    </div>
+                    <!-- HISTORY DATA GOES HERE -->
+                    <div id="groupedFoldersContainer"></div>
+                </div>
+            </div>
+
+            <!-- TAB 3: SETTINGS -->
+            <div id="tab-settings" class="tab-page">
+                <div class="settings-grid-layout">
+                    <div class="panel">
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Terminal Password</h3>
+                        <div class="form-group">
+                            <label style="color: var(--error-red);">Verify Current Passcode *</label>
+                            <input type="password" id="settingsOldPass" placeholder="Enter current passcode">
+                        </div>
+                        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+                        <div class="form-group">
+                            <label>New Operator ID</label>
+                            <input type="text" id="settingsUser" placeholder="New Username">
+                        </div>
+                        <div class="form-group">
+                            <label>New Passcode</label>
+                            <input type="password" id="settingsPass" placeholder="New Password">
+                        </div>
+                        <button class="btn btn-success" onclick="saveSecurityCredentials()">Update Credentials</button>
+                    </div>
+
+                    <div class="panel">
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Manage Courses Options</h3>
+                        <div class="form-group">
+                            <label>Add New Course Option</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <input type="text" id="newCourseInput" placeholder="e.g. Manual Car Package">
+                                <button type="button" class="btn btn-success" style="padding: 12px;" onclick="addCustomCourseOption()">➕ Add to Dropdown</button>
+                            </div>
+                        </div>
+                        <label>Active Database List</label>
+                        <ul id="courseConfigurationManagerList" class="course-manager-list"></ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
+        // YOUR SPECIFIC NEW SCRIPT URL
         const googleScriptUrl = "https://script.google.com/macros/s/AKfycbzTJs5UfDsMl5bWAkKsreefaOzUH2_ckJnR9TleIsJZWj1AJspoV3ECFDEis-OwuaxC/exec";
+        
+        let expandedFolders = {};
+        const defaultCoursesList = [
+            "Fresh Driving Learners License Track",
+            "Two Wheeler Training (Scooter/Motorcycle)",
+            "Four Wheeler Car Training (Manual)",
+            "Combined Package (Two + Four Wheeler)",
+            "License Renewal & Documentation"
+        ];
 
         window.onload = function() {
-            if(sessionStorage.getItem('auth_state') === 'verified') document.getElementById('loginScreen').style.display = 'none';
-            fetchSheetsCloudData();
+            // Setup default auth if none exists
+            if(!localStorage.getItem('admin_user')) localStorage.setItem('admin_user', 'Arun9666');
+            if(!localStorage.getItem('admin_pass')) localStorage.setItem('admin_pass', 'A6669n');
+            if(!localStorage.getItem('driving_school_courses')) {
+                localStorage.setItem('driving_school_courses', JSON.stringify(defaultCoursesList));
+            }
+
+            document.getElementById('settingsUser').value = localStorage.getItem('admin_user');
+            document.getElementById('settingsPass').value = localStorage.getItem('admin_pass');
+
+            renderCourseMenusUI();
+
+            // Check if already logged in
+            if (sessionStorage.getItem('auth_state') === 'verified') {
+                document.getElementById('loginScreen').style.display = 'none';
+            }
+            
+            generateNewReceiptNo();
+            updatePreview();
+            fetchSheetsCloudData(); 
         }
 
+        // --- AUTH & TAB LOGIC ---
         function handleAuthSubmit() {
-            if (document.getElementById('loginUser').value === 'Arun9666' && document.getElementById('loginPass').value === 'A6669n') {
+            const userInput = document.getElementById('loginUser').value;
+            const passInput = document.getElementById('loginPass').value;
+            const errorLabel = document.getElementById('loginError');
+
+            if (userInput === localStorage.getItem('admin_user') && passInput === localStorage.getItem('admin_pass')) {
                 sessionStorage.setItem('auth_state', 'verified');
                 document.getElementById('loginScreen').style.display = 'none';
-            } else { alert("Invalid credentials"); }
+                errorLabel.style.display = 'none';
+            } else {
+                errorLabel.innerText = "Invalid Operator Credentials.";
+                errorLabel.style.display = 'block';
+            }
         }
 
         function switchConsoleTab(tabId) {
             document.querySelectorAll('.tab-page').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
+            
+            const titleMap = {
+                'billing': 'Terminal Billing Form',
+                'students': 'Grouped Student Archives',
+                'settings': 'Profile & Menu Settings'
+            };
+            document.getElementById('topNavTitle').innerText = titleMap[tabId];
+            
+            // Refresh data when opening archives
+            if(tabId === 'students') fetchSheetsCloudData();
         }
 
+        function saveSecurityCredentials() {
+            const oldPassInput = document.getElementById('settingsOldPass').value;
+            const newUser = document.getElementById('settingsUser').value.trim();
+            const newPass = document.getElementById('settingsPass').value.trim();
+            if (oldPassInput !== localStorage.getItem('admin_pass')) { alert('Current passcode incorrect.'); return; }
+            if (!newUser || !newPass) { alert('Fields cannot be blank.'); return; }
+            localStorage.setItem('admin_user', newUser);
+            localStorage.setItem('admin_pass', newPass);
+            document.getElementById('settingsOldPass').value = '';
+            alert('Credentials updated!');
+        }
+
+        // --- COURSE DROPDOWN LOGIC ---
+        function renderCourseMenusUI() {
+            const currentCourses = JSON.parse(localStorage.getItem('driving_school_courses')) || defaultCoursesList;
+            const billingSelect = document.getElementById('course');
+            billingSelect.innerHTML = currentCourses.map(course => `<option value="${course}">${course}</option>`).join('');
+
+            const managementList = document.getElementById('courseConfigurationManagerList');
+            managementList.innerHTML = currentCourses.map((course, idx) => `
+                <li class="course-manager-item">
+                    <span>${course}</span>
+                    <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="removeCustomCourseOption(${idx})">🗑️</button>
+                </li>
+            `).join('');
+            updatePreview();
+        }
+
+        function addCustomCourseOption() {
+            const inputField = document.getElementById('newCourseInput');
+            const newTitle = inputField.value.trim();
+            if(!newTitle) return;
+            let courses = JSON.parse(localStorage.getItem('driving_school_courses')) || [];
+            courses.push(newTitle);
+            localStorage.setItem('driving_school_courses', JSON.stringify(courses));
+            inputField.value = '';
+            renderCourseMenusUI();
+        }
+
+        function removeCustomCourseOption(indexPosition) {
+            let courses = JSON.parse(localStorage.getItem('driving_school_courses')) || [];
+            courses.splice(indexPosition, 1);
+            localStorage.setItem('driving_school_courses', JSON.stringify(courses));
+            renderCourseMenusUI();
+        }
+
+        // --- BILLING PREVIEW & WHATSAPP ---
+        function generateNewReceiptNo() {
+            document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
+        }
+
+        function updatePreview() {
+            const receiptNo = document.getElementById('receiptNo').value;
+            const name = document.getElementById('custName').value || '____________________';
+            const course = document.getElementById('course').value || '--';
+            const amount = document.getElementById('amount').value || '0';
+            const mode = document.getElementById('payMode').value;
+            const date = new Date().toLocaleDateString('en-IN');
+
+            document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + receiptNo;
+            document.getElementById('previewDate').innerText = 'Date: ' + date;
+            document.getElementById('previewName').innerText = name;
+            document.getElementById('previewCourse').innerText = course;
+            document.getElementById('previewMode').innerText = mode;
+            document.getElementById('previewAmount').innerText = '₹ ' + amount;
+        }
+
+        function resetFormForNewReceipt() {
+            document.getElementById('custName').value = '';
+            document.getElementById('whatsappNo').value = '';
+            document.getElementById('amount').value = '';
+            generateNewReceiptNo();
+            updatePreview();
+        }
+
+        function sendWhatsApp() {
+            const receiptNo = document.getElementById('receiptNo').value;
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('whatsappNo').value.trim();
+            const course = document.getElementById('course').value;
+            const mode = document.getElementById('payMode').value;
+            const amount = document.getElementById('amount').value.trim();
+            const date = new Date().toLocaleDateString('en-IN');
+
+            if (!name || !phone || !amount) {
+                alert("Please fill in Student Name, Mobile Number, and Settled Amount.");
+                return;
+            }
+
+            const newRecord = { receiptNo, name, phone, course, mode, amount, date };
+            
+            // Save locally instantly so it appears in archives right away
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history.unshift(newRecord);
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+
+            // POST to Google Sheets
+            fetch(googleScriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newRecord)
+            }).then(() => {
+                setTimeout(fetchSheetsCloudData, 1500); 
+            });
+
+            // Format WhatsApp Message
+            const message = `*THANIMA IYKARAYIL MDS*\n_Official Digital Receipt_\n\n` +
+                            `• *Receipt No:* ${receiptNo}\n` +
+                            `• *Date:* ${date}\n` +
+                            `• *Student:* ${name.toUpperCase()}\n` +
+                            `• *Course Profile:* ${course}\n` +
+                            `• *Settlement via:* ${mode}\n\n` +
+                            `*Total Paid Amount: ₹ ${amount}* \n\nThank you for choosing THANIMA IYKARAYIL MDS. Verified Electronic Statement.`;
+
+            const cleanPhone = phone.replace(/\D/g, '');
+            const formattedPhone = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
+            
+            window.open(`https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`, '_blank');
+            
+            resetFormForNewReceipt();
+        }
+
+        // --- FETCH & DATA GROUPING (THE FIX) ---
         function fetchSheetsCloudData() {
             const label = document.getElementById('dbStatusLabel');
+            label.innerText = "Status: Syncing Live rows from Google Sheets... ⏳";
+            
+            const oldScript = document.getElementById('jsonpSyncScript');
+            if(oldScript) oldScript.remove();
+
             const script = document.createElement('script');
+            script.id = 'jsonpSyncScript';
+            // JSONP callback injection
             script.src = googleScriptUrl + "?callback=handleSheetsCloudResponse&ts=" + new Date().getTime();
-            script.onerror = () => label.innerText = "Status: Connection Error";
+            
+            script.onerror = function() {
+                label.innerText = "Status: Network error or Script not configured properly. Showing local backup. ⚠️";
+                loadGroupedStudents();
+            };
+            
             document.body.appendChild(script);
         }
 
         window.handleSheetsCloudResponse = function(data) {
-            localStorage.setItem('driving_school_history', JSON.stringify(data));
-            document.getElementById('dbStatusLabel').innerText = "Status: Sync Complete ✅";
-            loadGroupedStudents();
+            const label = document.getElementById('dbStatusLabel');
+            if (Array.isArray(data)) {
+                localStorage.setItem('driving_school_history', JSON.stringify(data));
+                label.innerText = "Status: Database Synced Successfully ✅";
+                loadGroupedStudents();
+            } else {
+                label.innerText = "Status: Connected, but Data Format Unknown ⚠️";
+                loadGroupedStudents();
+            }
         };
 
         function loadGroupedStudents() {
             const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            const searchQuery = document.getElementById('historySearch').value.toLowerCase().trim();
             const container = document.getElementById('groupedFoldersContainer');
-            container.innerHTML = history.map(item => `<div>${item.name} - ₹${item.amount}</div>`).join('');
+            
+            if(history.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No archive entries found. Ensure your script is returning data.</div>`;
+                return;
+            }
+
+            // ROBUST GROUPING LOGIC - Catches various data key formats (name vs Name vs index)
+            const groups = {};
+            
+            history.forEach(item => {
+                // Safely extract values regardless of capitalization
+                const studentName = (item.name || item.Name || item[1] || "Unknown Student").toString().trim();
+                const studentPhone = (item.phone || item.Phone || item[2] || "No Number").toString().trim();
+                const receiptNum = (item.receiptNo || item.ReceiptNo || item[0] || "--");
+                const courseName = (item.course || item.Course || item[3] || "--");
+                const payMode = (item.mode || item.Mode || item[4] || "--");
+                const amountPaid = parseFloat(item.amount || item.Amount || item[5] || 0);
+                const recDate = (item.date || item.Date || item[6] || "--");
+
+                // Skip completely empty rows
+                if (studentName === "Unknown Student" && amountPaid === 0) return;
+
+                const key = `${studentName.toLowerCase()}_${studentPhone}`;
+                
+                if (!groups[key]) { 
+                    groups[key] = { name: studentName, phone: studentPhone, totalPaid: 0, transactions: [] }; 
+                }
+                
+                groups[key].transactions.push({
+                    receiptNo: receiptNum, course: courseName, mode: payMode, amount: amountPaid, date: recDate
+                });
+                groups[key].totalPaid += amountPaid;
+            });
+
+            let objectRows = Object.values(groups);
+            
+            // Filter by search bar
+            if (searchQuery) {
+                objectRows = objectRows.filter(g => g.name.toLowerCase().includes(searchQuery) || g.phone.includes(searchQuery));
+            }
+
+            // Render Folders
+            container.innerHTML = objectRows.map((group, idx) => {
+                const folderId = `folder-${idx}`;
+                const isOpen = expandedFolders[folderId] ? 'open' : '';
+                
+                const nestedRowsHtml = group.transactions.map(t => `
+                    <div class="nested-payment-card">
+                        <div class="nested-grid">
+                            <div><strong>📅 Date:</strong> ${t.date}</div>
+                            <div><strong>🧾 Receipt:</strong> <span style="color:var(--accent-cyan);">${t.receiptNo}</span></div>
+                            <div style="font-weight:bold; color:var(--success-green);">₹ ${t.amount}</div>
+                        </div>
+                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:0.85rem;">
+                            <strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="folder-box">
+                        <div class="folder-header" onclick="toggleStudentFolder('${folderId}')">
+                            <span class="folder-title">📁 ${group.name.toUpperCase()}</span>
+                            <div class="folder-meta">
+                                <span class="count-badge">📱 ${group.phone}</span>
+                                <span class="count-badge" style="background:var(--accent-cyan); color:#000; font-weight:bold;">${group.transactions.length} entries</span>
+                                <span class="total-badge" style="color: var(--success-green);">Total: ₹ ${group.totalPaid}</span>
+                            </div>
+                        </div>
+                        <div class="folder-content ${isOpen}" id="${folderId}">${nestedRowsHtml}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function sendWhatsApp() {
-            const name = document.getElementById('custName').value;
-            alert("Receipt dispatched for: " + name);
+        function toggleStudentFolder(id) {
+            const folder = document.getElementById(id);
+            folder.classList.toggle('open');
+            expandedFolders[id] = folder.classList.contains('open');
         }
     </script>
 </body>
