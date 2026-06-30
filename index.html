@@ -435,11 +435,9 @@
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('bill')) {
-                // If it's a customer loading a bill link, skip login completely
                 document.getElementById('loginScreen').style.display = 'none';
                 renderOnlineInvoiceMode(urlParams);
             } else {
-                // Check if user is already logged in for this active tab session
                 if (sessionStorage.getItem('auth_state') === 'verified') {
                     document.getElementById('loginScreen').style.display = 'none';
                 }
@@ -481,10 +479,10 @@
             const label = document.getElementById('dbStatusLabel');
             if(connected) {
                 label.innerText = "Status: Connected to Google Sheets Live Sync Hub ✅";
-                label.style.color = var(--success-green);
+                label.style.color = "#06d6a0";
             } else {
                 label.innerText = "Status: Google Sync Interrupted. Check Script URL Deployment ⚠️";
-                label.style.color = var(--error-red);
+                label.style.color = "#ef4444";
             }
         }
 
