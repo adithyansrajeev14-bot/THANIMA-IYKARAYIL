@@ -397,14 +397,14 @@
         <div class="main-content-view">
             <header class="dashboard-header">
                 <h2 id="topNavTitle" style="color: var(--accent-cyan); font-size: 1.4rem;">Terminal Billing Form</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution | Lic No: 3/13/2019</p>
             </header>
 
             <div id="tab-billing" class="tab-page active">
                 <div class="form-split-layout">
                     <div class="panel">
                         <div class="db-config-box">
-                            <div class="db-status" id="dbStatusLabel">Status: Local Memory Active (Cloud Syncing Ready)</div>
+                            <div class="db-status" id="dbStatusLabel">Status: Connected to Google Sheets Live Sync Hub ✅</div>
                         </div>
                         <form id="receiptForm" onsubmit="event.preventDefault();">
                             <div class="form-group">
@@ -413,11 +413,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Student Name</label>
-                                <input type="text" id="custName" placeholder="Enter student full name" oninput="updatePreview()">
+                                <input type="text" id="custName" placeholder="Enter full name" oninput="updatePreview()">
                             </div>
                             <div class="form-group">
                                 <label>WhatsApp Mobile Number</label>
-                                <input type="tel" id="whatsappNo" placeholder="10-digit mobile number">
+                                <input type="tel" id="whatsappNo" placeholder="10-digit number (e.g. 9876543210)">
                             </div>
                             <div class="form-group">
                                 <label>Course Selection Profile</label>
@@ -433,11 +433,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Amount Settled (₹)</label>
-                                <input type="number" id="amount" placeholder="Enter payment amount" oninput="updatePreview()">
+                                <input type="number" id="amount" placeholder="Enter numeric transaction values" oninput="updatePreview()">
                             </div>
                             <div class="btn-container">
-                                <button type="button" class="btn btn-success" id="submitBtn" onclick="sendWhatsApp()">Dispatch Receipt via WhatsApp</button>
-                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Blank Form</button>
+                                <button type="button" class="btn btn-success" id="submitBtn" onclick="sendWhatsApp()">Dispatch Digital Receipt via WhatsApp</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Receipt</button>
                             </div>
                         </form>
                     </div>
@@ -447,31 +447,27 @@
                             <div class="receipt-preview">
                                 <div class="receipt-header">
                                     <h2 id="previewHeader" style="margin-bottom:4px; font-weight:800; font-size:1.35rem; color: #0b132b;">THANIMA IYKARAYIL MDS</h2>
-                                    <p style="font-size: 0.85rem; color: #475569;">Govt Reg. Institution</p>
+                                    <p style="font-size: 0.75rem; color: #475569;">Iykarayil Buildings, Mallappally | Tel: +91 9447175416<br>Govt Reg. Institution</p>
                                 </div>
                                 <div class="receipt-row">
                                     <span id="previewReceiptNo" style="font-weight: 600;">Receipt No: --</span>
                                     <span id="previewDate">Date: --</span>
                                 </div>
                                 <div class="receipt-row" style="margin-top: 15px;">
-                                    <span style="color: #64748b;">Received From:</span>
+                                    <span style="color: #64748b;">Received With Thanks From:</span>
                                     <span id="previewName" style="font-weight: 600; text-transform: uppercase;">____________________</span>
                                 </div>
                                 <div class="receipt-row">
-                                    <span style="color: #64748b;">Course Allotted:</span>
+                                    <span style="color: #64748b;">Allocated Course Assignment:</span>
                                     <span id="previewCourse" style="font-weight: 600;">--</span>
                                 </div>
                                 <div class="receipt-row">
-                                    <span style="color: #64748b;">Settlement Mode:</span>
+                                    <span style="color: #64748b;">Transaction Settlement Mode:</span>
                                     <span id="previewMode" style="font-weight: 600;">--</span>
                                 </div>
                                 <div class="receipt-total" id="previewAmount">₹ 0</div>
-                                <div id="printFooterText" style="display: none; text-align: center; margin-top: 30px; font-size: 0.8rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                                    Verified electronic document. No manual signature requirement.
-                                </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary" id="customerPrintBtn" style="display: none; margin-top: 15px;" onclick="window.print()">Print Receipt Document</button>
                     </div>
                 </div>
             </div>
@@ -479,7 +475,7 @@
             <div id="tab-students" class="tab-page">
                 <div class="panel">
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <input type="text" id="historySearch" placeholder="Search archive by student name or phone..." oninput="loadGroupedStudents()">
+                        <input type="text" id="historySearch" placeholder="Filter directories by student name or mobile parameters..." oninput="loadGroupedStudents()">
                     </div>
                     <div id="groupedFoldersContainer"></div>
                 </div>
@@ -546,18 +542,12 @@
 
             renderCourseMenusUI();
 
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('bill')) {
-                document.body.classList.add('customer-view-mode');
-                renderOnlineInvoiceMode(urlParams);
-            } else {
-                if (sessionStorage.getItem('auth_state') === 'verified') {
-                    document.getElementById('loginScreen').style.display = 'none';
-                }
-                generateNewReceiptNo();
-                updatePreview();
-                fetchSheetsCloudData(); 
+            if (sessionStorage.getItem('auth_state') === 'verified') {
+                document.getElementById('loginScreen').style.display = 'none';
             }
+            generateNewReceiptNo();
+            updatePreview();
+            fetchSheetsCloudData(); 
         }
 
         function renderCourseMenusUI() {
@@ -625,7 +615,7 @@
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
-            if(tabId === 'students') loadGroupedStudents();
+            if(tabId === 'students') fetchSheetsCloudData();
         }
 
         function generateNewReceiptNo() {
@@ -633,7 +623,6 @@
         }
 
         function updatePreview() {
-            if(document.body.classList.contains('customer-view-mode')) return;
             const receiptNo = document.getElementById('receiptNo').value;
             const name = document.getElementById('custName').value || '____________________';
             const course = document.getElementById('course').value || '--';
@@ -647,6 +636,28 @@
             document.getElementById('previewCourse').innerText = course;
             document.getElementById('previewMode').innerText = mode;
             document.getElementById('previewAmount').innerText = '₹ ' + amount;
+        }
+
+        function fetchSheetsCloudData() {
+            const label = document.getElementById('dbStatusLabel');
+            label.innerText = "Status: Pulling live records from Google Sheet... ⏳";
+            
+            fetch(googleScriptUrl)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        localStorage.setItem('driving_school_history', JSON.stringify(data));
+                        label.innerText = "Status: Connected to Google Sheets Live Sync Hub ✅";
+                        if (document.getElementById('tab-students').classList.contains('active')) {
+                            loadGroupedStudents();
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch failed, reverting to local data storage cache", err);
+                    label.innerText = "Status: Local Cache Active (Sync Offline) ⚠️";
+                    loadGroupedStudents();
+                });
         }
 
         function sendWhatsApp() {
@@ -663,21 +674,21 @@
                 return;
             }
 
-            // Save Live Record into History Database array
             const newRecord = { receiptNo, name, phone, course, mode, amount, date };
+            
             let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            history.unshift(newRecord); // Add to the top of the array
+            history.unshift(newRecord);
             localStorage.setItem('driving_school_history', JSON.stringify(history));
 
-            // Optional Cloud sync hook setup if your Apps Script is running
             fetch(googleScriptUrl, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newRecord)
-            }).catch(err => console.log("Cloud sync deferred structure logic."));
+            }).then(() => {
+                setTimeout(fetchSheetsCloudData, 1500); 
+            });
 
-            // Compile clean text dispatch data line
             const message = `*THANIMA IYKARAYIL MDS*\n_Official Digital Receipt_\n\n` +
                             `• *Receipt No:* ${receiptNo}\n` +
                             `• *Date:* ${date}\n` +
@@ -691,8 +702,6 @@
             
             window.open(`https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`, '_blank');
             
-            alert("Record securely added into system archives and processed for WhatsApp routing!");
-            generateNewReceiptNo();
             resetFormForNewReceipt();
         }
 
@@ -710,12 +719,13 @@
             const container = document.getElementById('groupedFoldersContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No history records saved on this device yet.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No archive entries found. Try opening the tab again to fetch from Google Sheets.</div>`;
                 return;
             }
 
             const groups = {};
             history.forEach(item => {
+                if(!item.name || !item.phone) return; 
                 const key = `${item.name.toLowerCase().trim()}_${item.phone.trim()}`;
                 if (!groups[key]) { groups[key] = { name: item.name, phone: item.phone, totalPaid: 0, transactions: [] }; }
                 groups[key].transactions.push(item);
@@ -738,9 +748,8 @@
                             <div><strong>🧾 Receipt:</strong> <span style="color:var(--accent-cyan);">${t.receiptNo}</span></div>
                             <div style="font-weight:bold; color:var(--success-green);">₹ ${t.amount}</div>
                         </div>
-                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:0.85rem; display:flex; justify-content:space-between; align-items:center;">
-                            <div><strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}</div>
-                            <button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 0.8rem;" onclick="deleteSingleReceiptRecord('${t.receiptNo}')">🗑️ Delete</button>
+                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:0.85rem;">
+                            <strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}
                         </div>
                     </div>
                 `).join('');
@@ -765,22 +774,6 @@
             const folder = document.getElementById(id);
             folder.classList.toggle('open');
             expandedFolders[id] = folder.classList.contains('open');
-        }
-
-        function deleteSingleReceiptRecord(receiptIdString) {
-            if(!confirm(`Delete receipt item ${receiptIdString}?`)) return;
-            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            history = history.filter(item => item.receiptNo !== receiptIdString);
-            localStorage.setItem('driving_school_history', JSON.stringify(history));
-            loadGroupedStudents();
-        }
-
-        function fetchSheetsCloudData() {
-            console.log("Cloud check completed.");
-        }
-
-        function renderOnlineInvoiceMode(urlParams) {
-            console.log("Customer online invoice mode initialized.");
         }
     </script>
 </body>
