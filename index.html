@@ -210,13 +210,6 @@
         }
 
         .inner-payment-item:last-child { border-bottom: none; }
-        .delete-single-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
 
         body.customer-view-mode .panel:first-child,
         body.customer-view-mode header,
@@ -240,7 +233,7 @@
     <div class="main-container">
         <div class="panel">
             <div class="db-config-box">
-                <div class="db-status" id="dbStatusLabel">Status: Syncing cloud connection...</div>
+                <div class="db-status" id="dbStatusLabel">Status: Syncing Google Sheets Cloud Engine...</div>
             </div>
 
             <form id="receiptForm" onsubmit="event.preventDefault();">
@@ -333,8 +326,8 @@
         
         <div class="ledger-tools">
             <input type="text" id="historySearch" placeholder="Search logs by student name or mobile string..." oninput="loadHistory()">
-            <button class="btn" style="width: auto; white-space: nowrap;" onclick="exportToExcel()">📊 Export Data (.XLS)</button>
-            <button class="btn btn-danger" style="width: auto; white-space: nowrap;" onclick="clearAllHistory()">⚠️ Purge Device History</button>
+            <button class="btn btn-secondary" style="width: auto; white-space: nowrap; margin-top: 0;" onclick="fetchSheetsCloudData()">🔄 Refresh Sync</button>
+            <button class="btn btn-danger" style="width: auto; white-space: nowrap;" onclick="clearAllHistory()">⚠️ Clear Screen Cache</button>
         </div>
 
         <div id="groupedLedgerContainer"></div>
@@ -343,29 +336,27 @@
     <script>
         let expandedBoxes = {};
         
-        // SECURE CLOUD ENDPOINTS WITH YOUR CORRECT PUBLISHABLE API TOKEN
-        const supabaseUrl = "https://oxbjszslvkytkuhswnry.supabase.co";
-        const supabaseKey = "sb_publishable_5po2pNSon-F9C2NrIGjXbA_FeM6Y2EO";
+        // INSTANT GOOGLE SHEETS LIVE DEPLOYMENT ENDPOINT
+        const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwG3X2gFZmnAmMii2TjukV-NuCWCOnzzmekYKcGi4W0vtf81HuYAgH5CApHyWoXs1iv/exec";
 
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('bill')) {
                 renderOnlineInvoiceMode(urlParams);
             } else {
-                setDbStatus(true);
                 generateNewReceiptNo();
                 updatePreview();
-                fetchSupabaseCloudData(); 
+                fetchSheetsCloudData(); 
             }
         }
 
         function setDbStatus(connected) {
             const label = document.getElementById('dbStatusLabel');
             if(connected) {
-                label.innerText = "Status: Connected to Supabase Production Hub Live ✅";
+                label.innerText = "Status: Connected to Google Sheets Live Sync Hub ✅";
                 label.style.color = "#16a34a";
             } else {
-                label.innerText = "Status: Local Engine Disconnected Framework Only ⚠️";
+                label.innerText = "Status: Google Sync Interrupted. Check Script URL Deployment ⚠️";
                 label.style.color = "#dc2626";
             }
         }
@@ -392,18 +383,11 @@
             document.getElementById('previewAmount').innerText = '₹ ' + amount;
         }
 
-        async function fetchSupabaseCloudData() {
-            document.getElementById('groupedLedgerContainer').innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">Fetching cloud records from Supabase Hub...</div>`;
+        async function fetchSheetsCloudData() {
+            document.getElementById('groupedLedgerContainer').innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">Fetching central log records from Google Sheet...</div>`;
             
             try {
-                const response = await fetch(`${supabaseUrl}/rest/v1/ledger?select=*&order=id.desc`, {
-                    method: 'GET',
-                    headers: {
-                        'apikey': supabaseKey,
-                        'Authorization': `Bearer ${supabaseKey}`
-                    }
-                });
-                
+                const response = await fetch(googleScriptUrl);
                 if(response.ok) {
                     const cloudHistory = await response.json();
                     localStorage.setItem('driving_school_history', JSON.stringify(cloudHistory));
@@ -412,7 +396,7 @@
                     setDbStatus(false);
                 }
             } catch (err) {
-                console.error("Supabase engine fallback status active:", err);
+                console.error("Sheets sync architecture error:", err);
                 setDbStatus(false);
             }
             loadHistory();
@@ -429,28 +413,23 @@
 
             if(!name || !phone || !amount) return false;
 
-            const id = 'ID-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-            const record = { id, date, receiptNo, name, phone, course, amount, mode };
+            const record = { date, receiptNo, name, phone, course, mode, amount };
             
             let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
             history.unshift(record); 
             localStorage.setItem('driving_school_history', JSON.stringify(history));
             loadHistory();
 
-            document.getElementById('submitBtn').innerText = "Syncing with Cloud Database Engine...";
+            document.getElementById('submitBtn').innerText = "Streaming to Google Spreadsheet Engine...";
             try {
-                await fetch(`${supabaseUrl}/rest/v1/ledger`, {
+                await fetch(googleScriptUrl, {
                     method: 'POST',
-                    headers: {
-                        'apikey': supabaseKey,
-                        'Authorization': `Bearer ${supabaseKey}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(record)
                 });
             } catch(e) {
-                console.error("Cloud engine error stack tracking:", e);
+                console.error("Google cloud stream integration crash log:", e);
             }
             document.getElementById('submitBtn').innerText = "Dispatch Digital Receipt via WhatsApp";
             return true;
@@ -462,7 +441,7 @@
             const container = document.getElementById('groupedLedgerContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No central database transaction records discovered. Make sure policies match inside your table configuration.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No historical database spreadsheet rows found. Add an entry to get started!</div>`;
                 return;
             }
 
@@ -490,7 +469,7 @@
             }
 
             if(objectRows.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No matching logs found.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No matching records mapped.</div>`;
                 return;
             }
 
@@ -504,9 +483,8 @@
                             <strong>${pay.date}</strong> - <span style="color:var(--brand-teal); font-weight:600;">${pay.receiptNo}</span> | 
                             ${pay.course} (${pay.mode})
                         </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
+                        <div>
                             <strong style="color:var(--brand-dark-teal)">₹ ${pay.amount}</strong>
-                            <button type="button" class="delete-single-btn" onclick="deleteSinglePayment('${pay.id}', event)">❌ Delete</button>
                         </div>
                     </div>
                 `).join('');
@@ -543,89 +521,10 @@
             }
         }
 
-        async function deleteSinglePayment(targetId, event) {
-            if(event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-
-            if(!confirm("Are you sure you want to delete this record across all platforms?")) return;
-
-            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            history = history.filter(item => item.id !== targetId);
-            localStorage.setItem('driving_school_history', JSON.stringify(history));
-            loadHistory();
-
-            try {
-                await fetch(`${supabaseUrl}/rest/v1/ledger?id=eq.${targetId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'apikey': supabaseKey,
-                        'Authorization': `Bearer ${supabaseKey}`
-                    }
-                });
-            } catch(e) {
-                console.error("Cloud row drop error execution stream interrupted:", e);
-            }
-        }
-
         function clearAllHistory() {
-            if(confirm("This will clear cached metrics on this device monitor layer. Safe permanent cloud records will persist.")) {
-                localStorage.removeItem('driving_school_history');
-                expandedBoxes = {};
-                loadHistory();
-            }
-        }
-
-        function exportToExcel() {
-            const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            if (history.length === 0) {
-                alert("No records available to export.");
-                return;
-            }
-
-            let excelContent = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-                <head><meta charset="UTF-8"></head>
-                <body>
-                <table border="1">
-                    <tr style="background-color: #005f73; color: white; font-weight: bold;">
-                        <th>Date</th>
-                        <th>Receipt Number</th>
-                        <th>Student Name</th>
-                        <th>WhatsApp Number</th>
-                        <th>Course / Service</th>
-                        <th>Payment Mode</th>
-                        <th>Amount Paid (INR)</th>
-                    </tr>
-            `;
-
-            history.forEach(item => {
-                excelContent += `
-                    <tr>
-                        <td>${item.date}</td>
-                        <td>${item.receiptNo}</td>
-                        <td>${item.name}</td>
-                        <td>+91 ${item.phone}</td>
-                        <td>${item.course}</td>
-                        <td>${item.mode}</td>
-                        <td>${item.amount}</td>
-                    </tr>
-                `;
-            });
-
-            excelContent += `</table></body></html>`;
-
-            const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
-            const downloadUrl = URL.createObjectURL(blob);
-            const virtualLink = document.createElement('a');
-            
-            virtualLink.href = downloadUrl;
-            virtualLink.download = `Thanima_Driving_School_Billing_Report_${new Date().toISOString().slice(0,10)}.xls`;
-            
-            document.body.appendChild(virtualLink);
-            virtualLink.click();
-            document.body.removeChild(virtualLink);
+            localStorage.removeItem('driving_school_history');
+            expandedBoxes = {};
+            loadHistory();
         }
 
         async function sendWhatsApp() {
