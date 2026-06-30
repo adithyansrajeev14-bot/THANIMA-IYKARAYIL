@@ -3,983 +3,715 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanima Iykarayil Motor Driving School - Billing</title>
+    <title>Thanima Iykarayil Motor Driving School - Billing System</title>
     <style>
         :root {
-            --brand-teal: #00a8cc;
-            --brand-dark-teal: #0c1b23;
-            --brand-yellow: #ffd54f;
-            --brand-red: #ff5252;
-            --dark-bg: #070f14;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-light: #e2e8f0;
-            --text-muted: #94a3b8;
-            
-            /* Dark Glowing Neon-Blue Header Variables */
-            --header-bg: linear-gradient(135deg, #050b14 0%, #0a192f 100%);
-            --neon-blue-glow: 0 0 20px rgba(0, 168, 204, 0.6), inset 0 0 15px rgba(0, 168, 204, 0.2);
-            --text-glow: 0 0 10px rgba(0, 168, 204, 0.8), 0 0 20px rgba(0, 168, 204, 0.4);
-            
-            --input-bg: rgba(255, 255, 255, 0.02);
-            --preview-bg: rgba(12, 27, 35, 0.6);
-            --preview-text: #ffffff;
+            --brand-teal: #005f73;
+            --brand-dark-teal: #0a2f35;
+            --light-bg: #f8fafc;
+            --border-color: #cbd5e1;
+            --text-main: #1e293b;
         }
 
-        /* Light Mode Variable Overrides */
-        body.light-mode {
-            --dark-bg: #f1f5f9;
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(15, 23, 42, 0.08);
-            --text-light: #0f172a;
-            --text-muted: #475569;
-            
-            /* Maintaining a dark neon presence even in light mode for explicit style separation */
-            --header-bg: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-            
-            --input-bg: rgba(15, 23, 42, 0.02);
-            --preview-bg: rgba(255, 255, 255, 0.9);
-            --preview-text: #0f172a;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--dark-bg);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 168, 204, 0.1) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(10, 47, 53, 0.4) 0px, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text-light);
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body.light-mode {
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 168, 204, 0.08) 0px, transparent 40%),
-                radial-gradient(at 100% 100%, rgba(203, 213, 225, 0.6) 0px, transparent 50%);
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            padding: 20px;
         }
 
-        /* Separate Dark Glowing Blue Header Panel */
-        .brand-header {
-            background: var(--header-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 35px 20px;
+        header {
             text-align: center;
-            position: relative;
-            border-bottom: 3px solid #00a8cc;
-            box-shadow: var(--neon-blue-glow);
-            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
-        /* Dark Glowing Header Typography rules override */
-        .brand-header .brand-title {
-            color: #ffffff !important;
-            text-shadow: var(--text-glow);
-        }
-        .brand-header .meta-info span {
-            color: #93c5fd !important;
-            text-shadow: 0 0 5px rgba(147, 197, 253, 0.3);
-        }
+        h1 { color: var(--brand-teal); margin-bottom: 5px; }
+        p.subtitle { color: #64748b; font-size: 0.9rem; }
 
-        /* Mode Dynamic Toggle Switch */
-        .theme-toggle-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: auto;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(0, 168, 204, 0.4);
-            color: #ffffff;
-            padding: 8px 14px;
-            font-size: 0.85rem;
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
-        }
-        .theme-toggle-btn:hover {
-            background: rgba(0, 168, 204, 0.2);
-            box-shadow: 0 0 10px rgba(0, 168, 204, 0.5);
-        }
-
-        .brand-title {
-            font-size: 2.6rem;
-            font-weight: 900;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .brand-subtitle {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 8px 0 15px 0;
-            letter-spacing: 3px;
-            color: var(--brand-yellow);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            text-shadow: 0 0 8px rgba(255, 213, 79, 0.3);
-        }
-
-        .l-badge {
-            background: var(--brand-red);
-            color: white;
-            border: 2px solid white;
-            border-radius: 4px;
-            width: 28px;
-            height: 28px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.1rem;
-            box-shadow: 0 0 10px rgba(255, 82, 82, 0.5);
-        }
-
-        .tagline-container {
-            display: inline-block;
-            background: rgba(0, 168, 204, 0.15);
-            color: #ffffff;
-            border: 1px solid rgba(0, 168, 204, 0.4);
-            padding: 6px 20px;
-            font-weight: 700;
-            font-style: italic;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(0, 168, 204, 0.2);
-        }
-
-        .meta-info {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* Containers */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
+        .main-container {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 35px;
-            padding: 0 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
         }
 
-        @media (max-width: 850px) {
-            .container { grid-template-columns: 1fr; margin: 20px auto; }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
         }
 
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-            transition: background 0.3s ease, border-color 0.3s ease;
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
-        h2 {
-            margin-top: 0;
-            color: var(--text-light);
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 14px;
-            font-size: 1.3rem;
-            font-weight: 600;
+        .form-group {
+            margin-bottom: 18px;
         }
-
-        .form-group { margin-bottom: 22px; }
 
         label {
             display: block;
-            margin-bottom: 8px;
             font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .phone-input-container { display: flex; gap: 8px; }
-
-        .country-code {
-            width: 75px;
-            background: var(--input-bg) !important;
-            border: 1px solid var(--glass-border) !important;
-            color: var(--text-muted) !important;
-            font-weight: bold;
-            text-align: center;
+            margin-bottom: 6px;
+            color: var(--brand-dark-teal);
         }
 
         input, select {
             width: 100%;
-            padding: 12px 16px;
-            background: var(--input-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             font-size: 1rem;
-            color: var(--text-light);
-            transition: all 0.2s ease;
+            outline: none;
         }
 
         input:focus, select:focus {
-            outline: none;
             border-color: var(--brand-teal);
-            box-shadow: 0 0 12px rgba(0, 168, 204, 0.15);
         }
 
-        .search-box {
+        .db-config-box {
+            background: #f0fdf4;
+            border: 1px dashed #16a34a;
+            padding: 15px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            padding: 12px;
-            background: var(--input-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            color: var(--text-light);
         }
 
-        /* Form Actions Grid Split */
-        .form-actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 480px) {
-            .form-actions-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 12px;
-        }
-
-        .btn-whatsapp { 
-            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%); 
-            color: white; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px;
-            margin-bottom: 0;
-        }
-        .btn-whatsapp:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-        
-        .btn-next-bill {
-            background: rgba(0, 168, 204, 0.15);
-            border: 1px solid var(--brand-teal);
-            color: var(--brand-teal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 0;
-        }
-        .btn-next-bill:hover { 
-            background: var(--brand-teal);
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0, 168, 204, 0.3);
-        }
-        
-        .btn-print-customer { 
-            background: var(--brand-teal); 
-            color: white; 
-            margin-top: 20px; 
-            display: none;
-        }
-
-        /* Glass Receipt Styling */
-        .receipt-preview {
-            border: 1px solid var(--glass-border);
-            padding: 35px;
-            background: var(--preview-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            min-height: 420px;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            color: var(--preview-text);
-            transition: background 0.3s ease;
-        }
-
-        .receipt-pdf-header {
-            text-align: center;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-        }
-
-        .receipt-pdf-header h3 {
-            margin: 0;
-            color: var(--preview-text);
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-
-        .pdf-l-badge {
-            background: var(--brand-red);
-            color: white;
-            border-radius: 3px;
-            width: 22px;
-            height: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
+        .db-status {
             font-size: 0.85rem;
-            margin-left: 5px;
+            font-weight: bold;
+            margin-top: 8px;
+            color: #16a34a;
+        }
+
+        .btn {
+            background-color: var(--brand-teal);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background-color: var(--brand-dark-teal); }
+        .btn-secondary { background-color: #64748b; margin-top: 10px; }
+        .btn-secondary:hover { background-color: #475569; }
+        .btn-danger { background-color: #ef4444; }
+        .btn-danger:hover { background-color: #dc2626; }
+
+        /* Live Preview Styles */
+        .receipt-preview {
+            border: 2px dashed var(--brand-teal);
+            padding: 30px;
+            border-radius: 8px;
+            background: #fff;
+            position: relative;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .receipt-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-            font-size: 1.05rem;
-            border-bottom: 1px dashed var(--glass-border);
-            padding-bottom: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #f1f5f9;
         }
-        
-        .receipt-row strong { color: var(--text-muted); font-weight: 500; }
-        .receipt-row span { text-align: right; font-weight: 600; color: var(--preview-text); }
 
-        .total-row {
-            border: 1px solid rgba(0, 168, 204, 0.2);
-            padding: 16px;
-            margin-top: 35px;
-            border-radius: 8px;
-            background-color: rgba(0, 168, 204, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .total-row strong { color: var(--preview-text); }
-        .total-row span { color: #d97706; font-size: 1.5rem; font-weight: 800; }
-        body:not(.light-mode) .total-row span { color: var(--brand-yellow); }
-
-        .instructions-box {
-            background: rgba(0, 168, 204, 0.05);
-            border-left: 4px solid var(--brand-teal);
-            padding: 16px;
+        .receipt-total {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--brand-teal);
+            text-align: right;
             margin-top: 20px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-            line-height: 1.5;
+            padding-top: 10px;
+            border-top: 2px solid #e2e8f0;
         }
 
-        /* Ledger History Logs Layout */
-        .history-container { max-width: 1100px; margin: 0 auto 60px auto; padding: 0 20px; }
+        /* Ledger History Component Styles */
+        .ledger-section {
+            max-width: 1300px;
+            margin: 40px auto 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .ledger-tools {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
         .student-row {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #fafafa;
             overflow: hidden;
         }
 
         .student-summary {
-            padding: 18px 22px;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            user-select: none;
-        }
-        .student-summary:hover { background: rgba(255, 255, 255, 0.03); }
-        body.light-mode .student-summary:hover { background: rgba(0, 0, 0, 0.02); }
-
-        .student-name { font-weight: 600; font-size: 1.1rem; color: var(--text-light); }
-        .student-phone { font-size: 0.85rem; color: var(--text-muted); }
-        .student-meta { text-align: right; display: flex; align-items: center; gap: 15px; }
-
-        .total-badge {
-            background: rgba(0, 168, 204, 0.12);
-            border: 1px solid rgba(0, 168, 204, 0.25);
-            color: var(--brand-teal);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 700;
+            background: #f8fafc;
         }
 
-        .count-badge {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-light);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            border: 1px solid var(--glass-border);
+        .student-summary:hover { background: #f1f5f9; }
+        .student-name { font-weight: bold; color: var(--brand-dark-teal); }
+        .student-phone { color: #64748b; margin-left: 10px; font-size: 0.9rem; }
+        
+        .student-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
+
+        .count-badge { background: #e2e8f0; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; }
+        .total-badge { font-weight: bold; color: var(--brand-teal); }
 
         .payments-detail-box {
             display: none;
-            background: rgba(0, 0, 0, 0.08);
-            border-top: 1px solid var(--glass-border);
-            padding: 12px 22px;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid var(--border-color);
         }
+
         .payments-detail-box.open { display: block; }
 
         .inner-payment-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--glass-border);
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
             font-size: 0.95rem;
         }
 
+        .inner-payment-item:last-child { border-bottom: none; }
         .delete-single-btn {
-            background: rgba(255, 82, 82, 0.1);
-            border: 1px solid rgba(255, 82, 82, 0.25);
-            color: var(--brand-red);
-            padding: 6px 12px;
-            border-radius: 6px;
+            background: none;
+            border: none;
+            color: #ef4444;
             cursor: pointer;
-            width: auto;
-            margin-bottom: 0;
-            font-weight: 600;
-        }
-        .delete-single-btn:hover { background: var(--brand-red); color: white; }
-
-        .action-bar { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 20px; }
-
-        .history-btn {
-            color: var(--text-light);
-            padding: 10px 20px;
-            width: auto;
             font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 0;
-            background: var(--glass-bg);
-        }
-        .excel-btn { color: #22c55e; }
-        .excel-btn:hover { background: #107c41; color: white; }
-        .clear-btn:hover { background: var(--brand-red); color: white; }
-
-        /* View Modes & Overlay */
-        body.customer-view-mode .brand-header, body.customer-view-mode .theme-toggle-btn { display: none; }
-        body.customer-view-mode .container { grid-template-columns: 1fr; max-width: 600px; margin: 30px auto; }
-        body.customer-view-mode .card, body.customer-view-mode .history-container { display: none; }
-
-        #loginOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(4, 9, 12, 0.85); backdrop-filter: blur(16px);
-            display: flex; justify-content: center; align-items: center; z-index: 9999;
-        }
-        body.light-mode #loginOverlay { background: rgba(241, 245, 249, 0.85); }
-
-        .login-card {
-            background: rgba(10, 25, 47, 0.95); border: 1px solid rgba(0, 168, 204, 0.4);
-            padding: 45px 40px; border-radius: 16px; width: 100%; max-width: 400px; box-sizing: border-box; text-align: center;
-            box-shadow: 0 0 25px rgba(0, 168, 204, 0.4);
         }
 
-        .login-btn { background: var(--brand-teal); color: white; margin-top: 20px; }
+        /* Customer View Overrides */
+        body.customer-view-mode .panel:first-child,
+        body.customer-view-mode header,
+        body.customer-view-mode .ledger-section {
+            display: none !important;
+        }
 
-        .login-error { color: var(--brand-red); font-size: 0.85rem; font-weight: 600; margin-top: 14px; display: none; }
-
-        @media print {
-            body { background: #fff !important; color: #000 !important; }
-            .brand-header, #previewHeader, .btn-print-customer, #loginOverlay, .theme-toggle-btn { display: none !important; }
-            .container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            .receipt-preview { border: none !important; box-shadow: none !important; padding: 0 !important; background: transparent !important; color: #000 !important; }
-            .receipt-row span, .total-row span, .receipt-pdf-header h3 { color: #000 !important; }
-            .receipt-row strong { color: #333 !important; }
-            .total-row { border: 1px solid #000 !important; background: transparent !important; }
+        body.customer-view-mode .main-container {
+            grid-template-columns: 1fr;
+            max-width: 600px;
         }
     </style>
 </head>
 <body>
 
-<div id="loginOverlay">
-    <div class="login-card">
-        <h2 style="border: none; padding-bottom: 0; margin-bottom: 30px; font-size: 1.5rem; color: #fff; text-shadow: var(--text-glow);">🔒 Staff Authentication</h2>
-        <form id="loginForm" onsubmit="handleLogin(event)">
-            <div class="form-group" style="text-align: left;">
-                <label style="color: #e2e8f0;">Username</label>
-                <input type="text" id="loginUser" required placeholder="Enter username" style="background: rgba(255,255,255,0.05); border-color: rgba(0,168,204,0.3); color:#fff;">
-            </div>
-            <div class="form-group" style="text-align: left;">
-                <label style="color: #e2e8f0;">Password</label>
-                <input type="password" id="loginPass" required placeholder="Enter password" style="background: rgba(255,255,255,0.05); border-color: rgba(0,168,204,0.3); color:#fff;">
-            </div>
-            <button type="submit" class="login-btn">Unlock Dashboard</button>
-            <div id="loginError" class="login-error">❌ Invalid credentials. Access Denied.</div>
-        </form>
-    </div>
-</div>
+    <header>
+        <h1 id="previewHeader">Thanima Iykarayil Motor Driving School</h1>
+        <p class="subtitle">Govt. Approved | Lic No: 3/13/2019 | Live Digital Billing Desk</p>
+    </header>
 
-<div class="brand-header">
-    <button type="button" class="theme-toggle-btn" onclick="toggleThemeMode()">
-        <span id="themeBtnIcon">☀️</span> <span id="themeBtnText">Light Mode</span>
-    </button>
-    <div class="brand-title">Thanima Iykarayil</div>
-    <div class="brand-subtitle">MOTOR DRIVING SCHOOL <span class="l-badge">L</span></div>
-    <br>
-    <div class="tagline-container">LEARN TO DRIVE WITH CONFIDENCE ≫</div>
-    <div class="meta-info">
-        <span>✓ Govt. Approved</span>
-        <span>✓ LIC NO: 3/13/2019</span>
-    </div>
-</div>
+    <div class="main-container">
+        <!-- Input Management Form Panel -->
+        <div class="panel">
+            <!-- Supabase Config Panel Node -->
+            <div class="db-config-box">
+                <label style="color: #166534; font-size: 0.9rem;">Supabase Free Cloud Database Sync</label>
+                <input type="password" id="sbKeyInput" placeholder="Paste your Supabase Anon/Public Key here" onchange="saveSupabaseConfig()" style="font-size: 0.85rem; padding: 10px; margin-top: 5px;">
+                <div class="db-status" id="dbStatusLabel">Status: Local Browser Storage Database Only</div>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <h2>Generate Fee Receipt</h2>
-        <form id="receiptForm" onsubmit="event.preventDefault();">
-            <div class="form-group">
-                <label>Receipt No:</label>
-                <input type="text" id="receiptNo" readonly style="font-weight: bold; border-color: rgba(0,168,204,0.25);">
-            </div>
-            <div class="form-group">
-                <label>Name:</label>
-                <input type="text" id="custName" required placeholder="Enter name" oninput="updatePreview()">
-            </div>
-            <div class="form-group">
-                <label>WhatsApp Number:</label>
-                <div class="phone-input-container">
-                    <input type="text" class="country-code" value="+91" readonly>
-                    <input type="tel" id="whatsappNo" required placeholder="Enter 10-digit mobile number">
+            <form id="receiptForm" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="receiptNo">Receipt Number</label>
+                    <input type="text" id="receiptNo" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="custName">Student Name</label>
+                    <input type="text" id="custName" placeholder="Enter full name" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label for="whatsappNo">WhatsApp Mobile Number</label>
+                    <input type="tel" id="whatsappNo" placeholder="10-digit number (e.g. 9876543210)">
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Course / Service Selected</label>
+                    <select id="course" onchange="updatePreview()">
+                        <option value="Fresh Driving Learners License Track">Fresh Driving Learners License Track</option>
+                        <option value="Two Wheeler Training (Scooter/Motorcycle)">Two Wheeler Training (Scooter/Motorcycle)</option>
+                        <option value="Four Wheeler Car Training (Manual)">Four Wheeler Car Training (Manual)</option>
+                        <option value="Combined Package (Two + Four Wheeler)">Combined Package (Two + Four Wheeler)</option>
+                        <option value="License Renewal & Documentation">License Renewal & Documentation</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="payMode">Mode of Payment</label>
+                    <select id="payMode" onchange="updatePreview()">
+                        <option value="UPI / GooglePay / PhonePe">UPI / GooglePay / PhonePe</option>
+                        <option value="Cash Handover">Cash Handover</option>
+                        <option value="Bank NetBanking Transfer">Bank NetBanking Transfer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Amount Paid (₹)</label>
+                    <input type="number" id="amount" placeholder="Enter numeric fee amount" oninput="updatePreview()">
+                </div>
+
+                <button type="button" class="btn" style="margin-top: 10px;" id="submitBtn" onclick="sendWhatsApp()">Dispatch Digital Receipt via WhatsApp</button>
+            </form>
+        </div>
+
+        <!-- Realtime Live View Document Component Panel -->
+        <div class="panel">
+            <div class="receipt-preview" id="printReceiptArea">
+                <div class="receipt-header">
+                    <h2>THANIMA MOTOR DRIVING SCHOOL</h2>
+                    <p style="font-size: 0.85rem; color: #475569;">Iykarayil Buildings, Mallappally | Tel: +91 9447175416</p>
+                    <p style="font-size: 0.8rem; color: #64748b; margin-top:4px;">Govt Reg. Institution</p>
+                </div>
+
+                <div class="receipt-row">
+                    <span id="previewReceiptNo" style="font-weight: 600;">Receipt No: --</span>
+                    <span id="previewDate">Date: --</span>
+                </div>
+
+                <div class="receipt-row" style="margin-top: 15px;">
+                    <span style="color: #64748b;">Received With Thanks From:</span>
+                    <span id="previewName" style="font-weight: 600; text-transform: uppercase;">____________________</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span style="color: #64748b;">Allocated Course Assignment:</span>
+                    <span id="previewCourse" style="font-weight: 600;">--</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span style="color: #64748b;">Transaction Settlement Mode:</span>
+                    <span id="previewMode" style="font-weight: 600;">--</span>
+                </div>
+
+                <div class="receipt-total" id="previewAmount">₹ 0</div>
+
+                <div id="printFooterText" style="display: none; text-align: center; margin-top: 30px; font-size: 0.8rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                    This is an officially verified electronic receipt profile tracking module ledger snapshot. No manual physical signature context required.
                 </div>
             </div>
-            <div class="form-group">
-                <label>Training Course / Service:</label>
-                <select id="course" onchange="updatePreview()">
-                    <option value="Four Wheeler Training (Car)">Four Wheeler Training (Car)</option>
-                    <option value="Two Wheeler Training (Bike/Scooter)">Two Wheeler Training (Bike/Scooter)</option>
-                    <option value="Combined Package (Car + Bike)">Combined Package (Car + Bike)</option>
-                    <option value="License Service & Documentation">License Service & Documentation</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Amount Paid (₹):</label>
-                <input type="number" id="amount" required min="0" placeholder="0" oninput="updatePreview()">
-            </div>
-            <div class="form-group">
-                <label>Payment Mode:</label>
-                <select id="payMode" onchange="updatePreview()">
-                    <option value="UPI / GPay / PhonePe">UPI / GPay / PhonePe</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                </select>
-            </div>
-            
-            <div class="form-actions-grid">
-                <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">WhatsApp Bill</button>
-                <button type="button" class="btn-next-bill" onclick="prepareNextBill()">➕ Next Receipt</button>
-            </div>
-            
-            <div class="instructions-box">
-                <strong>Dynamic Grouping Enabled:</strong><br>
-                Receipts with matching names and WhatsApp numbers are collected together under a single master profile below so you can audit their total account balance beautifully.
-            </div>
-        </form>
-    </div>
-
-    <div>
-        <h2 id="previewHeader">Receipt Live Preview</h2>
-        <div class="receipt-preview" id="receiptPrintArea">
-            <div class="receipt-pdf-header">
-                <h3>THANIMA IYKARAYIL <span class="pdf-l-badge">L</span></h3>
-                <strong style="color:var(--brand-teal); font-size:0.9rem; letter-spacing:1px; display:block; margin-top:5px;">MOTOR DRIVING SCHOOL</strong>
-                <p style="margin: 5px 0; font-size:0.8rem; color:var(--text-muted); font-weight:600;">Govt. Approved | LIC NO: 3/13/2019</p>
-                <div style="margin-top:15px; font-size:0.85rem; border-top:1px solid var(--glass-border); padding-top:10px;">
-                    <span id="previewDate" style="color: var(--text-muted)">Date: --/--/----</span> &nbsp;|&nbsp; <span id="previewReceiptNo" style="color: var(--text-muted)">Receipt No: TI-XXXXX</span>
-                </div>
-            </div>
-            
-            <div class="receipt-row"><strong>Name:</strong> <span id="previewName">____________________</span></div>
-            <div class="receipt-row"><strong>Course / Service:</strong> <span id="previewCourse">Four Wheeler Training (Car)</span></div>
-            <div class="receipt-row"><strong>Payment Mode:</strong> <span id="previewMode">UPI / GPay / PhonePe</span></div>
-            
-            <div class="total-row">
-                <strong>Total Amount Paid:</strong> 
-                <span id="previewAmount">₹ 0</span>
-            </div>
-            
-            <p style="text-align:center; margin-top:50px; font-size:0.95rem; font-weight:700; color:var(--brand-teal); font-style:italic; letter-spacing: 0.5px;">≫ Learn To Drive With Confidence ≪</p>
-            <p id="printFooterText" style="text-align:center; margin-top:20px; font-size:0.75rem; color:var(--text-muted); display:none;">This is an official real-time verified computer-generated digital receipt.</p>
+            <button type="button" class="btn btn-secondary" id="customerPrintBtn" style="display: none;" onclick="window.print()">Print Official Document Container</button>
         </div>
-        
-        <button type="button" id="customerPrintBtn" class="btn-print-customer" onclick="window.print()">🖨️ Save / Print Receipt</button>
     </div>
-</div>
 
-<div class="history-container">
-    <div class="card">
-        <div class="action-bar">
-            <button type="button" class="history-btn excel-btn" onclick="exportToExcel()">📊 Download Excel Sheet</button>
-            <button type="button" class="history-btn clear-btn" onclick="clearAllHistory()">Clear All Records</button>
+    <!-- Grouped Dynamic Profiles Ledger Log Data Tracking Component Section -->
+    <div class="ledger-section">
+        <h2 style="color: var(--brand-dark-teal); margin-bottom: 15px; font-size: 1.3rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">
+            Institutional Central Audit Database Ledger Logs
+        </h2>
+        
+        <div class="ledger-tools">
+            <input type="text" id="historySearch" placeholder="Search logs by student name or mobile string..." oninput="loadHistory()">
+            <button class="btn" style="width: auto; white-space: nowrap;" onclick="exportToExcel()">📊 Export Data (.XLS)</button>
+            <button class="btn btn-danger" style="width: auto; white-space: nowrap;" onclick="clearAllHistory()">⚠️ Purge Device History</button>
         </div>
-        <h2>📜 Grouped Ledger Logs</h2>
-        
-        <input type="text" id="historySearch" class="search-box" placeholder="🔍 Search by name or mobile number..." oninput="loadHistory()">
-        
-        <div id="groupedLedgerContainer"></div>
+
+        <div id="groupedLedgerContainer">
+            <!-- Dynamic Injection Profile Strings Load Wireframe Here -->
+        </div>
     </div>
-</div>
 
-<script>
-    let expandedBoxes = {};
+    <!-- UI ROUTING / INTERACTION PROCESS EXECUTION ENVIRONMENT MODULE LINK ENGINE -->
+    <script>
+        let expandedBoxes = {};
+        // Hardcoded base URL using your unique Supabase Project ID
+        const supabaseUrl = "https://oxbjszslvkytkuhswnry.supabase.co";
+        let supabaseKey = localStorage.getItem('thanima_sb_key') || "";
 
-    window.onload = function() {
-        if (localStorage.getItem('theme_mode') === 'light') {
-            document.body.classList.add('light-mode');
-            document.getElementById('themeBtnIcon').innerText = '🌙';
-            document.getElementById('themeBtnText').innerText = 'Dark Mode';
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('bill')) {
+                renderOnlineInvoiceMode(urlParams);
+            } else {
+                if(supabaseKey) {
+                    document.getElementById('sbKeyInput').value = supabaseKey;
+                    setDbStatus(true);
+                }
+                generateNewReceiptNo();
+                updatePreview();
+                fetchSupabaseCloudData();
+            }
         }
 
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('bill')) {
-            document.body.classList.add('customer-view-mode');
-            renderOnlineInvoiceMode(urlParams);
-        } else {
+        function setDbStatus(connected) {
+            const label = document.getElementById('dbStatusLabel');
+            if(connected) {
+                label.innerText = "Status: Connected to Supabase Production Hub Live ✅";
+                label.style.color = "#16a34a";
+            } else {
+                label.innerText = "Status: Local Browser Storage Database Only";
+                label.style.color = "#dc2626";
+            }
+        }
+
+        function saveSupabaseConfig() {
+            const key = document.getElementById('sbKeyInput').value.trim();
+
+            if(!key) {
+                localStorage.removeItem('thanima_sb_key');
+                supabaseKey = "";
+                setDbStatus(false);
+            } else {
+                localStorage.setItem('thanima_sb_key', key);
+                supabaseKey = key;
+                setDbStatus(true);
+            }
+            fetchSupabaseCloudData();
+        }
+
+        function generateNewReceiptNo() {
+            document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
+        }
+
+        function updatePreview() {
+            if(document.body.classList.contains('customer-view-mode')) return;
+
+            const receiptNo = document.getElementById('receiptNo').value;
+            const name = document.getElementById('custName').value || '____________________';
+            const course = document.getElementById('course').value;
+            const amount = document.getElementById('amount').value || '0';
+            const mode = document.getElementById('payMode').value;
+            const date = new Date().toLocaleDateString('en-IN');
+
+            document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + receiptNo;
+            document.getElementById('previewDate').innerText = 'Date: ' + date;
+            document.getElementById('previewName').innerText = name;
+            document.getElementById('previewCourse').innerText = course;
+            document.getElementById('previewMode').innerText = mode;
+            document.getElementById('previewAmount').innerText = '₹ ' + amount;
+        }
+
+        async function fetchSupabaseCloudData() {
+            if(!supabaseKey) {
+                loadHistory();
+                return;
+            }
+            
+            document.getElementById('groupedLedgerContainer').innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">Fetching cloud records from Supabase Hub...</div>`;
+            
+            try {
+                const response = await fetch(`${supabaseUrl}/rest/v1/ledger?select=*&order=id.desc`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`
+                    }
+                });
+                
+                if(response.ok) {
+                    const cloudHistory = await response.json();
+                    localStorage.setItem('driving_school_history', JSON.stringify(cloudHistory));
+                }
+            } catch (err) {
+                console.error("Supabase engine fallback warning, loaded offline cached structure map:", err);
+            }
+            loadHistory();
+        }
+
+        async function saveRecordToHistory() {
+            const receiptNo = document.getElementById('receiptNo').value;
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('whatsappNo').value.trim();
+            const course = document.getElementById('course').value;
+            const amount = parseFloat(document.getElementById('amount').value || 0);
+            const mode = document.getElementById('payMode').value;
+            const date = new Date().toLocaleDateString('en-IN');
+
+            if(!name || !phone || !amount) return false;
+
+            const id = 'ID-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            const record = { id, date, receiptNo, name, phone, course, amount, mode };
+            
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history.unshift(record); 
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+            loadHistory();
+
+            if(supabaseKey) {
+                document.getElementById('submitBtn').innerText = "Syncing with Cloud Database Engine...";
+                try {
+                    await fetch(`${supabaseUrl}/rest/v1/ledger`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': supabaseKey,
+                            'Authorization': `Bearer ${supabaseKey}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=minimal'
+                        },
+                        body: JSON.stringify(record)
+                    });
+                } catch(e) {
+                    console.error("Cloud data payload connection fail output stream error trace:", e);
+                }
+                document.getElementById('submitBtn').innerText = "Dispatch Digital Receipt via WhatsApp";
+            }
+            return true;
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            const searchQuery = document.getElementById('historySearch').value.toLowerCase().trim();
+            const container = document.getElementById('groupedLedgerContainer');
+            
+            if(history.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No transaction profiles found.</div>`;
+                return;
+            }
+
+            const groups = {};
+            history.forEach(item => {
+                const key = `${item.name.toLowerCase()}_${item.phone}`;
+                if (!groups[key]) {
+                    groups[key] = {
+                        name: item.name,
+                        phone: item.phone,
+                        totalPaid: 0,
+                        payments: []
+                    };
+                }
+                groups[key].payments.push(item);
+                groups[key].totalPaid += item.amount;
+            });
+
+            let objectRows = Object.values(groups);
+            if (searchQuery) {
+                objectRows = objectRows.filter(group => 
+                    group.name.toLowerCase().includes(searchQuery) || 
+                    group.phone.includes(searchQuery)
+                );
+            }
+
+            if(objectRows.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No matching logs found.</div>`;
+                return;
+            }
+
+            container.innerHTML = objectRows.map((group, index) => {
+                const boxId = `ledger-${index}`;
+                const isOpen = expandedBoxes[boxId] ? 'open' : '';
+                
+                const innerRowsHtml = group.payments.map(pay => `
+                    <div class="inner-payment-item">
+                        <div>
+                            <strong>${pay.date}</strong> - <span style="color:var(--brand-teal); font-weight:600;">${pay.receiptNo}</span> | 
+                            ${pay.course} (${pay.mode})
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <strong style="color:var(--brand-dark-teal)">₹ ${pay.amount}</strong>
+                            <button type="button" class="delete-single-btn" onclick="deleteSinglePayment('${pay.id}', event)">❌ Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="student-row">
+                        <div class="student-summary" onclick="toggleLedgerBox('${boxId}')">
+                            <div class="student-info">
+                                <span class="student-name">${group.name}</span>
+                                <span class="student-phone">📞 +91 ${group.phone}</span>
+                            </div>
+                            <div class="student-meta">
+                                <span class="count-badge">${group.payments.length} Payments</span>
+                                <span class="total-badge">Total: ₹ ${group.totalPaid}</span>
+                                <span style="font-size: 0.8rem; color:#64748b;">▼</span>
+                            </div>
+                        </div>
+                        <div class="payments-detail-box ${isOpen}" id="${boxId}">
+                            ${innerRowsHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleLedgerBox(id) {
+            const box = document.getElementById(id);
+            if(box.classList.contains('open')) {
+                box.classList.remove('open');
+                expandedBoxes[id] = false;
+            } else {
+                box.classList.add('open');
+                expandedBoxes[id] = true;
+            }
+        }
+
+        async function deleteSinglePayment(targetId, event) {
+            if(event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+
+            if(!confirm("Are you sure you want to delete this record? This will instantly execute across your local and Supabase cloud instance databases.")) return;
+
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history = history.filter(item => item.id !== targetId);
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+            loadHistory();
+
+            if(supabaseKey) {
+                try {
+                    await fetch(`${supabaseUrl}/rest/v1/ledger?id=eq.${targetId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'apikey': supabaseKey,
+                            'Authorization': `Bearer ${supabaseKey}`
+                        }
+                    });
+                } catch(e) {
+                    console.error("Cloud drop mutation request connection disruption dropped record status locally only:", e);
+                }
+            }
+        }
+
+        function clearAllHistory() {
+            if(confirm("Danger! Are you sure you want to clear your screen states? This drops local cache references. Cloud items will remain untouched in Supabase until explicitly dropped.")) {
+                localStorage.removeItem('driving_school_history');
+                expandedBoxes = {};
+                loadHistory();
+            }
+        }
+
+        function exportToExcel() {
+            const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            if (history.length === 0) {
+                alert("There are no records available to export into Excel.");
+                return;
+            }
+
+            let excelContent = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head><meta charset="UTF-8"></head>
+                <body>
+                <table border="1">
+                    <tr style="background-color: #005f73; color: white; font-weight: bold;">
+                        <th>Date</th>
+                        <th>Receipt Number</th>
+                        <th>Student Name</th>
+                        <th>WhatsApp Number</th>
+                        <th>Course / Service</th>
+                        <th>Payment Mode</th>
+                        <th>Amount Paid (INR)</th>
+                    </tr>
+            `;
+
+            history.forEach(item => {
+                excelContent += `
+                    <tr>
+                        <td>${item.date}</td>
+                        <td>${item.receiptNo}</td>
+                        <td>${item.name}</td>
+                        <td>+91 ${item.phone}</td>
+                        <td>${item.course}</td>
+                        <td>${item.mode}</td>
+                        <td>${item.amount}</td>
+                    </tr>
+                `;
+            });
+
+            excelContent += `</table></body></html>`;
+
+            const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+            const downloadUrl = URL.createObjectURL(blob);
+            const virtualLink = document.createElement('a');
+            
+            virtualLink.href = downloadUrl;
+            virtualLink.download = `Thanima_Driving_School_Billing_Report_${new Date().toISOString().slice(0,10)}.xls`;
+            
+            document.body.appendChild(virtualLink);
+            virtualLink.click();
+            document.body.removeChild(virtualLink);
+        }
+
+        async function sendWhatsApp() {
+            const receiptNo = document.getElementById('receiptNo').value;
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('whatsappNo').value.trim();
+            const course = document.getElementById('course').value;
+            const amount = document.getElementById('amount').value;
+            const mode = document.getElementById('payMode').value;
+            const date = new Date().toLocaleDateString('en-IN');
+
+            if(!name || !phone || !amount) {
+                alert('Please fill out all fields before launching WhatsApp.');
+                return;
+            }
+
+            await saveRecordToHistory();
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
+
+            const cleanPhone = '91' + phone.replace(/\D/g, '');
+            const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
+                            `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
+                            `----------------------------------------%0A` +
+                            `*Student Name:* ${name}%0A` +
+                            `*Total Amount Paid: ₹ ${amount}*%0A` +
+                            `----------------------------------------%0A%0A` +
+                            `👉 Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
+
+            window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
+            
+            document.getElementById('receiptForm').reset();
             generateNewReceiptNo();
             updatePreview();
-            loadHistory();
-        }
-    }
-
-    function toggleThemeMode() {
-        const body = document.body;
-        const icon = document.getElementById('themeBtnIcon');
-        const text = document.getElementById('themeBtnText');
-        
-        if (body.classList.contains('light-mode')) {
-            body.classList.remove('light-mode');
-            icon.innerText = '☀️';
-            text.innerText = 'Light Mode';
-            localStorage.setItem('theme_mode', 'dark');
-        } else {
-            body.classList.add('light-mode');
-            icon.innerText = '🌙';
-            text.innerText = 'Dark Mode';
-            localStorage.setItem('theme_mode', 'light');
-        }
-    }
-
-    function handleLogin(event) {
-        event.preventDefault();
-        const userField = document.getElementById('loginUser').value;
-        const passField = document.getElementById('loginPass').value;
-        const errorMsg = document.getElementById('loginError');
-        const overlay = document.getElementById('loginOverlay');
-
-        if (userField === "Arun9666" && passField === "A6669n") {
-            errorMsg.style.display = 'none';
-            overlay.style.display = 'none';
-        } else {
-            errorMsg.style.display = 'block';
-            document.getElementById('loginPass').value = '';
-        }
-    }
-
-    function generateNewReceiptNo() {
-        document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
-    }
-
-    function updatePreview() {
-        if(document.body.classList.contains('customer-view-mode')) return;
-
-        const receiptNo = document.getElementById('receiptNo').value;
-        const name = document.getElementById('custName').value.trim() || '____________________';
-        const course = document.getElementById('course').value;
-        const amount = document.getElementById('amount').value || '0';
-        const mode = document.getElementById('payMode').value;
-        const date = new Date().toLocaleDateString('en-IN');
-
-        document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + receiptNo;
-        document.getElementById('previewDate').innerText = 'Date: ' + date;
-        document.getElementById('previewName').innerText = name;
-        document.getElementById('previewCourse').innerText = course;
-        document.getElementById('previewMode').innerText = mode;
-        document.getElementById('previewAmount').innerText = '₹ ' + amount;
-    }
-
-    function prepareNextBill() {
-        document.getElementById('receiptForm').reset();
-        document.getElementById('historySearch').value = '';
-        generateNewReceiptNo();
-        updatePreview();
-    }
-
-    function saveRecordToHistory() {
-        const receiptNo = document.getElementById('receiptNo').value;
-        const name = document.getElementById('custName').value.trim();
-        let phone = document.getElementById('whatsappNo').value.trim().replace(/\D/g, '');
-        const course = document.getElementById('course').value;
-        const amount = parseFloat(document.getElementById('amount').value || 0);
-        const mode = document.getElementById('payMode').value;
-        const date = new Date().toLocaleDateString('en-IN');
-
-        if(!name || !phone || !amount) return false;
-
-        if (phone.length === 12 && phone.startsWith('91')) {
-            phone = phone.slice(2);
         }
 
-        const id = 'ID-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-        const record = { id, date, receiptNo, name, phone, course, amount, mode };
-        
-        let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-        history.unshift(record); 
-        localStorage.setItem('driving_school_history', JSON.stringify(history));
-        
-        loadHistory();
-        return true;
-    }
-
-    function loadHistory() {
-        const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-        const searchQuery = document.getElementById('historySearch').value.toLowerCase().trim();
-        const container = document.getElementById('groupedLedgerContainer');
-        
-        if(history.length === 0) {
-            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No transaction profiles found on this device.</div>`;
-            return;
-        }
-
-        const groups = {};
-        history.forEach(item => {
-            const key = `${item.name.toLowerCase()}_${item.phone}`;
-            if (!groups[key]) {
-                groups[key] = {
-                    name: item.name,
-                    phone: item.phone,
-                    totalPaid: 0,
-                    payments: []
-                };
-            }
-            groups[key].payments.push(item);
-            groups[key].totalPaid += item.amount;
-        });
-
-        let objectRows = Object.values(groups);
-        if (searchQuery) {
-            objectRows = objectRows.filter(group => 
-                group.name.toLowerCase().includes(searchQuery) || 
-                group.phone.includes(searchQuery)
-            );
-        }
-
-        if(objectRows.length === 0) {
-            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No matching logs found.</div>`;
-            return;
-        }
-
-        container.innerHTML = objectRows.map((group, index) => {
-            const boxId = `ledger-${index}`;
-            const isOpen = expandedBoxes[boxId] ? 'open' : '';
+        function renderOnlineInvoiceMode(params) {
+            document.body.classList.add('customer-view-mode');
             
-            const innerRowsHtml = group.payments.map(pay => `
-                <div class="inner-payment-item">
-                    <div>
-                        <strong>${pay.date}</strong> - <span style="color:var(--brand-teal); font-weight:600;">${pay.receiptNo}</span> | 
-                        <span style="color:var(--text-muted);">${pay.course} (${pay.mode})</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <strong style="color:var(--brand-teal)">₹ ${pay.amount}</strong>
-                        <button type="button" class="delete-single-btn" onclick="deleteSinglePayment('${pay.id}', event)">❌ Delete</button>
-                    </div>
-                </div>
-            `).join('');
+            document.getElementById('previewHeader').innerText = "Official Digital Fee Receipt";
+            document.getElementById('printFooterText').style.display = "block";
+            document.getElementById('customerPrintBtn').style.display = "block";
 
-            return `
-                <div class="student-row">
-                    <div class="student-summary" onclick="toggleLedgerBox('${boxId}')">
-                        <div class="student-info">
-                            <span class="student-name">${group.name}</span>
-                            <span class="student-phone">📞 +91 ${group.phone}</span>
-                        </div>
-                        <div class="student-meta">
-                            <span class="count-badge">${group.payments.length} Payments</span>
-                            <span class="total-badge">Total: ₹ ${group.totalPaid}</span>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">▼</span>
-                        </div>
-                    </div>
-                    <div class="payments-detail-box ${isOpen}" id="${boxId}">
-                        ${innerRowsHtml}
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    function toggleLedgerBox(id) {
-        const box = document.getElementById(id);
-        if(box.classList.contains('open')) {
-            box.classList.remove('open');
-            expandedBoxes[id] = false;
-        } else {
-            box.classList.add('open');
-            expandedBoxes[id] = true;
+            document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + params.get('no');
+            document.getElementById('previewDate').innerText = 'Date: ' + params.get('dt');
+            document.getElementById('previewName').innerText = params.get('nm');
+            document.getElementById('previewCourse').innerText = params.get('cs');
+            document.getElementById('previewMode').innerText = params.get('md');
+            document.getElementById('previewAmount').innerText = '₹ ' + params.get('am');
         }
-    }
-
-    function deleteSinglePayment(targetId, event) {
-        if(event) {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-
-        if(!confirm("Are you sure you want to delete this specific receipt payment record?")) return;
-
-        let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-        history = history.filter(item => item.id !== targetId);
-        localStorage.setItem('driving_school_history', JSON.stringify(history));
-        loadHistory();
-    }
-
-    function clearAllHistory() {
-        if(confirm("Danger! Are you sure you want to completely erase your ledger history profiles? This cannot be undone.")) {
-            localStorage.removeItem('driving_school_history');
-            expandedBoxes = {};
-            loadHistory();
-        }
-    }
-
-    function exportToExcel() {
-        const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-        if (history.length === 0) {
-            alert("There are no records available to export into Excel.");
-            return;
-        }
-
-        let excelContent = `
-            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head><meta charset="UTF-8"></head>
-            <body>
-            <table border="1">
-                <tr style="background-color: #005f73; color: white; font-weight: bold;">
-                    <th>Date</th>
-                    <th>Receipt Number</th>
-                    <th>Name</th>
-                    <th>WhatsApp Number</th>
-                    <th>Course / Service</th>
-                    <th>Payment Mode</th>
-                    <th>Amount Paid (INR)</th>
-                </tr>
-        `;
-
-        history.forEach(item => {
-            excelContent += `
-                <tr>
-                    <td>${item.date}</td>
-                    <td>${item.receiptNo}</td>
-                    <td>${item.name}</td>
-                    <td>+91 ${item.phone}</td>
-                    <td>${item.course}</td>
-                    <td>${item.mode}</td>
-                    <td>${item.amount}</td>
-                </tr>
-            `;
-        });
-
-        excelContent += `</table></body></html>`;
-
-        const blob = new Blob([excelContent], { type: 'application/vnd.ms-excel' });
-        const downloadUrl = URL.createObjectURL(blob);
-        const virtualLink = document.createElement('a');
-        
-        virtualLink.href = downloadUrl;
-        virtualLink.download = `Thanima_Driving_School_Billing_Report_${new Date().toISOString().slice(0,10)}.xls`;
-        
-        document.body.appendChild(virtualLink);
-        virtualLink.click();
-        document.body.removeChild(virtualLink);
-    }
-
-    function sendWhatsApp() {
-        const form = document.getElementById('receiptForm');
-        
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
-        const receiptNo = document.getElementById('receiptNo').value;
-        const name = document.getElementById('custName').value.trim();
-        let phone = document.getElementById('whatsappNo').value.trim().replace(/\D/g, '');
-        const course = document.getElementById('course').value;
-        const amount = document.getElementById('amount').value;
-        const mode = document.getElementById('payMode').value;
-        const date = new Date().toLocaleDateString('en-IN');
-
-        if (phone.length === 12 && phone.startsWith('91')) {
-            phone = phone.slice(2);
-        }
-
-        if (phone.length !== 10) {
-            alert('Please enter a valid 10-digit WhatsApp phone number.');
-            return;
-        }
-
-        saveRecordToHistory();
-
-        const baseUrl = window.location.origin + window.location.pathname;
-        const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
-        const cleanPhone = '91' + phone;
-        
-        const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MOTOR DRIVING SCHOOL*%0A` +
-                        `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
-                        `----------------------------------------%0A` +
-                        `*Name:* ${name}%0A` +
-                        `*Total Amount Paid: ₹ ${amount}*%0A` +
-                        `----------------------------------------%0A%0A` +
-                        `👉 Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
-
-        window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
-        
-        form.reset();
-        document.getElementById('historySearch').value = '';
-        generateNewReceiptNo();
-        updatePreview();
-    }
-
-    function renderOnlineInvoiceMode(params) {
-        const overlay = document.getElementById('loginOverlay');
-        if (overlay) overlay.style.display = 'none';
-        
-        document.getElementById('previewHeader').innerText = "Official Digital Fee Receipt";
-        document.getElementById('printFooterText').style.display = "block";
-        document.getElementById('customerPrintBtn').style.display = "block";
-
-        document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + params.get('no');
-        document.getElementById('previewDate').innerText = 'Date: ' + params.get('dt');
-        document.getElementById('previewName').innerText = params.get('nm');
-        document.getElementById('previewCourse').innerText = params.get('cs');
-        document.getElementById('previewMode').innerText = params.get('md');
-        document.getElementById('previewAmount').innerText = '₹ ' + params.get('am');
-    }
-</script>
+    </script>
 </body>
 </html>
