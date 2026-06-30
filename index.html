@@ -161,6 +161,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             border: 1px solid var(--border-color);
+            margin-bottom: 25px;
         }
 
         .form-group { margin-bottom: 18px; }
@@ -208,6 +209,8 @@
         .btn-success:hover { background-color: #05b385; }
         .btn-secondary { background-color: #4a5568; color: var(--text-light); }
         .btn-secondary:hover { background-color: #343d4c; }
+        .btn-danger { background-color: var(--error-red); color: var(--text-light); }
+        .btn-danger:hover { background-color: #d32f2f; }
 
         /* Receipt Canvas Styles */
         .receipt-preview {
@@ -256,6 +259,22 @@
         }
         .nested-payment-card:last-child { margin-bottom: 0; }
 
+        /* Course List Management UI elements */
+        .course-manager-list {
+            margin-top: 15px;
+            list-style: none;
+        }
+        .course-manager-item {
+            background: var(--bg-input);
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
         /* Customer Document Mode Hook Intercepts */
         body.customer-view-mode .sidebar-cell,
         body.customer-view-mode #loginScreen {
@@ -267,6 +286,7 @@
 </head>
 <body>
 
+    <!-- Access Lockdown Guard System -->
     <div id="loginScreen">
         <div class="login-wrapper">
             <div class="login-cell">
@@ -288,29 +308,34 @@
         </div>
     </div>
 
+    <!-- Layout Base Architecture Container Matrix Table -->
     <table class="dashboard-table">
         <tr>
+            <!-- Left Console Sidebar Cell Section -->
             <td class="sidebar-cell">
                 <div class="sidebar-brand">
                     <h3>THANIMA DRIVING DESK</h3>
-                    <p>Institutional Central Matrix v4.2</p>
+                    <p>Institutional Central Matrix v4.3</p>
                 </div>
                 <ul class="sidebar-menu">
                     <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Terminal Billing Form</li>
                     <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Grouped Student Archives</li>
-                    <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Security Profile Configuration</li>
+                    <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Profile & Menu Settings</li>
                 </ul>
             </td>
 
+            <!-- Right Core Application Container Workspace Context -->
             <td class="main-content-cell">
                 <header class="dashboard-header">
                     <h2 id="topNavTitle" style="color: var(--accent-cyan);">Terminal Billing System</h2>
                     <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution | Lic No: 3/13/2019</p>
                 </header>
 
+                <!-- TAB CONTAINER MODULE 1: RECEIPT CREATOR FORMS -->
                 <div id="tab-billing" class="tab-page active">
                     <table class="form-split-layout">
                         <tr>
+                            <!-- Form Inputs panel element -->
                             <td class="form-column">
                                 <div class="panel">
                                     <div class="db-config-box">
@@ -332,11 +357,7 @@
                                         <div class="form-group">
                                             <label>Course Selection Profile</label>
                                             <select id="course" onchange="updatePreview()">
-                                                <option value="Fresh Driving Learners License Track">Fresh Driving Learners License Track</option>
-                                                <option value="Two Wheeler Training (Scooter/Motorcycle)">Two Wheeler Training (Scooter/Motorcycle)</option>
-                                                <option value="Four Wheeler Car Training (Manual)">Four Wheeler Car Training (Manual)</option>
-                                                <option value="Combined Package (Two + Four Wheeler)">Combined Package (Two + Four Wheeler)</option>
-                                                <option value="License Renewal & Documentation">License Renewal & Documentation</option>
+                                                <!-- Populated Dynamically via Javascript Array Loops -->
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -353,12 +374,13 @@
                                         </div>
                                         <div class="btn-container">
                                             <button type="button" class="btn btn-success" id="submitBtn" onclick="sendWhatsApp()">Dispatch Digital Receipt via WhatsApp</button>
-                                            <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Receipt (Wipe Cache)</button>
+                                            <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Receipt</button>
                                         </div>
                                     </form>
                                 </div>
                             </td>
 
+                            <!-- Form View Previews side element -->
                             <td class="form-column">
                                 <div class="panel" style="background: rgba(255,255,255,0.01);">
                                     <div class="receipt-preview" id="printReceiptArea">
@@ -395,6 +417,7 @@
                     </table>
                 </div>
 
+                <!-- TAB CONTAINER MODULE 2: GROUPED STUDENTS ARCHIVES -->
                 <div id="tab-students" class="tab-page">
                     <div class="panel">
                         <div class="form-group" style="margin-bottom: 20px;">
@@ -404,18 +427,38 @@
                     </div>
                 </div>
 
+                <!-- TAB CONTAINER MODULE 3: PROFILE & MENU SETTINGS -->
                 <div id="tab-settings" class="tab-page">
-                    <div class="panel" style="max-width: 500px;">
-                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Terminal Gateway Settings</h3>
-                        <div class="form-group">
-                            <label>Update Operator ID</label>
-                            <input type="text" id="settingsUser" value="Arun9666">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                        <!-- Terminal Credentials Section Panel -->
+                        <div class="panel">
+                            <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Terminal Gateway Settings</h3>
+                            <div class="form-group">
+                                <label>Update Operator ID</label>
+                                <input type="text" id="settingsUser" value="Arun9666">
+                            </div>
+                            <div class="form-group">
+                                <label>Update Passcode</label>
+                                <input type="password" id="settingsPass" value="A6669n">
+                            </div>
+                            <button class="btn btn-success" onclick="saveSecurityCredentials()">Update Master Credentials</button>
                         </div>
-                        <div class="form-group">
-                            <label>Update Passcode</label>
-                            <input type="password" id="settingsPass" value="A6669n">
+
+                        <!-- Dropdown Manager Menu Panel Section -->
+                        <div class="panel">
+                            <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Manage Course/Service Dropdown Options</h3>
+                            <div class="form-group">
+                                <label>Create Custom Selection Title</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" id="newCourseInput" placeholder="e.g. Heavy Vehicle Special Endorsement">
+                                    <button type="button" class="btn btn-success" style="width: auto; padding: 12px 25px;" onclick="addCustomCourseOption()">➕ Add</button>
+                                </div>
+                            </div>
+                            <label>Active Courses Mapping Ledger</label>
+                            <ul id="courseConfigurationManagerList" class="course-manager-list">
+                                <!-- Populated Reactively via Local Arrays Loops -->
+                            </ul>
                         </div>
-                        <button class="btn btn-success" onclick="saveSecurityCredentials()">Update Console Master Credentials</button>
                     </div>
                 </div>
             </td>
@@ -428,13 +471,29 @@
         // CENTRALIZED MICRO-SERVICES SCRIPT INTEGRATION ENDPOINT LINK
         const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwG3X2gFZmnAmMii2TjukV-NuCWCOnzzmekYKcGi4W0vtf81HuYAgH5CApHyWoXs1iv/exec";
 
+        // Fallback default dropdown list array configuration setup
+        const defaultCoursesList = [
+            "Fresh Driving Learners License Track",
+            "Two Wheeler Training (Scooter/Motorcycle)",
+            "Four Wheeler Car Training (Manual)",
+            "Combined Package (Two + Four Wheeler)",
+            "License Renewal & Documentation"
+        ];
+
         window.onload = function() {
-            // Setup administrative login strings patterns structures
+            // Setup administrative login configurations profiles
             if(!localStorage.getItem('admin_user')) localStorage.setItem('admin_user', 'Arun9666');
             if(!localStorage.getItem('admin_pass')) localStorage.setItem('admin_pass', 'A6669n');
 
+            // Initialize course mapping layer arrays data structures
+            if(!localStorage.getItem('driving_school_courses')) {
+                localStorage.setItem('driving_school_courses', JSON.stringify(defaultCoursesList));
+            }
+
             document.getElementById('settingsUser').value = localStorage.getItem('admin_user');
             document.getElementById('settingsPass').value = localStorage.getItem('admin_pass');
+
+            renderCourseMenusUI();
 
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('bill')) {
@@ -448,6 +507,46 @@
                 updatePreview();
                 fetchSheetsCloudData(); 
             }
+        }
+
+        /* DYNAMIC COURSE LIST SELECTION ENGINE LOGIC */
+        function renderCourseMenusUI() {
+            const currentCourses = JSON.parse(localStorage.getItem('driving_school_courses')) || defaultCoursesList;
+            
+            // 1. Populate standard creation drop-down box structure inside billing tab
+            const billingSelect = document.getElementById('course');
+            billingSelect.innerHTML = currentCourses.map(course => `<option value="${course}">${course}</option>`).join('');
+
+            // 2. Populate interactive administration options lists inside system control tab
+            const managementList = document.getElementById('courseConfigurationManagerList');
+            managementList.innerHTML = currentCourses.map((course, idx) => `
+                <li class="course-manager-item">
+                    <span>${course}</span>
+                    <button class="btn btn-danger" style="width:auto; padding:4px 10px; font-size:0.8rem;" onclick="removeCustomCourseOption(${idx})">🗑️ Delete</button>
+                </li>
+            `).join('');
+
+            updatePreview();
+        }
+
+        function addCustomCourseOption() {
+            const inputField = document.getElementById('newCourseInput');
+            const newTitle = inputField.value.trim();
+            if(!newTitle) return;
+
+            let courses = JSON.parse(localStorage.getItem('driving_school_courses')) || [];
+            courses.push(newTitle);
+            localStorage.setItem('driving_school_courses', JSON.stringify(courses));
+            
+            inputField.value = '';
+            renderCourseMenusUI();
+        }
+
+        function removeCustomCourseOption(indexPosition) {
+            let courses = JSON.parse(localStorage.getItem('driving_school_courses')) || [];
+            courses.splice(indexPosition, 1);
+            localStorage.setItem('driving_school_courses', JSON.stringify(courses));
+            renderCourseMenusUI();
         }
 
         function handleAuthSubmit() {
@@ -481,7 +580,7 @@
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
 
-            const titleMap = { 'billing': 'Terminal Billing Form', 'students': 'Grouped Student Archives', 'settings': 'Security Profile Configuration' };
+            const titleMap = { 'billing': 'Terminal Billing Form', 'students': 'Grouped Student Archives', 'settings': 'Profile & Menu Settings' };
             document.getElementById('topNavTitle').innerText = titleMap[tabId];
 
             if(tabId === 'students') loadGroupedStudents();
@@ -491,7 +590,7 @@
             document.getElementById('custName').value = '';
             document.getElementById('whatsappNo').value = '';
             document.getElementById('amount').value = '';
-            document.getElementById('course').selectedIndex = 0;
+            if(document.getElementById('course').options.length > 0) document.getElementById('course').selectedIndex = 0;
             document.getElementById('payMode').selectedIndex = 0;
             generateNewReceiptNo();
             updatePreview();
@@ -518,7 +617,7 @@
 
             const receiptNo = document.getElementById('receiptNo').value;
             const name = document.getElementById('custName').value || '____________________';
-            const course = document.getElementById('course').value;
+            const course = document.getElementById('course').value || '--';
             const amount = document.getElementById('amount').value || '0';
             const mode = document.getElementById('payMode').value;
             const date = new Date().toLocaleDateString('en-IN');
@@ -570,6 +669,18 @@
             return true;
         }
 
+        /* LOCAL SINGLE LEDGER RECORD ITEM DELETION CONTROLLER */
+        function deleteSingleReceiptRecord(receiptIdString) {
+            if(!confirm(`Are you sure you want to permanently delete receipt record item ${receiptIdString} from cache?`)) return;
+
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history = history.filter(item => item.receiptNo !== receiptIdString);
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+
+            // Dynamically refresh student folder directory mapping layers
+            loadGroupedStudents();
+        }
+
         function loadGroupedStudents() {
             const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
             const searchQuery = document.getElementById('historySearch').value.toLowerCase().trim();
@@ -612,9 +723,12 @@
                                 <td><strong>📅 Date:</strong> ${t.date}</td>
                                 <td><strong>🧾 Receipt:</strong> <span style="color:var(--accent-cyan); font-weight:bold;">${t.receiptNo}</span></td>
                                 <td style="text-align:right;"><strong style="color:var(--success-green); font-size:1rem;">₹ ${t.amount}</strong></td>
+                                <td style="text-align:right; width: 45px; padding-left: 10px;">
+                                    <button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 0.8rem;" onclick="deleteSingleReceiptRecord('${t.receiptNo}')" title="Delete record item">🗑️</button>
+                                </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="padding-top:6px; color:var(--text-muted);">
+                                <td colspan="4" style="padding-top:6px; color:var(--text-muted);">
                                     <strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}
                                 </td>
                             </tr>
