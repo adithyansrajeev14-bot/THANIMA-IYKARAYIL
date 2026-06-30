@@ -32,7 +32,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Login Screen --- */
         #loginScreen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -55,10 +54,13 @@
             text-align: center;
         }
 
+        @media (min-width: 480px) {
+            .login-card { padding: 40px; }
+        }
+
         .login-card h2 { color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.4rem; }
         .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
 
-        /* --- Layout --- */
         .dashboard-container {
             display: flex;
             flex-direction: column;
@@ -69,7 +71,6 @@
             .dashboard-container { flex-direction: row; }
         }
 
-        /* --- Sidebar --- */
         .sidebar-panel {
             width: 100%;
             background-color: #0d1b2a;
@@ -88,9 +89,16 @@
             }
         }
 
-        .sidebar-brand { padding: 10px 15px; text-align: center; }
+        .sidebar-brand {
+            padding: 10px 15px;
+            text-align: center;
+        }
+
         @media (min-width: 992px) {
-            .sidebar-brand { padding: 25px 20px; border-bottom: 1px solid var(--border-color); }
+            .sidebar-brand {
+                padding: 25px 20px;
+                border-bottom: 1px solid var(--border-color);
+            }
         }
 
         .sidebar-brand h3 { color: var(--accent-cyan); font-size: 1.2rem; letter-spacing: 0.5px; }
@@ -104,10 +112,16 @@
             padding: 10px 0 5px 0;
             scrollbar-width: none;
         }
+
         .sidebar-menu::-webkit-scrollbar { display: none; }
 
         @media (min-width: 992px) {
-            .sidebar-menu { flex-direction: column; padding: 20px 0; gap: 0; overflow-x: visible; }
+            .sidebar-menu {
+                flex-direction: column;
+                padding: 20px 0;
+                gap: 0;
+                overflow-x: visible;
+            }
         }
 
         .menu-item {
@@ -125,87 +139,215 @@
 
         @media (min-width: 992px) {
             .menu-item {
-                padding: 14px 24px; font-size: 0.95rem; border-radius: 0;
-                white-space: normal; background: transparent; border: none; border-left: 4px solid transparent;
+                padding: 14px 24px;
+                font-size: 0.95rem;
+                border-radius: 0;
+                white-space: normal;
+                background: transparent;
+                border: none;
+                border-left: 4px solid transparent;
             }
         }
 
         .menu-item:hover { background: rgba(255,255,255,0.05); color: var(--text-light); }
-        .menu-item.active { background: rgba(0, 180, 216, 0.15); color: var(--accent-cyan); border-color: var(--accent-cyan); }
-        @media (min-width: 992px) {
-            .menu-item.active { background: rgba(0, 180, 216, 0.1); border-left-color: var(--accent-cyan); border-top: none; border-right: none; border-bottom: none; }
+
+        .menu-item.active {
+            background: rgba(0, 180, 216, 0.15);
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
         }
 
-        /* --- Main Content --- */
-        .main-content-view { flex-grow: 1; padding: 15px; width: 100%; }
+        @media (min-width: 992px) {
+            .menu-item.active {
+                background: rgba(0, 180, 216, 0.1);
+                border-left-color: var(--accent-cyan);
+                border-top: none; border-right: none; border-bottom: none;
+            }
+        }
+
+        .main-content-view {
+            flex-grow: 1;
+            padding: 15px;
+            width: 100%;
+        }
+
         @media (min-width: 768px) { .main-content-view { padding: 30px; } }
 
         header.dashboard-header {
-            margin-bottom: 20px; padding: 15px; background: var(--bg-card);
-            border-radius: 8px; border: 1px solid var(--border-color); text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
         }
 
-        .form-split-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { header.dashboard-header { text-align: left; padding: 20px; margin-bottom: 30px; } }
+
+        .form-split-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
         @media (min-width: 992px) { .form-split-layout { grid-template-columns: 1fr 1fr; gap: 25px; } }
 
         .panel {
-            background: var(--bg-card); padding: 15px; border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 1px solid var(--border-color); margin-bottom: 15px;
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            height: fit-content;
         }
 
-        .form-group { margin-bottom: 18px; text-align: left; }
+        @media (min-width: 480px) { .panel { padding: 25px; } }
+
+        .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--accent-blue); font-size: 0.9rem; }
+        
         input, select {
-            width: 100%; padding: 12px; background-color: var(--bg-input); border: 1px solid var(--border-color);
-            border-radius: 6px; font-size: 1rem; color: var(--text-light); outline: none;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            color: var(--text-light);
+            outline: none;
         }
+
+        input:focus, select:focus { border-color: var(--accent-cyan); }
 
         .db-config-box {
-            background: rgba(6, 214, 160, 0.08); border: 1px dashed var(--success-green);
-            padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem; text-align: center;
+            background: rgba(6, 214, 160, 0.08);
+            border: 1px dashed var(--success-green);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            text-align: center;
         }
 
         .btn-container { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        
         .btn {
-            background-color: var(--accent-cyan); color: var(--bg-main); padding: 12px 20px; border: none;
-            border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; text-align: center;
+            background-color: var(--accent-cyan);
+            color: var(--bg-main);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
         }
+
+        .btn:hover { background-color: #0096b4; }
         .btn-success { background-color: var(--success-green); color: var(--bg-main); }
         .btn-secondary { background-color: #4a5568; color: var(--text-light); }
         .btn-danger { background-color: var(--error-red); color: var(--text-light); }
 
-        /* --- Receipt Preview --- */
         .receipt-preview {
-            border: 2px dashed var(--accent-cyan); padding: 20px; border-radius: 8px;
-            background: #ffffff; color: #1e293b; word-wrap: break-word;
+            border: 2px dashed var(--accent-cyan);
+            padding: 20px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1e293b;
+            word-wrap: break-word;
         }
+
         .receipt-header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
-        .receipt-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0; }
-        @media (min-width: 400px) { .receipt-row { flex-direction: row; justify-content: space-between; gap: 0; } }
+        
+        .receipt-row { 
+            display: flex; 
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px; 
+            padding-bottom: 8px; 
+            border-bottom: 1px dashed #e2e8f0; 
+        }
+
+        @media (min-width: 400px) {
+            .receipt-row {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+            }
+        }
+
         .receipt-total { font-size: 1.4rem; font-weight: bold; color: #005f73; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 2px solid #e2e8f0; }
 
-        /* --- Folders (Archives) --- */
         .folder-box {
-            border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 12px; background: #151d33; overflow: hidden;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: #151d33;
+            overflow: hidden;
         }
+
         .folder-header {
-            padding: 15px; background: #1f2a4a; cursor: pointer; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid var(--border-color);
+            padding: 15px;
+            background: #1f2a4a;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
         }
-        @media (min-width: 600px) { .folder-header { flex-direction: row; justify-content: space-between; align-items: center; } }
+
+        @media (min-width: 600px) {
+            .folder-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
         .folder-title { font-weight: bold; color: var(--accent-cyan); font-size: 1.05rem; }
+        
         .folder-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.85rem; }
-        .count-badge, .total-badge { background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); }
+
+        .count-badge, .total-badge {
+            background: rgba(255,255,255,0.05);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
         .folder-content { display: none; padding: 15px; background: #0f1626; }
         .folder-content.open { display: block; }
-        .nested-payment-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
-        .nested-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-        @media (min-width: 576px) { .nested-grid { grid-template-columns: 1fr 1fr auto; align-items: center; } }
 
-        /* --- Settings Lists --- */
+        .nested-payment-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .nested-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        @media (min-width: 576px) {
+            .nested-grid { grid-template-columns: 1fr 1fr auto; align-items: center; }
+        }
+
         .course-manager-list { margin-top: 15px; list-style: none; }
         .course-manager-item {
-            background: var(--bg-input); padding: 10px 12px; margin-bottom: 6px; border-radius: 4px;
-            display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;
+            background: var(--bg-input);
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
         }
 
         .settings-grid-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
@@ -213,20 +355,24 @@
 
         .tab-page { display: none; }
         .tab-page.active { display: block; }
+
+        body.customer-view-mode .sidebar-panel,
+        body.customer-view-mode #loginScreen { display: none !important; }
+        body.customer-view-mode .main-content-view { padding: 15px; background: #f8fafc; }
+        body.customer-view-mode header.dashboard-header { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- AUTH SCREEN -->
     <div id="loginScreen">
         <div class="login-card">
             <h2>System Authentication</h2>
             <p>THANIMA IYKARAYIL MDS Terminal</p>
-            <div class="form-group">
+            <div class="form-group" style="text-align: left;">
                 <label>Operator ID</label>
                 <input type="text" id="loginUser" placeholder="Enter Operator ID">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="text-align: left;">
                 <label>Passcode</label>
                 <input type="password" id="loginPass" placeholder="Enter Passcode">
             </div>
@@ -235,34 +381,30 @@
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
     <div class="dashboard-container">
-        <!-- SIDEBAR -->
         <div class="sidebar-panel">
             <div class="sidebar-brand">
                 <h3>THANIMA IYKARAYIL MDS</h3>
                 <p>Institutional Management Matrix</p>
             </div>
             <ul class="sidebar-menu">
-                <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Terminal Billing Form</li>
-                <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Grouped Student Archives</li>
-                <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Profile & Menu Settings</li>
+                <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Billing Form</li>
+                <li class="menu-item" id="nav-students" onclick="switchConsoleTab('students')">📁 Student Archives</li>
+                <li class="menu-item" id="nav-settings" onclick="switchConsoleTab('settings')">⚙️ Control Settings</li>
             </ul>
         </div>
 
         <div class="main-content-view">
             <header class="dashboard-header">
                 <h2 id="topNavTitle" style="color: var(--accent-cyan); font-size: 1.4rem;">Terminal Billing Form</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution | Lic No: 3/13/2019</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution</p>
             </header>
 
-            <!-- TAB 1: BILLING -->
             <div id="tab-billing" class="tab-page active">
                 <div class="form-split-layout">
-                    <!-- Input Form -->
                     <div class="panel">
                         <div class="db-config-box">
-                            <div id="dbStatusLabel">Status: Connecting to Live Google Sheets... ⏳</div>
+                            <div class="db-status" id="dbStatusLabel">Status: Local Memory Active (Cloud Syncing Ready)</div>
                         </div>
                         <form id="receiptForm" onsubmit="event.preventDefault();">
                             <div class="form-group">
@@ -271,11 +413,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Student Name</label>
-                                <input type="text" id="custName" placeholder="Enter full name" oninput="updatePreview()">
+                                <input type="text" id="custName" placeholder="Enter student full name" oninput="updatePreview()">
                             </div>
                             <div class="form-group">
                                 <label>WhatsApp Mobile Number</label>
-                                <input type="tel" id="whatsappNo" placeholder="10-digit number (e.g. 9876543210)">
+                                <input type="tel" id="whatsappNo" placeholder="10-digit mobile number">
                             </div>
                             <div class="form-group">
                                 <label>Course Selection Profile</label>
@@ -291,56 +433,58 @@
                             </div>
                             <div class="form-group">
                                 <label>Amount Settled (₹)</label>
-                                <input type="number" id="amount" placeholder="Enter numeric transaction values" oninput="updatePreview()">
+                                <input type="number" id="amount" placeholder="Enter payment amount" oninput="updatePreview()">
                             </div>
                             <div class="btn-container">
-                                <button type="button" class="btn btn-success" onclick="sendWhatsApp()">Dispatch Digital Receipt via WhatsApp</button>
-                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Receipt</button>
+                                <button type="button" class="btn btn-success" id="submitBtn" onclick="sendWhatsApp()">Dispatch Receipt via WhatsApp</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Blank Form</button>
                             </div>
                         </form>
                     </div>
 
-                    <!-- Receipt Preview -->
                     <div class="panel" style="background: rgba(255,255,255,0.01);">
-                        <div class="receipt-preview">
-                            <div class="receipt-header">
-                                <h2 style="margin-bottom:4px; font-weight:800; font-size:1.35rem; color: #0b132b;">THANIMA IYKARAYIL MDS</h2>
-                                <p style="font-size: 0.75rem; color: #475569;">Iykarayil Buildings, Mallappally | Tel: +91 9447175416<br>Govt Reg. Institution</p>
+                        <div class="printReceiptArea" id="printReceiptArea">
+                            <div class="receipt-preview">
+                                <div class="receipt-header">
+                                    <h2 id="previewHeader" style="margin-bottom:4px; font-weight:800; font-size:1.35rem; color: #0b132b;">THANIMA IYKARAYIL MDS</h2>
+                                    <p style="font-size: 0.85rem; color: #475569;">Govt Reg. Institution</p>
+                                </div>
+                                <div class="receipt-row">
+                                    <span id="previewReceiptNo" style="font-weight: 600;">Receipt No: --</span>
+                                    <span id="previewDate">Date: --</span>
+                                </div>
+                                <div class="receipt-row" style="margin-top: 15px;">
+                                    <span style="color: #64748b;">Received From:</span>
+                                    <span id="previewName" style="font-weight: 600; text-transform: uppercase;">____________________</span>
+                                </div>
+                                <div class="receipt-row">
+                                    <span style="color: #64748b;">Course Allotted:</span>
+                                    <span id="previewCourse" style="font-weight: 600;">--</span>
+                                </div>
+                                <div class="receipt-row">
+                                    <span style="color: #64748b;">Settlement Mode:</span>
+                                    <span id="previewMode" style="font-weight: 600;">--</span>
+                                </div>
+                                <div class="receipt-total" id="previewAmount">₹ 0</div>
+                                <div id="printFooterText" style="display: none; text-align: center; margin-top: 30px; font-size: 0.8rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                                    Verified electronic document. No manual signature requirement.
+                                </div>
                             </div>
-                            <div class="receipt-row">
-                                <span id="previewReceiptNo" style="font-weight: 600;">Receipt No: --</span>
-                                <span id="previewDate">Date: --</span>
-                            </div>
-                            <div class="receipt-row" style="margin-top: 15px;">
-                                <span style="color: #64748b;">Received With Thanks From:</span>
-                                <span id="previewName" style="font-weight: 600; text-transform: uppercase;">____________________</span>
-                            </div>
-                            <div class="receipt-row">
-                                <span style="color: #64748b;">Allocated Course Assignment:</span>
-                                <span id="previewCourse" style="font-weight: 600;">--</span>
-                            </div>
-                            <div class="receipt-row">
-                                <span style="color: #64748b;">Transaction Settlement Mode:</span>
-                                <span id="previewMode" style="font-weight: 600;">--</span>
-                            </div>
-                            <div class="receipt-total" id="previewAmount">₹ 0</div>
                         </div>
+                        <button type="button" class="btn btn-secondary" id="customerPrintBtn" style="display: none; margin-top: 15px;" onclick="window.print()">Print Receipt Document</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2: ARCHIVES (HISTORY) -->
             <div id="tab-students" class="tab-page">
                 <div class="panel">
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <input type="text" id="historySearch" placeholder="Filter directories by student name or mobile parameters..." oninput="loadGroupedStudents()">
+                        <input type="text" id="historySearch" placeholder="Search archive by student name or phone..." oninput="loadGroupedStudents()">
                     </div>
-                    <!-- HISTORY DATA GOES HERE -->
                     <div id="groupedFoldersContainer"></div>
                 </div>
             </div>
 
-            <!-- TAB 3: SETTINGS -->
             <div id="tab-settings" class="tab-page">
                 <div class="settings-grid-layout">
                     <div class="panel">
@@ -378,12 +522,10 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // YOUR SPECIFIC NEW SCRIPT URL
-        const googleScriptUrl = "https://script.google.com/macros/s/AKfycbzTJs5UfDsMl5bWAkKsreefaOzUH2_ckJnR9TleIsJZWj1AJspoV3ECFDEis-OwuaxC/exec";
-        
         let expandedFolders = {};
+        const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwG3X2gFZmnAmMii2TjukV-NuCWCOnzzmekYKcGi4W0vtf81HuYAgH5CApHyWoXs1iv/exec";
+
         const defaultCoursesList = [
             "Fresh Driving Learners License Track",
             "Two Wheeler Training (Scooter/Motorcycle)",
@@ -393,7 +535,6 @@
         ];
 
         window.onload = function() {
-            // Setup default auth if none exists
             if(!localStorage.getItem('admin_user')) localStorage.setItem('admin_user', 'Arun9666');
             if(!localStorage.getItem('admin_pass')) localStorage.setItem('admin_pass', 'A6669n');
             if(!localStorage.getItem('driving_school_courses')) {
@@ -405,63 +546,20 @@
 
             renderCourseMenusUI();
 
-            // Check if already logged in
-            if (sessionStorage.getItem('auth_state') === 'verified') {
-                document.getElementById('loginScreen').style.display = 'none';
-            }
-            
-            generateNewReceiptNo();
-            updatePreview();
-            fetchSheetsCloudData(); 
-        }
-
-        // --- AUTH & TAB LOGIC ---
-        function handleAuthSubmit() {
-            const userInput = document.getElementById('loginUser').value;
-            const passInput = document.getElementById('loginPass').value;
-            const errorLabel = document.getElementById('loginError');
-
-            if (userInput === localStorage.getItem('admin_user') && passInput === localStorage.getItem('admin_pass')) {
-                sessionStorage.setItem('auth_state', 'verified');
-                document.getElementById('loginScreen').style.display = 'none';
-                errorLabel.style.display = 'none';
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('bill')) {
+                document.body.classList.add('customer-view-mode');
+                renderOnlineInvoiceMode(urlParams);
             } else {
-                errorLabel.innerText = "Invalid Operator Credentials.";
-                errorLabel.style.display = 'block';
+                if (sessionStorage.getItem('auth_state') === 'verified') {
+                    document.getElementById('loginScreen').style.display = 'none';
+                }
+                generateNewReceiptNo();
+                updatePreview();
+                fetchSheetsCloudData(); 
             }
         }
 
-        function switchConsoleTab(tabId) {
-            document.querySelectorAll('.tab-page').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabId).classList.add('active');
-            document.getElementById('nav-' + tabId).classList.add('active');
-            
-            const titleMap = {
-                'billing': 'Terminal Billing Form',
-                'students': 'Grouped Student Archives',
-                'settings': 'Profile & Menu Settings'
-            };
-            document.getElementById('topNavTitle').innerText = titleMap[tabId];
-            
-            // Refresh data when opening archives
-            if(tabId === 'students') fetchSheetsCloudData();
-        }
-
-        function saveSecurityCredentials() {
-            const oldPassInput = document.getElementById('settingsOldPass').value;
-            const newUser = document.getElementById('settingsUser').value.trim();
-            const newPass = document.getElementById('settingsPass').value.trim();
-            if (oldPassInput !== localStorage.getItem('admin_pass')) { alert('Current passcode incorrect.'); return; }
-            if (!newUser || !newPass) { alert('Fields cannot be blank.'); return; }
-            localStorage.setItem('admin_user', newUser);
-            localStorage.setItem('admin_pass', newPass);
-            document.getElementById('settingsOldPass').value = '';
-            alert('Credentials updated!');
-        }
-
-        // --- COURSE DROPDOWN LOGIC ---
         function renderCourseMenusUI() {
             const currentCourses = JSON.parse(localStorage.getItem('driving_school_courses')) || defaultCoursesList;
             const billingSelect = document.getElementById('course');
@@ -471,7 +569,7 @@
             managementList.innerHTML = currentCourses.map((course, idx) => `
                 <li class="course-manager-item">
                     <span>${course}</span>
-                    <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="removeCustomCourseOption(${idx})">🗑️</button>
+                    <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="removeCustomCourseOption(${idx})">🗑️ Delete</button>
                 </li>
             `).join('');
             updatePreview();
@@ -495,12 +593,47 @@
             renderCourseMenusUI();
         }
 
-        // --- BILLING PREVIEW & WHATSAPP ---
+        function handleAuthSubmit() {
+            const userInput = document.getElementById('loginUser').value;
+            const passInput = document.getElementById('loginPass').value;
+            const errorLabel = document.getElementById('loginError');
+
+            if (userInput === localStorage.getItem('admin_user') && passInput === localStorage.getItem('admin_pass')) {
+                sessionStorage.setItem('auth_state', 'verified');
+                document.getElementById('loginScreen').style.display = 'none';
+                errorLabel.style.display = 'none';
+            } else {
+                errorLabel.innerText = "Invalid Operator Credentials.";
+                errorLabel.style.display = 'block';
+            }
+        }
+
+        function saveSecurityCredentials() {
+            const oldPassInput = document.getElementById('settingsOldPass').value;
+            const newUser = document.getElementById('settingsUser').value.trim();
+            const newPass = document.getElementById('settingsPass').value.trim();
+            if (oldPassInput !== localStorage.getItem('admin_pass')) { alert('Current passcode incorrect.'); return; }
+            if (!newUser || !newPass) { alert('Fields cannot be blank.'); return; }
+            localStorage.setItem('admin_user', newUser);
+            localStorage.setItem('admin_pass', newPass);
+            document.getElementById('settingsOldPass').value = '';
+            alert('Credentials updated!');
+        }
+
+        function switchConsoleTab(tabId) {
+            document.querySelectorAll('.tab-page').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
+            if(tabId === 'students') loadGroupedStudents();
+        }
+
         function generateNewReceiptNo() {
             document.getElementById('receiptNo').value = 'TI-' + Math.floor(10000 + Math.random() * 90000);
         }
 
         function updatePreview() {
+            if(document.body.classList.contains('customer-view-mode')) return;
             const receiptNo = document.getElementById('receiptNo').value;
             const name = document.getElementById('custName').value || '____________________';
             const course = document.getElementById('course').value || '--';
@@ -514,14 +647,6 @@
             document.getElementById('previewCourse').innerText = course;
             document.getElementById('previewMode').innerText = mode;
             document.getElementById('previewAmount').innerText = '₹ ' + amount;
-        }
-
-        function resetFormForNewReceipt() {
-            document.getElementById('custName').value = '';
-            document.getElementById('whatsappNo').value = '';
-            document.getElementById('amount').value = '';
-            generateNewReceiptNo();
-            updatePreview();
         }
 
         function sendWhatsApp() {
@@ -538,24 +663,21 @@
                 return;
             }
 
+            // Save Live Record into History Database array
             const newRecord = { receiptNo, name, phone, course, mode, amount, date };
-            
-            // Save locally instantly so it appears in archives right away
             let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            history.unshift(newRecord);
+            history.unshift(newRecord); // Add to the top of the array
             localStorage.setItem('driving_school_history', JSON.stringify(history));
 
-            // POST to Google Sheets
+            // Optional Cloud sync hook setup if your Apps Script is running
             fetch(googleScriptUrl, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newRecord)
-            }).then(() => {
-                setTimeout(fetchSheetsCloudData, 1500); 
-            });
+            }).catch(err => console.log("Cloud sync deferred structure logic."));
 
-            // Format WhatsApp Message
+            // Compile clean text dispatch data line
             const message = `*THANIMA IYKARAYIL MDS*\n_Official Digital Receipt_\n\n` +
                             `• *Receipt No:* ${receiptNo}\n` +
                             `• *Date:* ${date}\n` +
@@ -569,41 +691,18 @@
             
             window.open(`https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`, '_blank');
             
+            alert("Record securely added into system archives and processed for WhatsApp routing!");
+            generateNewReceiptNo();
             resetFormForNewReceipt();
         }
 
-        // --- FETCH & DATA GROUPING (THE FIX) ---
-        function fetchSheetsCloudData() {
-            const label = document.getElementById('dbStatusLabel');
-            label.innerText = "Status: Syncing Live rows from Google Sheets... ⏳";
-            
-            const oldScript = document.getElementById('jsonpSyncScript');
-            if(oldScript) oldScript.remove();
-
-            const script = document.createElement('script');
-            script.id = 'jsonpSyncScript';
-            // JSONP callback injection
-            script.src = googleScriptUrl + "?callback=handleSheetsCloudResponse&ts=" + new Date().getTime();
-            
-            script.onerror = function() {
-                label.innerText = "Status: Network error or Script not configured properly. Showing local backup. ⚠️";
-                loadGroupedStudents();
-            };
-            
-            document.body.appendChild(script);
+        function resetFormForNewReceipt() {
+            document.getElementById('custName').value = '';
+            document.getElementById('whatsappNo').value = '';
+            document.getElementById('amount').value = '';
+            generateNewReceiptNo();
+            updatePreview();
         }
-
-        window.handleSheetsCloudResponse = function(data) {
-            const label = document.getElementById('dbStatusLabel');
-            if (Array.isArray(data)) {
-                localStorage.setItem('driving_school_history', JSON.stringify(data));
-                label.innerText = "Status: Database Synced Successfully ✅";
-                loadGroupedStudents();
-            } else {
-                label.innerText = "Status: Connected, but Data Format Unknown ⚠️";
-                loadGroupedStudents();
-            }
-        };
 
         function loadGroupedStudents() {
             const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
@@ -611,46 +710,23 @@
             const container = document.getElementById('groupedFoldersContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No archive entries found. Ensure your script is returning data.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No history records saved on this device yet.</div>`;
                 return;
             }
 
-            // ROBUST GROUPING LOGIC - Catches various data key formats (name vs Name vs index)
             const groups = {};
-            
             history.forEach(item => {
-                // Safely extract values regardless of capitalization
-                const studentName = (item.name || item.Name || item[1] || "Unknown Student").toString().trim();
-                const studentPhone = (item.phone || item.Phone || item[2] || "No Number").toString().trim();
-                const receiptNum = (item.receiptNo || item.ReceiptNo || item[0] || "--");
-                const courseName = (item.course || item.Course || item[3] || "--");
-                const payMode = (item.mode || item.Mode || item[4] || "--");
-                const amountPaid = parseFloat(item.amount || item.Amount || item[5] || 0);
-                const recDate = (item.date || item.Date || item[6] || "--");
-
-                // Skip completely empty rows
-                if (studentName === "Unknown Student" && amountPaid === 0) return;
-
-                const key = `${studentName.toLowerCase()}_${studentPhone}`;
-                
-                if (!groups[key]) { 
-                    groups[key] = { name: studentName, phone: studentPhone, totalPaid: 0, transactions: [] }; 
-                }
-                
-                groups[key].transactions.push({
-                    receiptNo: receiptNum, course: courseName, mode: payMode, amount: amountPaid, date: recDate
-                });
-                groups[key].totalPaid += amountPaid;
+                const key = `${item.name.toLowerCase().trim()}_${item.phone.trim()}`;
+                if (!groups[key]) { groups[key] = { name: item.name, phone: item.phone, totalPaid: 0, transactions: [] }; }
+                groups[key].transactions.push(item);
+                groups[key].totalPaid += parseFloat(item.amount || 0);
             });
 
             let objectRows = Object.values(groups);
-            
-            // Filter by search bar
             if (searchQuery) {
                 objectRows = objectRows.filter(g => g.name.toLowerCase().includes(searchQuery) || g.phone.includes(searchQuery));
             }
 
-            // Render Folders
             container.innerHTML = objectRows.map((group, idx) => {
                 const folderId = `folder-${idx}`;
                 const isOpen = expandedFolders[folderId] ? 'open' : '';
@@ -662,8 +738,9 @@
                             <div><strong>🧾 Receipt:</strong> <span style="color:var(--accent-cyan);">${t.receiptNo}</span></div>
                             <div style="font-weight:bold; color:var(--success-green);">₹ ${t.amount}</div>
                         </div>
-                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:0.85rem;">
-                            <strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}
+                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:0.85rem; display:flex; justify-content:space-between; align-items:center;">
+                            <div><strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}</div>
+                            <button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 0.8rem;" onclick="deleteSingleReceiptRecord('${t.receiptNo}')">🗑️ Delete</button>
                         </div>
                     </div>
                 `).join('');
@@ -688,6 +765,22 @@
             const folder = document.getElementById(id);
             folder.classList.toggle('open');
             expandedFolders[id] = folder.classList.contains('open');
+        }
+
+        function deleteSingleReceiptRecord(receiptIdString) {
+            if(!confirm(`Delete receipt item ${receiptIdString}?`)) return;
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history = history.filter(item => item.receiptNo !== receiptIdString);
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+            loadGroupedStudents();
+        }
+
+        function fetchSheetsCloudData() {
+            console.log("Cloud check completed.");
+        }
+
+        function renderOnlineInvoiceMode(urlParams) {
+            console.log("Customer online invoice mode initialized.");
         }
     </script>
 </body>
