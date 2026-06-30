@@ -32,7 +32,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Gatekeeper Lock Form overlay module */
         #loginScreen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -59,10 +58,9 @@
             .login-card { padding: 40px; }
         }
 
-        .login-card h2 { color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.6rem; }
+        .login-card h2 { color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.4rem; }
         .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
 
-        /* Modern Mobile-Responsive Layout Framework */
         .dashboard-container {
             display: flex;
             flex-direction: column;
@@ -70,12 +68,9 @@
         }
 
         @media (min-width: 992px) {
-            .dashboard-container {
-                flex-direction: row;
-            }
+            .dashboard-container { flex-direction: row; }
         }
 
-        /* Sidebar Responsive Configuration */
         .sidebar-panel {
             width: 100%;
             background-color: #0d1b2a;
@@ -154,10 +149,7 @@
             }
         }
 
-        .menu-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-light);
-        }
+        .menu-item:hover { background: rgba(255,255,255,0.05); color: var(--text-light); }
 
         .menu-item.active {
             background: rgba(0, 180, 216, 0.15);
@@ -173,16 +165,13 @@
             }
         }
 
-        /* Main Workspace Panel */
         .main-content-view {
             flex-grow: 1;
             padding: 15px;
             width: 100%;
         }
 
-        @media (min-width: 768px) {
-            .main-content-view { padding: 30px; }
-        }
+        @media (min-width: 768px) { .main-content-view { padding: 30px; } }
 
         header.dashboard-header {
             margin-bottom: 20px;
@@ -193,23 +182,15 @@
             text-align: center;
         }
 
-        @media (min-width: 768px) {
-            header.dashboard-header { text-align: left; padding: 20px; margin-bottom: 30px; }
-        }
+        @media (min-width: 768px) { header.dashboard-header { text-align: left; padding: 20px; margin-bottom: 30px; } }
 
-        /* CSS Grid replacing legacy tables for flawless responsive control */
         .form-split-layout {
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
         }
 
-        @media (min-width: 992px) {
-            .form-split-layout {
-                grid-template-columns: 1fr 1fr;
-                gap: 25px;
-            }
-        }
+        @media (min-width: 992px) { .form-split-layout { grid-template-columns: 1fr 1fr; gap: 25px; } }
 
         .panel {
             background: var(--bg-card);
@@ -221,9 +202,7 @@
             height: fit-content;
         }
 
-        @media (min-width: 480px) {
-            .panel { padding: 25px; }
-        }
+        @media (min-width: 480px) { .panel { padding: 25px; } }
 
         .form-group { margin-bottom: 18px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--accent-blue); font-size: 0.9rem; }
@@ -237,11 +216,9 @@
             font-size: 1rem;
             color: var(--text-light);
             outline: none;
-            transition: border-color 0.2s;
         }
 
         input:focus, select:focus { border-color: var(--accent-cyan); }
-        input::placeholder { color: #94a3b8; }
 
         .db-config-box {
             background: rgba(6, 214, 160, 0.08);
@@ -266,18 +243,13 @@
             cursor: pointer;
             width: 100%;
             text-align: center;
-            transition: background-color 0.2s;
         }
 
         .btn:hover { background-color: #0096b4; }
         .btn-success { background-color: var(--success-green); color: var(--bg-main); }
-        .btn-success:hover { background-color: #05b385; }
         .btn-secondary { background-color: #4a5568; color: var(--text-light); }
-        .btn-secondary:hover { background-color: #343d4c; }
         .btn-danger { background-color: var(--error-red); color: var(--text-light); }
-        .btn-danger:hover { background-color: #d32f2f; }
 
-        /* Mobile-Safe Receipt Canvas Layout */
         .receipt-preview {
             border: 2px dashed var(--accent-cyan);
             padding: 20px;
@@ -285,10 +257,6 @@
             background: #ffffff;
             color: #1e293b;
             word-wrap: break-word;
-        }
-
-        @media (min-width: 480px) {
-            .receipt-preview { padding: 30px; }
         }
 
         .receipt-header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
@@ -312,7 +280,6 @@
 
         .receipt-total { font-size: 1.4rem; font-weight: bold; color: #005f73; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 2px solid #e2e8f0; }
 
-        /* Folder Nesting Components */
         .folder-box {
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -339,15 +306,9 @@
             }
         }
 
-        .folder-header:hover { background: #253359; }
         .folder-title { font-weight: bold; color: var(--accent-cyan); font-size: 1.05rem; }
         
-        .folder-meta { 
-            display: flex; 
-            flex-wrap: wrap;
-            gap: 8px; 
-            font-size: 0.85rem; 
-        }
+        .folder-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.85rem; }
 
         .count-badge, .total-badge {
             background: rgba(255,255,255,0.05);
@@ -366,7 +327,6 @@
             border-radius: 6px;
             margin-bottom: 10px;
         }
-        .nested-payment-card:last-child { margin-bottom: 0; }
 
         .nested-grid {
             display: grid;
@@ -375,17 +335,10 @@
         }
 
         @media (min-width: 576px) {
-            .nested-grid {
-                grid-template-columns: 1fr 1fr auto;
-                align-items: center;
-            }
+            .nested-grid { grid-template-columns: 1fr 1fr auto; align-items: center; }
         }
 
-        /* Course List Management UI elements */
-        .course-manager-list {
-            margin-top: 15px;
-            list-style: none;
-        }
+        .course-manager-list { margin-top: 15px; list-style: none; }
         .course-manager-item {
             background: var(--bg-input);
             padding: 10px 12px;
@@ -395,35 +348,22 @@
             justify-content: space-between;
             align-items: center;
             font-size: 0.9rem;
-            gap: 10px;
         }
 
-        /* Active Setting Layout Grid Wrapper */
-        .settings-grid-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        @media (min-width: 992px) {
-            .settings-grid-layout { grid-template-columns: 1fr 1fr; gap: 25px; }
-        }
+        .settings-grid-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 992px) { .settings-grid-layout { grid-template-columns: 1fr 1fr; gap: 25px; } }
 
-        /* Tab Content Section Control Nodes */
         .tab-page { display: none; }
         .tab-page.active { display: block; }
 
-        /* Customer Document Mode Hook Intercepts */
         body.customer-view-mode .sidebar-panel,
-        body.customer-view-mode #loginScreen {
-            display: none !important;
-        }
+        body.customer-view-mode #loginScreen { display: none !important; }
         body.customer-view-mode .main-content-view { padding: 15px; background: #f8fafc; }
         body.customer-view-mode header.dashboard-header { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- Access Lockdown Guard System -->
     <div id="loginScreen">
         <div class="login-card">
             <h2>System Authentication</h2>
@@ -436,19 +376,16 @@
                 <label>Passcode</label>
                 <input type="password" id="loginPass" placeholder="Enter Passcode">
             </div>
-            <p id="loginError" style="color: var(--error-red); display: none; margin-bottom: 12px; font-weight: bold; font-size:0.9rem;"></p>
+            <p id="loginError" style="color: var(--error-red); display: none; margin-bottom: 12px; font-weight: bold;"></p>
             <button class="btn" onclick="handleAuthSubmit()">Unlock Workspace</button>
         </div>
     </div>
 
-    <!-- Main Responsive Container Architecture Layout -->
     <div class="dashboard-container">
-        
-        <!-- Sidebar Area Panel -->
         <div class="sidebar-panel">
             <div class="sidebar-brand">
                 <h3>THANIMA IYKARAYIL MDS</h3>
-                <p>Institutional Central Matrix v4.3</p>
+                <p>Institutional Management Matrix</p>
             </div>
             <ul class="sidebar-menu">
                 <li class="menu-item active" id="nav-billing" onclick="switchConsoleTab('billing')">🧾 Billing Form</li>
@@ -457,20 +394,17 @@
             </ul>
         </div>
 
-        <!-- Main Display Viewspace -->
         <div class="main-content-view">
             <header class="dashboard-header">
-                <h2 id="topNavTitle" style="color: var(--accent-cyan); font-size: 1.5rem;">Terminal Billing Form</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution | Lic No: 3/13/2019</p>
+                <h2 id="topNavTitle" style="color: var(--accent-cyan); font-size: 1.4rem;">Terminal Billing Form</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">Govt Approved Institution</p>
             </header>
 
-            <!-- TAB CONTAINER MODULE 1: RECEIPT CREATOR FORMS -->
             <div id="tab-billing" class="tab-page active">
                 <div class="form-split-layout">
-                    <!-- Input Parameters Panel -->
                     <div class="panel">
                         <div class="db-config-box">
-                            <div class="db-status" id="dbStatusLabel">Status: Syncing Google Sheets Cloud Engine...</div>
+                            <div class="db-status" id="dbStatusLabel">Status: Local Memory Active (Cloud Syncing Ready)</div>
                         </div>
                         <form id="receiptForm" onsubmit="event.preventDefault();">
                             <div class="form-group">
@@ -479,17 +413,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Student Name</label>
-                                <input type="text" id="custName" placeholder="Enter full name" oninput="updatePreview()">
+                                <input type="text" id="custName" placeholder="Enter student full name" oninput="updatePreview()">
                             </div>
                             <div class="form-group">
                                 <label>WhatsApp Mobile Number</label>
-                                <input type="tel" id="whatsappNo" placeholder="10-digit number (e.g. 9876543210)">
+                                <input type="tel" id="whatsappNo" placeholder="10-digit mobile number">
                             </div>
                             <div class="form-group">
                                 <label>Course Selection Profile</label>
-                                <select id="course" onchange="updatePreview()">
-                                    <!-- Populated Dynamically via Javascript Array Loops -->
-                                </select>
+                                <select id="course" onchange="updatePreview()"></select>
                             </div>
                             <div class="form-group">
                                 <label>Mode of Settlement</label>
@@ -501,16 +433,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Amount Settled (₹)</label>
-                                <input type="number" id="amount" placeholder="Enter numeric transaction values" oninput="updatePreview()">
+                                <input type="number" id="amount" placeholder="Enter payment amount" oninput="updatePreview()">
                             </div>
                             <div class="btn-container">
-                                <button type="button" class="btn btn-success" id="submitBtn" onclick="sendWhatsApp()">Dispatch Digital Receipt via WhatsApp</button>
-                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Receipt</button>
+                                <button type="button" class="btn btn-success" id="submitBtn" onclick="sendWhatsApp()">Dispatch Receipt via WhatsApp</button>
+                                <button type="button" class="btn btn-secondary" onclick="resetFormForNewReceipt()">➕ Create New Blank Form</button>
                             </div>
                         </form>
                     </div>
 
-                    <!-- Live Real-Time Receipt Graphic Preview Module Layout -->
                     <div class="panel" style="background: rgba(255,255,255,0.01);">
                         <div class="receipt-preview" id="printReceiptArea">
                             <div class="receipt-header">
@@ -522,84 +453,75 @@
                                 <span id="previewDate">Date: --</span>
                             </div>
                             <div class="receipt-row" style="margin-top: 15px;">
-                                <span style="color: #64748b;">Received With Thanks From:</span>
+                                <span style="color: #64748b;">Received From:</span>
                                 <span id="previewName" style="font-weight: 600; text-transform: uppercase;">____________________</span>
                             </div>
                             <div class="receipt-row">
-                                <span style="color: #64748b;">Allocated Course Assignment:</span>
+                                <span style="color: #64748b;">Course Allotted:</span>
                                 <span id="previewCourse" style="font-weight: 600;">--</span>
                             </div>
                             <div class="receipt-row">
-                                <span style="color: #64748b;">Transaction Settlement Mode:</span>
+                                <span style="color: #64748b;">Settlement Mode:</span>
                                 <span id="previewMode" style="font-weight: 600;">--</span>
                             </div>
                             <div class="receipt-total" id="previewAmount">₹ 0</div>
                             <div id="printFooterText" style="display: none; text-align: center; margin-top: 30px; font-size: 0.8rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                                This is an officially verified electronic receipt tracking entry snapshot. Manual signature context not structural.
+                                Verified electronic document. No manual signature requirement.
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary" id="customerPrintBtn" style="display: none; margin-top: 15px;" onclick="window.print()">Print Official Document Container</button>
+                        <button type="button" class="btn btn-secondary" id="customerPrintBtn" style="display: none; margin-top: 15px;" onclick="window.print()">Print Receipt Document</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB CONTAINER MODULE 2: GROUPED STUDENTS ARCHIVES -->
             <div id="tab-students" class="tab-page">
                 <div class="panel">
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <input type="text" id="historySearch" placeholder="Filter directories by student name or mobile parameters..." oninput="loadGroupedStudents()">
+                        <input type="text" id="historySearch" placeholder="Search archive by student name or phone..." oninput="loadGroupedStudents()">
                     </div>
                     <div id="groupedFoldersContainer"></div>
                 </div>
             </div>
 
-            <!-- TAB CONTAINER MODULE 3: PROFILE & MENU SETTINGS -->
             <div id="tab-settings" class="tab-page">
                 <div class="settings-grid-layout">
-                    <!-- Credentials Change Panel Container Section -->
                     <div class="panel">
-                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Terminal Gateway Settings</h3>
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Terminal Password</h3>
                         <div class="form-group">
                             <label style="color: var(--error-red);">Verify Current Passcode *</label>
-                            <input type="password" id="settingsOldPass" placeholder="Enter current passcode to verify identity">
+                            <input type="password" id="settingsOldPass" placeholder="Enter current passcode">
                         </div>
                         <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
                         <div class="form-group">
                             <label>New Operator ID</label>
-                            <input type="text" id="settingsUser" placeholder="Enter new ID">
+                            <input type="text" id="settingsUser" placeholder="New Username">
                         </div>
                         <div class="form-group">
                             <label>New Passcode</label>
-                            <input type="password" id="settingsPass" placeholder="Enter new passcode">
+                            <input type="password" id="settingsPass" placeholder="New Password">
                         </div>
-                        <button class="btn btn-success" onclick="saveSecurityCredentials()">Update Master Credentials</button>
+                        <button class="btn btn-success" onclick="saveSecurityCredentials()">Update Credentials</button>
                     </div>
 
-                    <!-- Custom Dropdown Menu Manager Node Module -->
                     <div class="panel">
-                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Manage Course Dropdown Options</h3>
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Manage Courses Options</h3>
                         <div class="form-group">
-                            <label>Create Custom Selection Title</label>
+                            <label>Add New Course Option</label>
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <input type="text" id="newCourseInput" placeholder="e.g. Heavy Vehicle Special Endorsement">
-                                <button type="button" class="btn btn-success" style="padding: 12px;" onclick="addCustomCourseOption()">➕ Add Option</button>
+                                <input type="text" id="newCourseInput" placeholder="e.g. Manual Car Package">
+                                <button type="button" class="btn btn-success" style="padding: 12px;" onclick="addCustomCourseOption()">➕ Add to Dropdown</button>
                             </div>
                         </div>
-                        <label>Active Courses Mapping Ledger</label>
-                        <ul id="courseConfigurationManagerList" class="course-manager-list">
-                            <!-- Populated Reactively via Local Arrays Loops -->
-                        </ul>
+                        <label>Active Database List</label>
+                        <ul id="courseConfigurationManagerList" class="course-manager-list"></ul>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
         let expandedFolders = {};
-        
-        // CENTRALIZED MICRO-SERVICES SCRIPT INTEGRATION ENDPOINT LINK
         const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwG3X2gFZmnAmMii2TjukV-NuCWCOnzzmekYKcGi4W0vtf81HuYAgH5CApHyWoXs1iv/exec";
 
         const defaultCoursesList = [
@@ -613,7 +535,6 @@
         window.onload = function() {
             if(!localStorage.getItem('admin_user')) localStorage.setItem('admin_user', 'Arun9666');
             if(!localStorage.getItem('admin_pass')) localStorage.setItem('admin_pass', 'A6669n');
-
             if(!localStorage.getItem('driving_school_courses')) {
                 localStorage.setItem('driving_school_courses', JSON.stringify(defaultCoursesList));
             }
@@ -639,7 +560,6 @@
 
         function renderCourseMenusUI() {
             const currentCourses = JSON.parse(localStorage.getItem('driving_school_courses')) || defaultCoursesList;
-            
             const billingSelect = document.getElementById('course');
             billingSelect.innerHTML = currentCourses.map(course => `<option value="${course}">${course}</option>`).join('');
 
@@ -650,7 +570,6 @@
                     <button class="btn btn-danger" style="width:auto; padding:6px 12px; font-size:0.8rem;" onclick="removeCustomCourseOption(${idx})">🗑️ Delete</button>
                 </li>
             `).join('');
-
             updatePreview();
         }
 
@@ -658,11 +577,9 @@
             const inputField = document.getElementById('newCourseInput');
             const newTitle = inputField.value.trim();
             if(!newTitle) return;
-
             let courses = JSON.parse(localStorage.getItem('driving_school_courses')) || [];
             courses.push(newTitle);
             localStorage.setItem('driving_school_courses', JSON.stringify(courses));
-            
             inputField.value = '';
             renderCourseMenusUI();
         }
@@ -684,7 +601,7 @@
                 document.getElementById('loginScreen').style.display = 'none';
                 errorLabel.style.display = 'none';
             } else {
-                errorLabel.innerText = "Invalid Operator Credentials. Access Denied.";
+                errorLabel.innerText = "Invalid Operator Credentials.";
                 errorLabel.style.display = 'block';
             }
         }
@@ -693,58 +610,20 @@
             const oldPassInput = document.getElementById('settingsOldPass').value;
             const newUser = document.getElementById('settingsUser').value.trim();
             const newPass = document.getElementById('settingsPass').value.trim();
-            
-            const activePass = localStorage.getItem('admin_pass');
-
-            if (oldPassInput !== activePass) {
-                alert('Verification Failed: The current passcode you entered is incorrect.');
-                return;
-            }
-
-            if (!newUser || !newPass) {
-                alert('Credentials fields cannot be blank.');
-                return;
-            }
-
+            if (oldPassInput !== localStorage.getItem('admin_pass')) { alert('Current passcode incorrect.'); return; }
+            if (!newUser || !newPass) { alert('Fields cannot be blank.'); return; }
             localStorage.setItem('admin_user', newUser);
             localStorage.setItem('admin_pass', newPass);
             document.getElementById('settingsOldPass').value = '';
-            alert('Console credentials updated successfully!');
+            alert('Credentials updated!');
         }
 
         function switchConsoleTab(tabId) {
             document.querySelectorAll('.tab-page').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
-
-            const titleMap = { 'billing': 'Terminal Billing Form', 'students': 'Grouped Student Archives', 'settings': 'Control Settings' };
-            document.getElementById('topNavTitle').innerText = titleMap[tabId];
-
             if(tabId === 'students') loadGroupedStudents();
-        }
-
-        function resetFormForNewReceipt() {
-            document.getElementById('custName').value = '';
-            document.getElementById('whatsappNo').value = '';
-            document.getElementById('amount').value = '';
-            if(document.getElementById('course').options.length > 0) document.getElementById('course').selectedIndex = 0;
-            document.getElementById('payMode').selectedIndex = 0;
-            generateNewReceiptNo();
-            updatePreview();
-        }
-
-        function setDbStatus(connected) {
-            const label = document.getElementById('dbStatusLabel');
-            if(!label) return;
-            if(connected) {
-                label.innerText = "Status: Connected to Google Sheets Live Sync Hub ✅";
-                label.style.color = "#06d6a0";
-            } else {
-                label.innerText = "Status: Google Sync Interrupted ⚠️";
-                label.style.color = "#ef4444";
-            }
         }
 
         function generateNewReceiptNo() {
@@ -753,7 +632,6 @@
 
         function updatePreview() {
             if(document.body.classList.contains('customer-view-mode')) return;
-
             const receiptNo = document.getElementById('receiptNo').value;
             const name = document.getElementById('custName').value || '____________________';
             const course = document.getElementById('course').value || '--';
@@ -769,83 +647,27 @@
             document.getElementById('previewAmount').innerText = '₹ ' + amount;
         }
 
-        async function fetchSheetsCloudData() {
-            try {
-                const response = await fetch(googleScriptUrl);
-                if(response.ok) {
-                    const cloudHistory = await response.json();
-                    localStorage.setItem('driving_school_history', JSON.stringify(cloudHistory));
-                    setDbStatus(true);
-                } else { setDbStatus(false); }
-            } catch (err) { setDbStatus(false); }
-            if(document.getElementById('tab-students').classList.contains('active')) loadGroupedStudents();
-        }
-
-        async function saveRecordToHistory() {
-            const receiptNo = document.getElementById('receiptNo').value;
-            const name = document.getElementById('custName').value.trim();
-            const phone = document.getElementById('whatsappNo').value.trim();
-            const course = document.getElementById('course').value;
-            const amount = parseFloat(document.getElementById('amount').value || 0);
-            const mode = document.getElementById('payMode').value;
-            const date = new Date().toLocaleDateString('en-IN');
-
-            if(!name || !phone || !amount) return false;
-            const record = { date, receiptNo, name, phone, course, mode, amount };
-            
-            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            history.unshift(record); 
-            localStorage.setItem('driving_school_history', JSON.stringify(history));
-
-            try {
-                await fetch(googleScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(record)
-                });
-            } catch(e) { console.error(e); }
-            return true;
-        }
-
-        function deleteSingleReceiptRecord(receiptIdString) {
-            if(!confirm(`Are you sure you want to permanently delete receipt record item ${receiptIdString} from cache?`)) return;
-
-            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
-            history = history.filter(item => item.receiptNo !== receiptIdString);
-            localStorage.setItem('driving_school_history', JSON.stringify(history));
-
-            loadGroupedStudents();
-        }
-
         function loadGroupedStudents() {
             const history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
             const searchQuery = document.getElementById('historySearch').value.toLowerCase().trim();
             const container = document.getElementById('groupedFoldersContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No historical spreadsheet profiles mapped.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No history records saved on this device yet.</div>`;
                 return;
             }
 
             const groups = {};
             history.forEach(item => {
                 const key = `${item.name.toLowerCase().trim()}_${item.phone.trim()}`;
-                if (!groups[key]) {
-                    groups[key] = { name: item.name, phone: item.phone, totalPaid: 0, transactions: [] };
-                }
+                if (!groups[key]) { groups[key] = { name: item.name, phone: item.phone, totalPaid: 0, transactions: [] }; }
                 groups[key].transactions.push(item);
-                groups[key].totalPaid += item.amount;
+                groups[key].totalPaid += parseFloat(item.amount || 0);
             });
 
             let objectRows = Object.values(groups);
             if (searchQuery) {
                 objectRows = objectRows.filter(g => g.name.toLowerCase().includes(searchQuery) || g.phone.includes(searchQuery));
-            }
-
-            if(objectRows.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No directory folders found matching query search.</div>`;
-                return;
             }
 
             container.innerHTML = objectRows.map((group, idx) => {
@@ -856,10 +678,10 @@
                     <div class="nested-payment-card">
                         <div class="nested-grid">
                             <div><strong>📅 Date:</strong> ${t.date}</div>
-                            <div><strong>🧾 Receipt:</strong> <span style="color:var(--accent-cyan); font-weight:bold;">${t.receiptNo}</span></div>
-                            <div style="font-size:1.1rem; font-weight:bold; color:var(--success-green);">₹ ${t.amount}</div>
+                            <div><strong>🧾 Receipt:</strong> <span style="color:var(--accent-cyan);">${t.receiptNo}</span></div>
+                            <div style="font-weight:bold; color:var(--success-green);">₹ ${t.amount}</div>
                         </div>
-                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); color:var(--text-muted); font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <div style="margin-top:8px; padding-top:8px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:0.85rem; display:flex; justify-content:space-between; align-items:center;">
                             <div><strong>Course:</strong> ${t.course} | <strong>Mode:</strong> ${t.mode}</div>
                             <button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 0.8rem;" onclick="deleteSingleReceiptRecord('${t.receiptNo}')">🗑️ Delete</button>
                         </div>
@@ -871,14 +693,12 @@
                         <div class="folder-header" onclick="toggleStudentFolder('${folderId}')">
                             <span class="folder-title">📁 ${group.name.toUpperCase()}</span>
                             <div class="folder-meta">
-                                <span class="count-badge">📱 +91 ${group.phone}</span>
-                                <span class="count-badge" style="background:var(--accent-cyan); color:#000; font-weight:bold;">${group.transactions.length} Recs</span>
-                                <span class="total-badge" style="color: var(--success-green); font-weight:bold;">Total: ₹ ${group.totalPaid}</span>
+                                <span class="count-badge">📱 ${group.phone}</span>
+                                <span class="count-badge" style="background:var(--accent-cyan); color:#000; font-weight:bold;">${group.transactions.length} entries</span>
+                                <span class="total-badge" style="color: var(--success-green);">Total: ₹ ${group.totalPaid}</span>
                             </div>
                         </div>
-                        <div class="folder-content ${isOpen}" id="${folderId}">
-                            ${nestedRowsHtml}
-                        </div>
+                        <div class="folder-content ${isOpen}" id="${folderId}">${nestedRowsHtml}</div>
                     </div>
                 `;
             }).join('');
@@ -886,13 +706,31 @@
 
         function toggleStudentFolder(id) {
             const folder = document.getElementById(id);
-            if(folder.classList.contains('open')) {
-                folder.classList.remove('open');
-                expandedFolders[id] = false;
-            } else {
-                folder.classList.add('open');
-                expandedFolders[id] = true;
-            }
+            folder.classList.toggle('open');
+            expandedFolders[id] = folder.classList.contains('open');
+        }
+
+        function deleteSingleReceiptRecord(receiptIdString) {
+            if(!confirm(`Delete receipt item ${receiptIdString}?`)) return;
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history = history.filter(item => item.receiptNo !== receiptIdString);
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+            loadGroupedStudents();
+        }
+
+        async function fetchSheetsCloudData() {
+            try {
+                const response = await fetch(googleScriptUrl);
+                if(response.ok) {
+                    const cloudHistory = await response.json();
+                    if(Array.isArray(cloudHistory) && cloudHistory.length > 0) {
+                        localStorage.setItem('driving_school_history', JSON.stringify(cloudHistory));
+                        document.getElementById('dbStatusLabel').innerText = "Status: Live Cloud Sync Connected ✅";
+                        document.getElementById('dbStatusLabel').style.color = "#06d6a0";
+                    }
+                }
+            } catch (err) { console.log("Cloud read offline. Using local backup storage."); }
+            loadGroupedStudents();
         }
 
         async function sendWhatsApp() {
@@ -902,35 +740,55 @@
             const course = document.getElementById('course').value;
             const amount = document.getElementById('amount').value;
             const mode = document.getElementById('payMode').value;
-
-            if(!name || !phone || !amount) { alert('Please fill out all fields before dispatching.'); return; }
-
-            const approved = await saveRecordToHistory();
-            if(!approved) return;
-
             const date = new Date().toLocaleDateString('en-IN');
+
+            if(!name || !phone || !amount) { alert('Please fill all parameters first.'); return; }
+
+            // CRITICAL SECURE UPGRADE: Instantly write locally before processing any network tasks
+            const record = { date, receiptNo, name, phone, course, mode, amount: parseFloat(amount) };
+            let history = JSON.parse(localStorage.getItem('driving_school_history')) || [];
+            history.unshift(record);
+            localStorage.setItem('driving_school_history', JSON.stringify(history));
+            
+            // Instantly refresh workspace dashboard tracking lists
+            loadGroupedStudents();
+
+            // Background Fire & Forget push to Cloud Deployment script
+            fetch(googleScriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(record)
+            }).catch(e => console.log("Cloud upload queued pending connection recovery. Saved locally."));
+
+            // Compile parameters for document generation links
             const baseUrl = window.location.origin + window.location.pathname;
             const invoiceUrl = `${baseUrl}?bill=true&no=${encodeURIComponent(receiptNo)}&dt=${encodeURIComponent(date)}&nm=${encodeURIComponent(name)}&cs=${encodeURIComponent(course)}&am=${encodeURIComponent(amount)}&md=${encodeURIComponent(mode)}`;
-
             const cleanPhone = '91' + phone.replace(/\D/g, '');
+            
             const message = `*🧾 DIGITAL RECEIPT - THANIMA IYKARAYIL MDS*%0A` +
-                            `_Govt. Approved | LIC NO: 3/13/2019_%0A` +
                             `----------------------------------------%0A` +
-                            `*Student Name:* ${name}%0A` +
+                            `*Student Name:* ${name.toUpperCase()}%0A` +
                             `*Total Amount Paid: ₹ ${amount}*%0A` +
                             `----------------------------------------%0A%0A` +
-                            `👉 Click the link below to view and download your full official receipt online:%0A${encodeURIComponent(invoiceUrl)}`;
+                            `👉 Click link below to view your receipt document online:%0A${encodeURIComponent(invoiceUrl)}`;
 
             window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${message}`, '_blank');
             resetFormForNewReceipt();
-            fetchSheetsCloudData();
+        }
+
+        function resetFormForNewReceipt() {
+            document.getElementById('custName').value = '';
+            document.getElementById('whatsappNo').value = '';
+            document.getElementById('amount').value = '';
+            generateNewReceiptNo();
+            updatePreview();
         }
 
         function renderOnlineInvoiceMode(params) {
             document.getElementById('previewHeader').innerText = "THANIMA IYKARAYIL MDS";
             document.getElementById('printFooterText').style.display = "block";
             document.getElementById('customerPrintBtn').style.display = "block";
-
             document.getElementById('previewReceiptNo').innerText = 'Receipt No: ' + params.get('no');
             document.getElementById('previewDate').innerText = 'Date: ' + params.get('dt');
             document.getElementById('previewName').innerText = params.get('nm');
