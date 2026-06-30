@@ -157,7 +157,6 @@
             .menu-item.active {
                 background: rgba(0, 180, 216, 0.1);
                 border-left-color: var(--accent-cyan);
-                border-top: none; border-right: none; border-bottom: none;
             }
         }
 
@@ -599,7 +598,6 @@
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
             
-            // Sync headings text
             const titleMap = {
                 'billing': 'Terminal Billing Form',
                 'students': 'Grouped Student Archives',
@@ -630,18 +628,18 @@
             document.getElementById('previewAmount').innerText = '₹ ' + amount;
         }
 
-        // Bypasses browser blocks completely using clean JSONP injection execution
+        // Master fetch operation using JSONP method mapping
         function fetchSheetsCloudData() {
             const label = document.getElementById('dbStatusLabel');
             label.innerText = "Status: Syncing Live rows from Google Sheets Matrix... ⏳";
             
-            // Clean up old scripts
             const oldScript = document.getElementById('jsonpSyncScript');
             if(oldScript) oldScript.remove();
 
             const script = document.createElement('script');
             script.id = 'jsonpSyncScript';
-            script.src = googleScriptUrl + "?callback=handleSheetsCloudResponse";
+            // Passing the unique frontend callback identity down the transmission pipe
+            script.src = googleScriptUrl + "?callback=handleSheetsCloudResponse&ts=" + new Date().getTime();
             
             script.onerror = function() {
                 label.innerText = "Status: Local Backup Matrix Active (Offline Mode) ⚠️";
@@ -651,7 +649,7 @@
             document.body.appendChild(script);
         }
 
-        // Processing callback function fired straight from the spreadsheet script
+        // Global callback logic executes when Google Apps Script drops payload
         window.handleSheetsCloudResponse = function(data) {
             const label = document.getElementById('dbStatusLabel');
             if (Array.isArray(data)) {
@@ -723,7 +721,7 @@
             const container = document.getElementById('groupedFoldersContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No archive entries found. Try opening the tab again to fetch from Google Sheets.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No archive entries found. Try refreshing or checking your script connection.</div>`;
                 return;
             }
 
