@@ -462,7 +462,7 @@
             const container = document.getElementById('groupedLedgerContainer');
             
             if(history.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No central database transaction records discovered. Check RLS policies if records are missing.</div>`;
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">No central database transaction records discovered. Make sure policies match inside your table configuration.</div>`;
                 return;
             }
 
